@@ -17,6 +17,8 @@ The first release focuses on one question: for unchanged Python source and expli
 
 Python 3.11–3.13 on Linux and macOS are the CI targets. The status of each platform must be read from actual CI results. Windows, external services, browser tests, arbitrary monorepos, and source-plus-test migrations are outside the initial scope.
 
+Version `0.1.0a3` adds external configuration, native GitHub Action integration with separated project Python, actual test/mutant diffs, run timestamps, a sanitized share export, and a frozen 30/20 conformance corpus. See [quality status](quality-status.md) for observed results and deferred original-plan targets.
+
 ## Next iterations
 
 1. **Make the current path dependable.** Fix installation failures, false classifications, stale fingerprints, timeout cleanup, and report ambiguities before adding runners.

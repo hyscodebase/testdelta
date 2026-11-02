@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "finite_core_comparison_conformance",
+  "aggregation_kind": "two_sequential_split_runs_not_an_additional_execution",
+  "snapshot_kind": "controlled_fixture_bytes_not_git",
+  "mutation_origin": "fixture_negative_control",
+  "automatic_mutation_generation_exercised": false,
+  "git_snapshot_eligibility_exercised": false,
+  "scope": "Finite conformance fixtures; no model or general-accuracy claim.",
+  "source_artifacts": [
+    {
+      "path": "evidence/corpus/development.json",
+      "sha256": "514fade8ae8766dbe6404a5d8e4d4e747597da6bf989389c25b357934ad7bb7b"
+    },
+    {
+      "path": "evidence/corpus/validation.json",
+      "sha256": "15ef953123dc4141853cc1034706586065c8baaa8e47e54d12cd975d12590ccf"
+    }
+  ],
+  "frozen_corpora": {
+    "development": {
+      "path": "corpus/development.json",
+      "count": 30,
+      "sha256": "58eea5d6f9024d57c17371b42ca633f88b3c89d37068b11f2ef0536384145d6e"
+    },
+    "validation": {
+      "path": "corpus/validation.json",
+      "count": 20,
+      "sha256": "97424a8a5ad005d427bcd6bf41130e682127c4cd8905e2f5fd4be50c8cf87be7"
+    }
+  },
+  "manifest_sha256": "6fc78e86cfcc966398f4bec47697dec6ec289229b2d535198eb182cc26961c41",
+  "engine_sha256": {
+    "src/testdelta/compare.py": "587e80d4832ea76af9aa9dde38c39537829f519a8a13813142987c9aa677f044",
+    "src/testdelta/git_inputs.py": "f4be9a28d64bdb3492d392233981b2b6284e875b070282a398246a6ad5ac82c0",
+    "src/testdelta/runner/supervisor.py": "d52cbd3cf6558bd3b413a44bd53ee5484080f7ca403896bb3180f2cfd2ce1e07",
+    "src/testdelta/runner/plugin.py": "51a0e4c2852751f1766ccb4b1c8cba284f5db8f8a9e1fd07865f2f170bb35861"
+  },
+  "engine_unchanged_during_both_runs": true,
+  "execution_complete": true,
+  "started_at_utc": "2026-11-02T13:12:55.177600+00:00",
+  "finished_at_utc": "2026-11-02T13:15:24.957993+00:00",
+  "runtime_context": "Local CPU workload was not isolated; concurrent tests may run.",
+  "summary": {
+    "cases_executed": 50,
+    "matched_expectations": 50,
+    "disagreements": [],
+    "expected_counts": {
+      "loss_observed": 17,
+      "no_loss_observed": 17,
+      "inconclusive": 16
+    },
+    "observed_counts": {
+      "loss_observed": 17,
+      "no_loss_observed": 17,
+      "inconclusive": 16
+    },
+    "confusion_matrix_expected_rows": {
+      "loss_observed": {
+        "loss_observed": 17,
+        "no_loss_observed": 0,
+        "inconclusive": 0
+      },
+      "no_loss_observed": {
+        "loss_observed": 0,
+        "no_loss_observed": 17,
+        "inconclusive": 0
+      },
+      "inconclusive": {
+        "loss_observed": 0,
+        "no_loss_observed": 0,
+        "inconclusive": 16
+      }
+    },
+    "runtime_observations": {
+      "workload": "one_declared_hand_authored_control_per_complete_valid_fixture",
+      "eligibility": "all_four_normal_baselines_pass_and_each_takes_at_most_2_seconds",
+      "eligible_cases": 34,
+      "excluded_executed_cases": 16,
+      "percentile_method": "nearest_rank",
+      "comparison_p50_seconds": 3.425,
+      "comparison_p95_seconds": 5.111,
+      "comparison_max_seconds": 5.224,
+      "scope": "Observed local runtime only; not a ten-mutant or arbitrary-project bound."
+    },
+    "baseline_failure_status_counts": {
+      "assertion_failure": 2,
+      "collection_error": 3,
+      "not_executed": 6,
+      "fixture_error": 3,
+      "runtime_error": 2
+    }
+  }
+}

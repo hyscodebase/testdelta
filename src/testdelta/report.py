@@ -8,6 +8,8 @@ import os
 import re
 from pathlib import Path
 
+from testdelta.export import build_summary
+
 
 def _text(value) -> str:
     return (
@@ -134,11 +136,29 @@ def _section(
     )
 
 
+def _diff_section(title: str, diff: str, sha256, truncated: bool) -> dict:
+    paragraphs = [f"Diff SHA-256: {sha256 or 'not recorded'}"]
+    if truncated:
+        paragraphs.append(
+            "Diff display truncated; the recorded SHA-256 identifies the full generated diff."
+        )
+    return _section(
+        title,
+        paragraphs=paragraphs,
+        snippets=[diff] if diff else ["No textual diff recorded."],
+    )
+
+
 def _sections(report: dict) -> list[dict]:
     plan = report.get("plan", {})
     sections = []
     if _reason(report):
         sections.append(_section("Why this result needs attention", paragraphs=[_reason(report)]))
+    for item in report.get("test_diffs", []):
+        sections.append(_diff_section(
+            f"Changed test diff: {item.get('path', 'unknown')}",
+            item.get("diff", ""), item.get("sha256"), bool(item.get("truncated", False)),
+        ))
     issues, evidence = [], []
     for label, run in _runs(report):
         detail = _details(run)
@@ -222,6 +242,13 @@ def _sections(report: dict) -> list[dict]:
             rows=mutant_rows or [("None recorded", "No mutation conclusion", "—", "—")],
         )
     )
+    for mutant in report.get("mutants", []):
+        if "diff" in mutant:
+            sections.append(_diff_section(
+                f"Mutant diff: {mutant.get('id', 'unknown')} · {mutant.get('path', '?')}",
+                mutant["diff"], mutant.get("diff_sha256"),
+                bool(mutant.get("diff_truncated", False)),
+            ))
     controls = [
         (
             label,
@@ -411,8 +438,26 @@ def write_report(report: dict, output: Path) -> None:
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a", encoding="utf-8") as stream:
-            stream.write(text + "\n")
+            stream.write(github_summary(report) + "\n")
     (output / "report.html").write_text(html_document(report), encoding="utf-8")
+
+
+def github_summary(report: dict) -> str:
+    """Render only allowlisted outcomes for an automatically published CI summary."""
+    summary = build_summary(report)
+    title, explanation, _tone = _summary(summary)
+    confirmed = sum(_confirmed(witness) for witness in summary["witnesses"])
+    return "\n".join([
+        "# TestDelta", "", f"## {title}", "", explanation, "",
+        f"Recorded verdict: {summary['verdict']}",
+        f"Selected plan complete: {summary['complete']}",
+        f"Mutation pairs attempted / planned: {summary['mutants_completed']} / {summary['mutants_planned']}",
+        f"Confirmed detection-loss findings: {confirmed}", "",
+        "Finite selected mutation scope only; no proof of test equivalence or software correctness.",
+        "Raw diagnostics, paths, diffs, and source/config text are omitted from this CI summary.",
+        "Local report artifacts and replay bundles can contain private execution output and source.",
+        "",
+    ])
 
 
 def exit_code(report: dict, advisory: bool = False) -> int:

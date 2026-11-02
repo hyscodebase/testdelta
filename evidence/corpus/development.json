@@ -1,0 +1,5245 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "finite_core_comparison_conformance",
+  "generated_at_utc": "2026-11-02T13:12:55.177600+00:00",
+  "snapshot_kind": "controlled_fixture_bytes_not_git",
+  "mutation_origin": "fixture_negative_control",
+  "comparison_entrypoint": "testdelta.compare.compare",
+  "runner_evidence": "actual_pytest_subprocesses",
+  "automatic_mutation_generation_exercised": false,
+  "git_snapshot_eligibility_exercised": false,
+  "scope": "Finite conformance fixtures; no model or general-accuracy claim.",
+  "split": "development",
+  "planned_cases": 30,
+  "frozen_corpora": {
+    "development": {
+      "path": "corpus/development.json",
+      "count": 30,
+      "sha256": "58eea5d6f9024d57c17371b42ca633f88b3c89d37068b11f2ef0536384145d6e"
+    },
+    "validation": {
+      "path": "corpus/validation.json",
+      "count": 20,
+      "sha256": "97424a8a5ad005d427bcd6bf41130e682127c4cd8905e2f5fd4be50c8cf87be7"
+    }
+  },
+  "manifest_sha256": "6fc78e86cfcc966398f4bec47697dec6ec289229b2d535198eb182cc26961c41",
+  "engine_sha256_before": {
+    "src/testdelta/compare.py": "587e80d4832ea76af9aa9dde38c39537829f519a8a13813142987c9aa677f044",
+    "src/testdelta/git_inputs.py": "f4be9a28d64bdb3492d392233981b2b6284e875b070282a398246a6ad5ac82c0",
+    "src/testdelta/runner/supervisor.py": "d52cbd3cf6558bd3b413a44bd53ee5484080f7ca403896bb3180f2cfd2ce1e07",
+    "src/testdelta/runner/plugin.py": "51a0e4c2852751f1766ccb4b1c8cba284f5db8f8a9e1fd07865f2f170bb35861"
+  },
+  "limits_per_case": {
+    "budget_seconds": 60,
+    "timeout_seconds": 10,
+    "max_mutants": 1
+  },
+  "execution_complete": true,
+  "engine_sha256_after": {
+    "src/testdelta/compare.py": "587e80d4832ea76af9aa9dde38c39537829f519a8a13813142987c9aa677f044",
+    "src/testdelta/git_inputs.py": "f4be9a28d64bdb3492d392233981b2b6284e875b070282a398246a6ad5ac82c0",
+    "src/testdelta/runner/supervisor.py": "d52cbd3cf6558bd3b413a44bd53ee5484080f7ca403896bb3180f2cfd2ce1e07",
+    "src/testdelta/runner/plugin.py": "51a0e4c2852751f1766ccb4b1c8cba284f5db8f8a9e1fd07865f2f170bb35861"
+  },
+  "engine_unchanged_during_execution": true,
+  "finished_at_utc": "2026-11-02T13:14:21.827873+00:00",
+  "export_kind": "allowlisted_corpus_summary",
+  "raw_diagnostics_included": false,
+  "runtime_context": "Local CPU workload was not isolated; concurrent tests may run.",
+  "results": [
+    {
+      "id": "dev-001",
+      "split": "development",
+      "category": "Inclusive age boundary",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.39,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "9379074b3dec0fe817c6a0801f3283470beec0311bea0b475f471aecec5ef367"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "6b30f8f661a4c6de39ee9e982e604b22183e0b86a5cdf766ae96f9c98ba81277",
+              "new": "b44efad94920c68816faa337e6a58dc2a8af8e2d2ca573757ec1d08a9dbb244e"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "b3700e74e610ffa098ac363cd3644a0cc954321c9e635bacd2366d3289a78147",
+            "diff_sha256": "5f0c94f55ada8f1445fb59672b4f30eedaa2b3b657cd21cdc9b300a6955eaed9",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "9379074b3dec0fe817c6a0801f3283470beec0311bea0b475f471aecec5ef367",
+            "mutated_sha256": "b3700e74e610ffa098ac363cd3644a0cc954321c9e635bacd2366d3289a78147",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "8104e57c0193199f86c4d88cea0515a3ca8083b13011a6bdb71505327a9e65d2",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-002",
+      "split": "development",
+      "category": "Lower clamp boundary",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.43,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "5e2322eabfe8ee0b149e5527b78a89a7ba47b46666f8b3571be6d7062ac2fd54"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "50f8fbc12e0838776e05470933efd98e580db467d5b0aca6de8c3abd78500bb9",
+              "new": "5ffec9092f18f7730a2a06ff14ada9b798aefb2c7c24cc8319421c37c6f3ebea"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "3a2fe2662497265d0d17d57f08b5d298448f010215baab3f9a93ae442fee296c",
+            "diff_sha256": "c57b45519a0d90bdb0a1bff2e7d7b916ba7307a8e872158c9894fff3f6a04c5d",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "5e2322eabfe8ee0b149e5527b78a89a7ba47b46666f8b3571be6d7062ac2fd54",
+            "mutated_sha256": "3a2fe2662497265d0d17d57f08b5d298448f010215baab3f9a93ae442fee296c",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "42b1bb365c8add6965211bcf8c62465e2a44e88af74d3620a3a3daeaa341d57b",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-003",
+      "split": "development",
+      "category": "Discount percentage units",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.401,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "6e2ec7186a6b83a470419784414def828869e58091568dfc784290912d4498db"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "2e0dc16f492866b3c1b72341766adf917e958fea5b7b2b66f98a34a7cca17778",
+              "new": "3f266e0158267ce06aedac7ab1b39cb4f2d6b156033de633e8c0b4042cc020c9"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "d80ea9c549ba8493971a96541454dafc99bef98259c9a2f15abb2e18ab9bd838",
+            "diff_sha256": "62e24d0977b251b5fecdaec13e3ba68dbb64617347bb0cf09b34cd3be22d44fd",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "6e2ec7186a6b83a470419784414def828869e58091568dfc784290912d4498db",
+            "mutated_sha256": "d80ea9c549ba8493971a96541454dafc99bef98259c9a2f15abb2e18ab9bd838",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "06f367a340fb7ad44112502589549c72e9e0a598e37ce0a0cf95f869015c30c7",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-004",
+      "split": "development",
+      "category": "Duplicate list elements",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.431,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "37c5ffd2f5319bdb3ab1c2a958a29fb9ce9dc8cf227080e0215b69405256ac68"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "9269520685dc958f39f8682aecae4b30361c6699bf2670e148bf4ed47f7d5f7b",
+              "new": "a3842baa7c2c220f25bcce054e3337e5cb3f5da854be9698d08feabe5a7bd969"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "8cee387db5dc117823e109a48c413ff23322b96d1773137eaccc8cf26c00f8a1",
+            "diff_sha256": "8fff072e533b488343b7347b276c4dc391dd3213fea5a28754c19ba98263aa75",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "37c5ffd2f5319bdb3ab1c2a958a29fb9ce9dc8cf227080e0215b69405256ac68",
+            "mutated_sha256": "8cee387db5dc117823e109a48c413ff23322b96d1773137eaccc8cf26c00f8a1",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "9618fd2566d75e130596e2ed8ceec17b334a06e07e797832699b2f2afbd0190f",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-005",
+      "split": "development",
+      "category": "String whitespace normalization",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.414,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "e61c0f2ac478c47944a6fee4852205b53d9e6aaac79b311e09e8f4dda3969c1c"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "5dea460dba01f979eabd92e15339a0e4fd55fb59e87e75853973dd95544009ab",
+              "new": "98ad69952284d29ba06f29dafa2cfd9b606d6f9972d6a7b9cb6cba1e6c38d769"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "0897a42fd4cc78cf0a150f04f0db83d93f4d4381c4f8c3eb1bda026b6ff59e26",
+            "diff_sha256": "f5d4d16033da11cfa66309ede3131cb5c581011a78f5d379d45d35231cb6349d",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "e61c0f2ac478c47944a6fee4852205b53d9e6aaac79b311e09e8f4dda3969c1c",
+            "mutated_sha256": "0897a42fd4cc78cf0a150f04f0db83d93f4d4381c4f8c3eb1bda026b6ff59e26",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "3de00ba9d7db5712cd8d3fc42386f3d8255c4e0120c9a9d8f0f494e2e53e20bd",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-006",
+      "split": "development",
+      "category": "Key-value parsing with repeated separator",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.439,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "c8050ca633ff1887a3db452e4b71bddbb4093b37f54d6906ce6b3ac55fb7ad53"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "98fc89fa7dc77c1c667bf4a94f7583f55876c47ded43cbd413d075972fc5f4cb",
+              "new": "b965d7b7344b325adabc3979d26347a03e44fa0504b7cdb0dd49fdaf59f32ff1"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "5378e6d7fdf8a42f742d01766c64202e04db778782eed3491b76fe8a8b6ceb61",
+            "diff_sha256": "e9120d6980abaf266d350161ccd5dcec45db1aa6509b753a4c28c0e304c85580",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "c8050ca633ff1887a3db452e4b71bddbb4093b37f54d6906ce6b3ac55fb7ad53",
+            "mutated_sha256": "5378e6d7fdf8a42f742d01766c64202e04db778782eed3491b76fe8a8b6ceb61",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "0fe3b44b66be5efa81ed2be0ef98e3d7152cbcf9b38d6fd939747333e0d041a6",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-007",
+      "split": "development",
+      "category": "Closed numeric interval",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.42,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "d1436f6f18416c35826d753e4605de15f767580f7346cb075e780309a8ead220"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "ebc401d0262082976827f46ca3a9f58d9c07c9ff192428f39bc28265a2bef2c1",
+              "new": "73d9b7d22646a5a09c4b35ee70aaad5c7c111d07c6df3090f89334b187ae9de8"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "3b3222f74503fc4cd56bee6af2722c92714fb5ac6fd8fde799abe2079334a7d6",
+            "diff_sha256": "23d9f0e78edffef8df2fa0c7e2b20eac4231b5bc18a01a696662edb25f54804a",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "d1436f6f18416c35826d753e4605de15f767580f7346cb075e780309a8ead220",
+            "mutated_sha256": "3b3222f74503fc4cd56bee6af2722c92714fb5ac6fd8fde799abe2079334a7d6",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "1d9d7ed209bf14bd9e4fa8e47ac7613077a756eaef3d23cd081317eeae8b3184",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-008",
+      "split": "development",
+      "category": "Rounding to the next multiple",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.613,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "6225fe09305791084cb88bdb76c625cafbe592a0f8db27a8fc8df095bf37b374"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "71016cad8aa97fc3b4e952a54806a380a33d0ada5998b0247856abd4186e4bfe",
+              "new": "19f2597d61df51e4e0e511e50ba28a0283b754284946e1dab439d3ebe8f0fd95"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "adf9e91e3f5d508b7946b0747781ca0cf13bf95b461b39f4fd008412ff632531",
+            "diff_sha256": "a1c8793f405111bbdc3b43733797cafa687c9c5f566c767087ad54335afedbbf",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "6225fe09305791084cb88bdb76c625cafbe592a0f8db27a8fc8df095bf37b374",
+            "mutated_sha256": "adf9e91e3f5d508b7946b0747781ca0cf13bf95b461b39f4fd008412ff632531",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "59b9ea19c3959b49d6d0196141d5db7dac2a9c37b85b1aa04f57581567c5ac48",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-009",
+      "split": "development",
+      "category": "Positive search excludes zero",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.654,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "9810d44ee3bfc8c4df7f858afdb3ba1320c4eeec2bebac5b2197c17871fbabfd"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "33bd9fedfae64df5530e819d84e37dc4cc4ab4e61391890e2e6608296ec0d9c2",
+              "new": "2575e7c605fd0ae3130dd2aae43615ff6b850ab538bb2cb743bc495c86807774"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "d8e94be8838ccc8f539016292c9bd07ef82784d2e05a4f13bf37160f097f3512",
+            "diff_sha256": "d44e1e2ad924496f78da5344ccbe8f8dfe8d9b1720ada5c956174edf70bfc342",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "9810d44ee3bfc8c4df7f858afdb3ba1320c4eeec2bebac5b2197c17871fbabfd",
+            "mutated_sha256": "d8e94be8838ccc8f539016292c9bd07ef82784d2e05a4f13bf37160f097f3512",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "ac2f6062e260c1f70dd8f3febc3dfa26a1f914c6ae9ab51d61677a1aa11f522a",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-010",
+      "split": "development",
+      "category": "Joining multiple strings",
+      "expected": {
+        "verdict": "loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "lost_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true,
+        "three_pairs_and_confirmed_witness": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 4.664,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "86b91369d08a5b2a5cd1e11bffc31ebe805655340a47a224c429c6c9331da657"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "2176221595a7bf0d3d724e03e1bc98a684267ca6b8d5b535e3fe6bb2b99c595f",
+              "new": "40327e5d01317e5c58c8aa0fea6489c1a7990448b4ebb95332ff0ed1bca38957"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "bcc47021274c4af80742202307e09b66fb89b5a7fbc478ebf4889ce8fc1a4a58",
+            "diff_sha256": "4bd895c85c2f1f957b0acbefbf95736fb62c6234181f2d9e7d3b6a501fd6c89c",
+            "diff_truncated": false,
+            "outcome": "lost_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              },
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              },
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "original_sha256": "86b91369d08a5b2a5cd1e11bffc31ebe805655340a47a224c429c6c9331da657",
+            "mutated_sha256": "bcc47021274c4af80742202307e09b66fb89b5a7fbc478ebf4889ce8fc1a4a58",
+            "confirmation": "three_pairs_and_final_controls",
+            "old_outcomes": [
+              "killed",
+              "killed",
+              "killed"
+            ],
+            "new_outcomes": [
+              "survived",
+              "survived",
+              "survived"
+            ]
+          }
+        ],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "def22d9eed8967a635bc7796d644264f8a3f2691108a2c6837b7beca344fe1f7",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-011",
+      "split": "development",
+      "category": "Refactored maximum checks retain detection",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "retained_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.182,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "63e0bea34709e879def98e1e66399a4bb5de8e33b0cb71f69b7b5d4c5fb013b3"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "0f4de11320a573e4f92ee3f51d1fd32c2d43b85b81763e20052e736d2ff9a53f",
+              "new": "c6770456382ecb4db834ea8083ef68ad008fa22203e819c18b11231ef8c682fa"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 3,
+            "collected_count": 3,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 3,
+            "collected_count": 3,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 3,
+            "collected_count": 3,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "0bc894fafc508594b72c57fe3b170c237768d1bc747b10ea0cb5f3114d83affe",
+            "diff_sha256": "6f1847abe2e9711971276f2eeef9ce4868e99a11ff264e2197957dfa05da3972",
+            "diff_truncated": false,
+            "outcome": "retained_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "assertion_failure",
+                "side": "new",
+                "ran_count": 3,
+                "collected_count": 3,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 2
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "586918392491086db41655bf94ba0256df9b3cb42ab3c3fa7055fec4ac540e96",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-012",
+      "split": "development",
+      "category": "Sign checks retain negative branch",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "retained_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.194,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "b71da8d315dbb3a3dee1b808c3576be9ae3b068e838480aaf4171be5fb0a9e62"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "907d04ecafadd16f7428d3cd0165bf78efa32dedd0ccb7108ac754dbc9618972",
+              "new": "d0b3730ae4e267312fef89405fa06783bff5b77ca830c71090054ae7da79aade"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 3,
+            "collected_count": 3,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 3,
+            "collected_count": 3,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 3,
+            "collected_count": 3,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "4cf26d8917b748496a6dd9b918d2e1bcd88bc7664a14c245c1095a1597f99247",
+            "diff_sha256": "a7516217999ac6f113d3eec89afdd6098c2a57d548c3627a8208f2272d715f02",
+            "diff_truncated": false,
+            "outcome": "retained_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "assertion_failure",
+                "side": "new",
+                "ran_count": 3,
+                "collected_count": 3,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "1f551f87561dcb970eb8aee98ac278aef7e8bb1ffb013b946137eeec9b68afea",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-013",
+      "split": "development",
+      "category": "Case-insensitive suffix detection retained",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "retained_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.18,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "d34e338368053803a2a88f44b8224b390c3cd6d39f77fa96ca2c43452c3d656a"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "d7419f3a2cf44053a6d10be71d203aec84ff30b6940ed3217888e9b31f07c120",
+              "new": "ab638fd0fcef782b4cd79b73a980cc89bbb83b25ed152e321b39a85877b82b37"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "90c5f9d88de8dadfffeeb47bb3a62cdfb2dfee961011c4d88782af3835de21b4",
+            "diff_sha256": "1b15a503cdd82cc1ea6d321ed1d259576a80044d00e3dc629fa7818c4cfa620f",
+            "diff_truncated": false,
+            "outcome": "retained_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "assertion_failure",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "351da01fb6eb4169f98eb8277c0fe32f0972539b60fffdbb8175097c0b97c24c",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-014",
+      "split": "development",
+      "category": "Empty-cart shipping detection retained",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "retained_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.182,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "2f64c49fdd8309eb944c778b62a766abade72b05daddf18f90ff5e030ae3544b"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "5b6c7eca2c00abb57161b6cae97697e5273d5b7abeeb7daa2f0b102c54b71f12",
+              "new": "af80b74e8bf725c08a87f6ff882dcbdc34e279f12e58fc4d7f478fae37260fb5"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "1dd2c779d842a09d2974ebeb36e91024c0221430fa1ed8a9944fcdff77bdc166",
+            "diff_sha256": "9f22535dbae48676fec7adcfb7d55cd3181886fdbc81535b49986e13e88f744b",
+            "diff_truncated": false,
+            "outcome": "retained_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "assertion_failure",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "3e0389bf6b005db2ed882fba7ca1f2d199ad6448673bbe5d4f2d324bd3773230",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-015",
+      "split": "development",
+      "category": "Century leap-year detection retained",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "retained_kill"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.413,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "771ffd9fdf2176a6074fa0a384b90edd3e6cf514bc789f06516157aa21cc39b4"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "527d000382a297e0be91ac1d0da218023cacd7c11e0784e55288796a20f2dd94",
+              "new": "d8239241b9b437ee4e91495bc15988d37b9326908916f18fb2952309c13b4086"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 4,
+            "collected_count": 4,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 4,
+            "collected_count": 4,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 4,
+            "collected_count": 4,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "9fe719add5e88711759fb8e4a74fedc2098e330e8fa12a5d57508b10c0b4e22e",
+            "diff_sha256": "356d7c824a3ced8329ab8b6a0bc20dd3175ecd9e0f3fd56fc1784d0dcb680aea",
+            "diff_truncated": false,
+            "outcome": "retained_kill",
+            "old": [
+              {
+                "status": "assertion_failure",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ],
+            "new": [
+              {
+                "status": "assertion_failure",
+                "side": "new",
+                "ran_count": 4,
+                "collected_count": 4,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 1
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "a9068196297931cd613024c1644be6d13b824b1711ac5eb03dfba558eab9180e",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-016",
+      "split": "development",
+      "category": "Both revisions leave a negative branch unchecked",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "survived_both"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.253,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "50e701e90d3759e3a33433025002bb0fbe24660286eb73f0f060d09c83c89507"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "8713609abe2d2223420d80744311a00bf0fc9d9ffc93a9dba5f0d51d83866e66",
+              "new": "d53a87b4574631e2f89493a4ed466e1b84fa25727d5f4c207aabb81a8d5e65ef"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "f5a395cda8bdb0675d253bdde925145fd7850f0572e88328ddefca5d2061bcd3",
+            "diff_sha256": "a2e4ae7038e8c7d32c6d93936d89b6d1a0fb9180e681185e0bd2740a3915ac6c",
+            "diff_truncated": false,
+            "outcome": "survived_both",
+            "old": [
+              {
+                "status": "pass",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "ca6f7079d18a2ed2b1acbaf64bdfb12d8e131b7229232b5df273fd0b38aa426a",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-017",
+      "split": "development",
+      "category": "Both revisions omit zero from positive counting",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "survived_both"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.226,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "f97b46466c9421e6a51b9fc19be91b8b3442f24d48360eca7d633be8c98bdaf9"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "633cc01f539dab54c635196cce0afaae6deff8293950a877a9f4a6a295f01d2b",
+              "new": "82dc1583ae3582432c8be95d97ab700c509224a8092f2164e6aec79f8ca1b061"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "24d429ede22a0841dd3f7043be15b1fb38b91792c22494e5253c7389de36fd5a",
+            "diff_sha256": "d2c9e0acd2b96d996cf643f98d3a5f2d9261e17f43b9e914336349ab00de5659",
+            "diff_truncated": false,
+            "outcome": "survived_both",
+            "old": [
+              {
+                "status": "pass",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "b966f7f5cb255470bafa8a34364c02e6db8b1859bcc16227e607cd85090b1d19",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-018",
+      "split": "development",
+      "category": "Both revisions omit token padding",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "survived_both"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.425,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "0c46f97b5ee06b6fbdedc7d9f5a234ab33fc103b6716728e6d02b0c72f4279bb"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "b198002c697c47173bd075c9e95d4542cc0e62119ddc86295761df15869b5d5f",
+              "new": "e996fd631a098b97c838c7730351efd637291667d3f3aa4cb9c225bf3366129c"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "aef43f5ff407bccc6ff1f3c005aabe17a1c08f7e5dd95f33e271e0fe015307b4",
+            "diff_sha256": "a62dd43e51de08359a4885e071bbb27ad736c9a1b0a010aa3768ff3a32608574",
+            "diff_truncated": false,
+            "outcome": "survived_both",
+            "old": [
+              {
+                "status": "pass",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "a304c49a89be17349d119c884010bbba5b20265b33c649bcb19eb0432d9b4397",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-019",
+      "split": "development",
+      "category": "Both revisions miss a child-price boundary",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "survived_both"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.224,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "ece1bd88c84a57049540222e6f7d432ffa109990bb6db3856087280de40c418d"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "99dd5564ac494717051436fc85d8add446b4d40caae73299e3f4be7a09768c3f",
+              "new": "b1ad2141f6a3e3ddfe8b555103e75916d4d6f3c1f6fa6d6796f2139e8e3e78a5"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "cd29cc60f0ec8ed9a01b293340842e71cb22b0eb4ff035081b888ab89a168101",
+            "diff_sha256": "cdc7f3e4d9ae7e9d51b4ee657e34123968fe1e0be339d285cba6a30d4532ff4e",
+            "diff_truncated": false,
+            "outcome": "survived_both",
+            "old": [
+              {
+                "status": "pass",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "69494907ca7c23e22a94b3df4eb78cb4c69b4997c3233424808c2e1d4573fdf7",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-020",
+      "split": "development",
+      "category": "Both revisions use single-spaced words",
+      "expected": {
+        "verdict": "no_loss_observed",
+        "complete": true
+      },
+      "actual": {
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "reason": null,
+        "baseline_statuses": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "control_statuses": [
+          "pass",
+          "pass"
+        ],
+        "mutation_outcomes": [
+          "survived_both"
+        ]
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "four_passing_baselines": true,
+        "two_passing_final_controls": true,
+        "one_declared_control_completed": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 3.342,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "no_loss_observed",
+        "complete": true,
+        "mutants_planned": 1,
+        "mutants_completed": 1,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "986bc317fbd2587bfdcc2305e907f5669724b3e0624388d2d597a5dac34ba6cc"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "955711fb8b5b8fc64f15eb26b42c5e25a88d3715b565050b3d413e94d2eb6ee0",
+              "new": "35ea161bd96fe8cad10d72553d474f9dc16eb1d0857767fe969332785e2882a9"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "pass",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "mutants": [
+          {
+            "id": "unrecorded",
+            "path": "subject.py",
+            "line": 2,
+            "mutated_sha256": "5b3dee42d9daccc652898d838a6ace8384bab106de5a8713949bf1e4b3bd2876",
+            "diff_sha256": "b6a31936111a02515825e1b7c7624c5f146cc20260de3809d48e0c3d9d57db59",
+            "diff_truncated": false,
+            "outcome": "survived_both",
+            "old": [
+              {
+                "status": "pass",
+                "side": "old",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ],
+            "new": [
+              {
+                "status": "pass",
+                "side": "new",
+                "ran_count": 1,
+                "collected_count": 1,
+                "skipped_count": 0,
+                "missing_test_ids_count": 0,
+                "assertion_failure_nodes_count": 0
+              }
+            ]
+          }
+        ],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "3b559c9d93ad59d5aa8b091f973ecb54615d56826341d0083cbc6fad41523de0",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-021",
+      "split": "development",
+      "category": "Invalid new baseline assertion",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "assertion_failure"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "assertion_failure"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "assertion_failure"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.884,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "63098273a7aaa630762d6f145dfcf9c61c8c9b290c6ebeb2a05fea5854ccb476"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "0b2f640dc9df62173a369690ebc308be13d3bfcec60f49c34267eb5ae4aade4e",
+              "new": "3897302a36b8dd578c8b9e7700c68b99f492d5278e31d461e8fbe796bc668b61"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "assertion_failure",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 1
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "d2cc7461f42af31e69b25fff2ea17b227dd1839ebe776678e21cd1eeff5a280c",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-022",
+      "split": "development",
+      "category": "Invalid new baseline import",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "collection_error"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "collection_error"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "collection_error"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.93,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "d59788ed5c3f21504803b0524152aea1c9cf559c2042f274c431ee06d3ccb78f"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "8100802f8d5e1a885112317ceeadf8d1fc378782bba56cbe610be54bf2a876c6",
+              "new": "cfd89ed98b2e3dc27b1ad8aba939b768c3fcd26985b637988cd26296dc5cbe3a"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "collection_error",
+            "side": "new",
+            "ran_count": 0,
+            "collected_count": 0,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "4678b76d7d268bdac9de3b8a4c763f86956f9c4b8ec29a3cc6b272f99e364969",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-023",
+      "split": "development",
+      "category": "Invalid new baseline syntax",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "collection_error"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "collection_error"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "collection_error"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.96,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "0216ccd9006ce187208943e4b99b8b4b9148e008fbddc2a5df0e84ca9d7332e8"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "6fec957967b1994ba279bb044b893844152ef5bdb0bcf080eaf72dc820901def",
+              "new": "7d37efe79ec564527d435cbd754a426bf814286e2955ab5edef57fc93bb2336b"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "collection_error",
+            "side": "new",
+            "ran_count": 0,
+            "collected_count": 0,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "2985b7f5a03f4874fe3d09d286bc15f111f63ead4d3d6dc9bffda16ee92d8fb2",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-024",
+      "split": "development",
+      "category": "Empty new test suite",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "not_executed"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "not_executed"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "not_executed"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.849,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "1d296db32710aaced3d9596fc81695ddef5a81ae2cbf7863f7943db4f06474b1"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "a9f14024a0d4f7f5f51c600659156ad9bbc6c62b5f8a1e48e95b5b737cfd06af",
+              "new": "fd83a66d7d5ea397e61b0de43f01234882ae306dddd66cc7ecbcb4eac6ea747e"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "not_executed",
+            "side": "new",
+            "ran_count": 0,
+            "collected_count": 0,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "f1845f6bab24962ae918e5ea8f6ec799a66b8cd65bd459ab0c0ec0ba20864eac",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-025",
+      "split": "development",
+      "category": "Module-level skip in new baseline",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "not_executed"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "not_executed"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "not_executed"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.983,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "2e6ad295f92e3d9d7d7183565e6b2f1c7f02c898f6dbdabe9bac6e835a8845fc"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "c03be1fad398610028a24093953d0b091930d31102759d5cfa85df7afe71184b",
+              "new": "5e78f938faf8578035af5f322e4fadb752a358a93214cc9ed95b905cdcb84665"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "not_executed",
+            "side": "new",
+            "ran_count": 0,
+            "collected_count": 0,
+            "skipped_count": 1,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "5f609b7cb3c4a1035e2c1c6743b6f65de0385e80a95017bec9a38ac0cd90d6bd",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-026",
+      "split": "development",
+      "category": "Marked skip in new baseline",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "not_executed"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "not_executed"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "not_executed"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.871,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "7e6ed6f26d4bb1a61cf6e123c760b25e9d080aa18f526454373808ae1c0022a9"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "5b9a209d03f9f8c008f7b2ab9feef9c44ce4529826bba6660ef3619bf03990fb",
+              "new": "8124173198cbd82b48e3a08280f62498dbbe53276b7a1ac92aae9f115422dfa3"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "not_executed",
+            "side": "new",
+            "ran_count": 0,
+            "collected_count": 1,
+            "skipped_count": 1,
+            "missing_test_ids_count": 1,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "5e74b848d0826c25ef7212791ccf974de8dc31b2ec31ca09f2f828566c88890f",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-027",
+      "split": "development",
+      "category": "Expected failure in new baseline",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "not_executed"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "not_executed"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "not_executed"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.851,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "efbe39f3bfdb5b6246342b74c382ff9247d375554e7bacc288fad6a3b1fb736d"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "8ec4e7d735003049280eaf0da6397f428b46a0495964152145d726904c52c86d",
+              "new": "382fa7f7ee566dd8b284ed137e8c69fcd4e7b30ea11773ffd5e948092f195b99"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "not_executed",
+            "side": "new",
+            "ran_count": 0,
+            "collected_count": 1,
+            "skipped_count": 1,
+            "missing_test_ids_count": 1,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "c500ba94337d189fc3076126f123b5b984136cb3232f29361724c80c655d383c",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-028",
+      "split": "development",
+      "category": "Fixture setup error in new baseline",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "fixture_error"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "fixture_error"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "fixture_error"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.883,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "496b60ff11166e8bf892036af90eec55acec5afa919bdc8688b6303fdd64e5ef"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "fa4e9a66180b0d74360ce6f1485deee1543155d3f770591ff14b9735a29dcc0a",
+              "new": "fa32c4fc2f76ef784251f75e40ecdab2e940bead97c662dcbb3658434157622c"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "fixture_error",
+            "side": "new",
+            "ran_count": 0,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 1,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "d0e61c3161de55c96274a167809fcd1e32db72303b594bc58cfdb536b78d2615",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-029",
+      "split": "development",
+      "category": "Uncaught runtime error in new baseline",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "runtime_error"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "runtime_error"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "runtime_error"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.968,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "679230a41b1aed857b96fdbc5121b7009887d4f04e964a8131a98014979c1ac6"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "7f1a34a39a30448f642679219d900dcac46cdcc673bd46268a90b9f897e73a27",
+              "new": "021404c7a19e3d9afdff8e8913318057cac9e7d81ffabff0e6c82443a5601440"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "runtime_error",
+            "side": "new",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "e603b7f371920ff8c31bad3d385e7a5cc13d3c57e8659e1578d53a414b58a786",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    },
+    {
+      "id": "dev-030",
+      "split": "development",
+      "category": "Missing fixture in new baseline",
+      "expected": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "baseline_failure_status": "fixture_error"
+      },
+      "actual": {
+        "verdict": "inconclusive",
+        "complete": false,
+        "reason": "baseline_not_valid",
+        "baseline_statuses": [
+          "pass",
+          "fixture_error"
+        ],
+        "control_statuses": [],
+        "mutation_outcomes": [],
+        "baseline_failure_status": "fixture_error"
+      },
+      "checks": {
+        "verdict": true,
+        "complete": true,
+        "controlled_fixture_provenance": true,
+        "baseline_not_valid_reason": true,
+        "specific_baseline_failure": true,
+        "old_baseline_passes_before_new_failure": true,
+        "stops_before_mutation_or_final_control": true
+      },
+      "matches_expected": true,
+      "duration_seconds": 0.912,
+      "execution_summary": {
+        "schema_version": "0.1",
+        "export_kind": "sanitized_summary",
+        "verdict": "inconclusive",
+        "complete": false,
+        "mutants_planned": 0,
+        "mutants_completed": 0,
+        "plan": {
+          "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+          "manifest_origin": "unknown",
+          "source_hashes": {
+            "subject.py": "df1fd4b0a34a1fa9e27ae636ac9c1a7ce1748c54ac029880a1df96e0ed82294b"
+          },
+          "test_hashes": {
+            "tests/test_subject.py": {
+              "old": "8d395304cb19e11847fb27050c0032568cb833eb913c8ebc4c99954d8210191c",
+              "new": "9aec2342b7fd75e7b8dd2fe7bef6798facf0dc6701ee8b31f51997e00eebff80"
+            }
+          }
+        },
+        "baseline": [
+          {
+            "status": "pass",
+            "side": "old",
+            "ran_count": 1,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 0,
+            "assertion_failure_nodes_count": 0
+          },
+          {
+            "status": "fixture_error",
+            "side": "new",
+            "ran_count": 0,
+            "collected_count": 1,
+            "skipped_count": 0,
+            "missing_test_ids_count": 1,
+            "assertion_failure_nodes_count": 0
+          }
+        ],
+        "controls": [],
+        "mutants": [],
+        "witnesses": [],
+        "limitations": [
+          "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+          "Incomplete work and provisional observations are not clean conclusions.",
+          "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+          "Relative filenames and hashes remain; this summary is not a replay record."
+        ],
+        "reason": "baseline_not_valid",
+        "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+        "limits": {
+          "budget_seconds": 60,
+          "max_mutants": 1,
+          "timeout_seconds": 10
+        },
+        "test_diffs": [
+          {
+            "path": "tests/test_subject.py",
+            "sha256": "8f1bc10f3c6685e8776b3ed6b0ea89aa7070983e9117e8875e9e3b8dbb1e2c10",
+            "truncated": false
+          }
+        ]
+      },
+      "versions": {
+        "supervisor_python": "3.13.5",
+        "target_python": "3.13.5",
+        "target_pytest": "9.2.0",
+        "testdelta": "0.1.0a3",
+        "pytest": "9.2.0",
+        "cosmic-ray": "8.7.0"
+      }
+    }
+  ],
+  "summary": {
+    "cases_executed": 30,
+    "matched_expectations": 30,
+    "disagreements": [],
+    "expected_counts": {
+      "loss_observed": 10,
+      "no_loss_observed": 10,
+      "inconclusive": 10
+    },
+    "observed_counts": {
+      "loss_observed": 10,
+      "no_loss_observed": 10,
+      "inconclusive": 10
+    },
+    "confusion_matrix_expected_rows": {
+      "loss_observed": {
+        "loss_observed": 10,
+        "no_loss_observed": 0,
+        "inconclusive": 0
+      },
+      "no_loss_observed": {
+        "loss_observed": 0,
+        "no_loss_observed": 10,
+        "inconclusive": 0
+      },
+      "inconclusive": {
+        "loss_observed": 0,
+        "no_loss_observed": 0,
+        "inconclusive": 10
+      }
+    },
+    "runtime_observations": {
+      "workload": "one_declared_hand_authored_control_per_complete_valid_fixture",
+      "eligibility": "all_four_normal_baselines_pass_and_each_takes_at_most_2_seconds",
+      "eligible_cases": 20,
+      "excluded_executed_cases": 10,
+      "percentile_method": "nearest_rank",
+      "comparison_p50_seconds": 3.425,
+      "comparison_p95_seconds": 4.654,
+      "comparison_max_seconds": 4.664,
+      "scope": "Observed local runtime only; not a ten-mutant or arbitrary-project bound."
+    }
+  }
+}

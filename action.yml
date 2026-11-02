@@ -1,0 +1,101 @@
+name: TestDelta
+description: Compare whether committed pytest test changes retain detection of selected faults
+branding:
+  icon: check-circle
+  color: blue
+inputs:
+  repo:
+    description: Path to the checked-out repository
+    default: '.'
+  base:
+    description: Base revision to compare (both revisions must be available locally)
+    required: true
+  head:
+    description: Head revision to compare
+    default: HEAD
+  config:
+    description: Optional path to an external TestDelta manifest
+    default: ''
+  output:
+    description: Directory for local reports and replay bundle
+    default: .testdelta/report
+  budget-seconds:
+    description: Total comparison budget in seconds
+    default: '120'
+  timeout-seconds:
+    description: Per-pytest-run timeout in seconds
+    default: '15'
+  max-mutants:
+    description: Maximum selected mutants (1 to 100)
+    default: '10'
+  python:
+    description: Caller-prepared Python executable with project test dependencies installed
+    default: python
+  advisory:
+    description: Only complete detection loss may pass; incomplete and invalid work still fail
+    default: 'false'
+outputs:
+  verdict:
+    description: Report verdict, or error when no valid fresh report is available
+    value: ${{ steps.compare.outputs.verdict }}
+  complete:
+    description: Whether the reported comparison is complete (true or false)
+    value: ${{ steps.compare.outputs.complete }}
+  report-path:
+    description: Absolute path to the canonical report.json, empty on adapter errors
+    value: ${{ steps.compare.outputs.report-path }}
+runs:
+  using: composite
+  steps:
+    - name: Compare test revisions
+      id: compare
+      shell: bash
+      env:
+        TESTDELTA_INPUT_REPO: ${{ inputs.repo }}
+        TESTDELTA_INPUT_BASE: ${{ inputs.base }}
+        TESTDELTA_INPUT_HEAD: ${{ inputs.head }}
+        TESTDELTA_INPUT_CONFIG: ${{ inputs.config }}
+        TESTDELTA_INPUT_OUTPUT: ${{ inputs.output }}
+        TESTDELTA_INPUT_BUDGET_SECONDS: ${{ inputs.budget-seconds }}
+        TESTDELTA_INPUT_TIMEOUT_SECONDS: ${{ inputs.timeout-seconds }}
+        TESTDELTA_INPUT_MAX_MUTANTS: ${{ inputs.max-mutants }}
+        TESTDELTA_INPUT_PYTHON: ${{ inputs.python }}
+        TESTDELTA_INPUT_ADVISORY: ${{ inputs.advisory }}
+      run: |
+        python - <<'PY'
+        import os
+        import shutil
+        import subprocess
+        import sys
+        import tempfile
+        from pathlib import Path
+
+        try:
+            if sys.platform not in {"linux", "darwin"}:
+                raise ValueError("TestDelta Action supports Ubuntu and macOS runners only")
+            if not (3, 11) <= sys.version_info[:2] < (3, 14):
+                raise ValueError("Set up Python 3.11–3.13 before running TestDelta")
+            target = shutil.which(os.environ["TESTDELTA_INPUT_PYTHON"])
+            if not target:
+                raise ValueError("The selected target Python executable was not found")
+            # Preserve a virtual environment's executable symlink and dependencies.
+            target = os.path.abspath(target)
+            temporary = Path(tempfile.mkdtemp(prefix="testdelta-action-", dir=os.environ["RUNNER_TEMP"]))
+            tool_env = temporary / "tool"
+            subprocess.run([sys.executable, "-I", "-m", "venv", str(tool_env)], check=True)
+            tool_python = str(tool_env / "bin" / "python")
+            subprocess.run([
+                tool_python, "-I", "-m", "pip", "--disable-pip-version-check", "install",
+                os.environ["GITHUB_ACTION_PATH"],
+            ], check=True)
+            environment = dict(os.environ, TESTDELTA_TARGET_PYTHON=target)
+            code = subprocess.run(
+                [tool_python, "-I", "-m", "testdelta.action_entry"], env=environment,
+            ).returncode
+        except Exception as exc:
+            print(f"TestDelta Action setup failed: {exc}", file=sys.stderr)
+            with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+                output.write("verdict=error\ncomplete=false\nreport-path=\n")
+            code = 3
+        raise SystemExit(code)
+        PY

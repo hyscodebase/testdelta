@@ -6,6 +6,7 @@ Run `uv run pytest`, `uv run ruff check .`, and a built-wheel demo before releas
 Core invariants:
 
 - Only compare committed test-only changes with unchanged source/config/dependencies.
+- Treat external config as explicit trusted policy; record its exact bytes/hash for replay.
 - Generate a mutation once and materialize identical bytes for both test revisions.
 - Require passing original-source controls. Collection, setup, runtime errors,
   skips, missing tests, timeouts, and unfinished work are never clean evidence.

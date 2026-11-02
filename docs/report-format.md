@@ -26,3 +26,26 @@ Reports and bundles contain source snippets, test failures, runtime paths, and
 captured output. Review them before sharing. A bundle checksum detects accidental
 corruption; it does not authenticate its creator. Bundles are trusted local inputs,
 not portable safe executables or self-contained environment archives.
+
+External configuration records `manifest_origin=external`, exact UTF-8 text in
+`manifest_snapshot.text`, and its raw-byte SHA-256. Replay checks that snapshot
+against both its digest and `manifest_hash`; the original external file is not
+needed. A base-committed manifest retains the default policy.
+
+`test_diffs` records changed-test unified diffs, full generated-diff SHA-256 and
+`truncated`. Each attempted mutant has `diff`, `diff_sha256`, and
+`diff_truncated`. Display text is bounded to 20,000 characters per diff; the hash
+identifies the complete generated diff. Unterminated lines have standard newline
+markers. These diffs are local evidence and can contain source text.
+
+Actual pytest runs record `started_at_utc`, `finished_at_utc`, and monotonic
+`duration_seconds`. A `not_completed` placeholder represents an execution that
+never started, so it has no artificial execution timestamps. `limits.suite_calls_max`
+is the conservative bound `6 + 6 × max_mutants`, not a measured runtime estimate.
+
+`testdelta export REPORT_DIRECTORY --output NEW_FILE` writes a separate
+allowlisted summary. It omits raw diagnostics, source/config/diff text, absolute
+paths, free-text reasons and arbitrary future fields; relative locations and
+hashes remain. The automatic GitHub job summary is more compact and also omits
+those raw fields. Full local reports and replay bundles are unchanged. An export
+is not a replay bundle, an anonymizer, or an independent attestation of its input.

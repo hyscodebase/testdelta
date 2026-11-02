@@ -1,0 +1,433 @@
+[
+  {
+    "id": "dev-001",
+    "split": "development",
+    "category": "Inclusive age boundary",
+    "source": "def is_adult(age):\n    return age >= 18\n",
+    "old_tests": "from subject import is_adult\n\n\ndef test_adult_at_boundary():\n    assert is_adult(18) is True\n",
+    "new_tests": "from subject import is_adult\n\n\ndef test_adult_and_child_examples():\n    assert is_adult(21) is True\n    assert is_adult(17) is False\n",
+    "mutant": "def is_adult(age):\n    return age > 18\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The old boundary assertion rejects the hand-authored control, while the new examples omit age eighteen."
+  },
+  {
+    "id": "dev-002",
+    "split": "development",
+    "category": "Lower clamp boundary",
+    "source": "def clamp(value, lower, upper):\n    return max(lower, min(value, upper))\n",
+    "old_tests": "from subject import clamp\n\n\ndef test_clamp_below_lower_limit():\n    assert clamp(-5, 0, 10) == 0\n",
+    "new_tests": "from subject import clamp\n\n\ndef test_clamp_inside_and_above_range():\n    assert clamp(5, 0, 10) == 5\n    assert clamp(12, 0, 10) == 10\n",
+    "mutant": "def clamp(value, lower, upper):\n    return min(value, upper)\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "Removing the lower clamp is detected only by the old below-range input."
+  },
+  {
+    "id": "dev-003",
+    "split": "development",
+    "category": "Discount percentage units",
+    "source": "def discounted_cents(price_cents, percent):\n    return price_cents * (100 - percent) // 100\n",
+    "old_tests": "from subject import discounted_cents\n\n\ndef test_percentage_scales_with_price():\n    assert discounted_cents(1000, 10) == 900\n",
+    "new_tests": "from subject import discounted_cents\n\n\ndef test_discount_on_one_hundred_cents():\n    assert discounted_cents(100, 10) == 90\n",
+    "mutant": "def discounted_cents(price_cents, percent):\n    return price_cents - percent\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "A one-hundred-cent example masks the control's subtraction of percentage points as cents."
+  },
+  {
+    "id": "dev-004",
+    "split": "development",
+    "category": "Duplicate list elements",
+    "source": "def unique_count(values):\n    return len(set(values))\n",
+    "old_tests": "from subject import unique_count\n\n\ndef test_duplicate_values_count_once():\n    assert unique_count([2, 2, 5]) == 2\n",
+    "new_tests": "from subject import unique_count\n\n\ndef test_distinct_values():\n    assert unique_count([2, 5, 8]) == 3\n",
+    "mutant": "def unique_count(values):\n    return len(values)\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The revised test has no duplicates and therefore accepts the control that counts every element."
+  },
+  {
+    "id": "dev-005",
+    "split": "development",
+    "category": "String whitespace normalization",
+    "source": "def normalize_tag(tag):\n    return tag.strip().lower()\n",
+    "old_tests": "from subject import normalize_tag\n\n\ndef test_tag_padding_is_removed():\n    assert normalize_tag(\"  ALPHA  \") == \"alpha\"\n",
+    "new_tests": "from subject import normalize_tag\n\n\ndef test_tag_case_is_normalized():\n    assert normalize_tag(\"ALPHA\") == \"alpha\"\n",
+    "mutant": "def normalize_tag(tag):\n    return tag.lower()\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The new uppercase-only example no longer checks removal of surrounding whitespace."
+  },
+  {
+    "id": "dev-006",
+    "split": "development",
+    "category": "Key-value parsing with repeated separator",
+    "source": "def parse_assignment(text):\n    key, separator, value = text.partition(\"=\")\n    return key, value\n",
+    "old_tests": "from subject import parse_assignment\n\n\ndef test_value_retains_later_equals():\n    assert parse_assignment(\"role=a=b\") == (\"role\", \"a=b\")\n",
+    "new_tests": "from subject import parse_assignment\n\n\ndef test_simple_assignment():\n    assert parse_assignment(\"role=admin\") == (\"role\", \"admin\")\n",
+    "mutant": "def parse_assignment(text):\n    parts = text.split(\"=\")\n    return parts[0], parts[-1]\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The control discards intermediate value text only when an assignment contains a later equals sign."
+  },
+  {
+    "id": "dev-007",
+    "split": "development",
+    "category": "Closed numeric interval",
+    "source": "def in_closed_interval(value, lower, upper):\n    return lower <= value <= upper\n",
+    "old_tests": "from subject import in_closed_interval\n\n\ndef test_interval_includes_both_endpoints():\n    assert in_closed_interval(3, 3, 8) is True\n    assert in_closed_interval(8, 3, 8) is True\n",
+    "new_tests": "from subject import in_closed_interval\n\n\ndef test_interval_interior():\n    assert in_closed_interval(5, 3, 8) is True\n",
+    "mutant": "def in_closed_interval(value, lower, upper):\n    return lower < value < upper\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "Replacing endpoint checks with one interior input accepts the control's open interval."
+  },
+  {
+    "id": "dev-008",
+    "split": "development",
+    "category": "Rounding to the next multiple",
+    "source": "def round_up_to_multiple(number, step):\n    return ((number + step - 1) // step) * step\n",
+    "old_tests": "from subject import round_up_to_multiple\n\n\ndef test_non_multiple_rounds_up():\n    assert round_up_to_multiple(7, 5) == 10\n",
+    "new_tests": "from subject import round_up_to_multiple\n\n\ndef test_exact_multiple_stays_equal():\n    assert round_up_to_multiple(10, 5) == 10\n",
+    "mutant": "def round_up_to_multiple(number, step):\n    return (number // step) * step\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "An exact multiple cannot distinguish upward rounding from the control's downward rounding."
+  },
+  {
+    "id": "dev-009",
+    "split": "development",
+    "category": "Positive search excludes zero",
+    "source": "def first_positive(values):\n    return next((value for value in values if value > 0), None)\n",
+    "old_tests": "from subject import first_positive\n\n\ndef test_zero_is_not_positive():\n    assert first_positive([0, -1, 3]) == 3\n",
+    "new_tests": "from subject import first_positive\n\n\ndef test_search_after_negative_value():\n    assert first_positive([-1, 3]) == 3\n",
+    "mutant": "def first_positive(values):\n    return next((value for value in values if value >= 0), None)\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The old zero-containing list rejects the control, while the new list contains no zero."
+  },
+  {
+    "id": "dev-010",
+    "split": "development",
+    "category": "Joining multiple strings",
+    "source": "def join_labels(labels, separator):\n    return separator.join(labels)\n",
+    "old_tests": "from subject import join_labels\n\n\ndef test_separator_between_two_labels():\n    assert join_labels([\"a\", \"b\"], \":\") == \"a:b\"\n",
+    "new_tests": "from subject import join_labels\n\n\ndef test_single_label():\n    assert join_labels([\"a\"], \":\") == \"a\"\n",
+    "mutant": "def join_labels(labels, separator):\n    return \"\".join(labels)\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "A singleton list hides the control's omission of separators between labels."
+  },
+  {
+    "id": "dev-011",
+    "split": "development",
+    "category": "Refactored maximum checks retain detection",
+    "source": "def larger(left, right):\n    return left if left >= right else right\n",
+    "old_tests": "from subject import larger\n\n\ndef test_larger_value():\n    assert larger(2, 9) == 9\n",
+    "new_tests": "import pytest\n\nfrom subject import larger\n\n\n@pytest.mark.parametrize(\"left,right,expected\", [(2, 9, 9), (8, 3, 8), (4, 4, 4)])\ndef test_larger_value(left, right, expected):\n    assert larger(left, right) == expected\n",
+    "mutant": "def larger(left, right):\n    return left if left <= right else right\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both test revisions reject the hand-authored minimum control after the checks become parameterized."
+  },
+  {
+    "id": "dev-012",
+    "split": "development",
+    "category": "Sign checks retain negative branch",
+    "source": "def sign(number):\n    if number > 0:\n        return 1\n    if number < 0:\n        return -1\n    return 0\n",
+    "old_tests": "from subject import sign\n\n\ndef test_negative_sign():\n    assert sign(-7) == -1\n",
+    "new_tests": "import pytest\n\nfrom subject import sign\n\n\n@pytest.mark.parametrize(\"number,expected\", [(-7, -1), (0, 0), (5, 1)])\ndef test_number_sign(number, expected):\n    assert sign(number) == expected\n",
+    "mutant": "def sign(number):\n    if number == 0:\n        return 0\n    return 1\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "The new parameterized checks retain the negative input that rejects the control."
+  },
+  {
+    "id": "dev-013",
+    "split": "development",
+    "category": "Case-insensitive suffix detection retained",
+    "source": "def has_extension(filename, extension):\n    return filename.casefold().endswith(extension.casefold())\n",
+    "old_tests": "from subject import has_extension\n\n\ndef test_uppercase_filename_extension():\n    assert has_extension(\"REPORT.CSV\", \".csv\") is True\n",
+    "new_tests": "from subject import has_extension\n\n\ndef test_extension_cases():\n    examples = [\n        (\"Photo.PNG\", \".png\", True),\n        (\"notes.txt\", \".csv\", False),\n    ]\n    for filename, extension, expected in examples:\n        assert has_extension(filename, extension) is expected\n",
+    "mutant": "def has_extension(filename, extension):\n    return filename.endswith(extension)\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both revisions contain a mixed-case filename that rejects the case-sensitive control."
+  },
+  {
+    "id": "dev-014",
+    "split": "development",
+    "category": "Empty-cart shipping detection retained",
+    "source": "def cart_total(prices, shipping):\n    return sum(prices) + shipping if prices else 0\n",
+    "old_tests": "from subject import cart_total\n\n\ndef test_empty_cart_has_no_shipping():\n    assert cart_total([], 5) == 0\n",
+    "new_tests": "from subject import cart_total\n\n\ndef test_cart_totals():\n    assert cart_total([], 7) == 0\n    assert cart_total([3, 4], 7) == 14\n",
+    "mutant": "def cart_total(prices, shipping):\n    return sum(prices) + shipping\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both revisions reject charging shipping on an empty cart."
+  },
+  {
+    "id": "dev-015",
+    "split": "development",
+    "category": "Century leap-year detection retained",
+    "source": "def is_leap_year(year):\n    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)\n",
+    "old_tests": "from subject import is_leap_year\n\n\ndef test_non_leap_century():\n    assert is_leap_year(1900) is False\n",
+    "new_tests": "import pytest\n\nfrom subject import is_leap_year\n\n\n@pytest.mark.parametrize(\"year,expected\", [(1900, False), (2000, True), (2024, True), (2023, False)])\ndef test_leap_year_examples(year, expected):\n    assert is_leap_year(year) is expected\n",
+    "mutant": "def is_leap_year(year):\n    return year % 4 == 0\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "The non-leap century assertion remains present and rejects the divisible-by-four control."
+  },
+  {
+    "id": "dev-016",
+    "split": "development",
+    "category": "Both revisions leave a negative branch unchecked",
+    "source": "def magnitude(number):\n    return number if number >= 0 else -number\n",
+    "old_tests": "from subject import magnitude\n\n\ndef test_positive_magnitude():\n    assert magnitude(4) == 4\n",
+    "new_tests": "from subject import magnitude\n\n\ndef test_other_positive_magnitude():\n    result = magnitude(9)\n    assert result == 9\n",
+    "mutant": "def magnitude(number):\n    return number if number >= 0 else -number - 1\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both positive-only revisions accept the declared control whose error is confined to negative inputs."
+  },
+  {
+    "id": "dev-017",
+    "split": "development",
+    "category": "Both revisions omit zero from positive counting",
+    "source": "def count_positive(values):\n    return sum(1 for value in values if value > 0)\n",
+    "old_tests": "from subject import count_positive\n\n\ndef test_positive_list():\n    assert count_positive([1, 2]) == 2\n",
+    "new_tests": "from subject import count_positive\n\n\ndef test_mixed_nonzero_list():\n    assert count_positive([-1, 4, 8]) == 2\n",
+    "mutant": "def count_positive(values):\n    return sum(1 for value in values if value >= 0)\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Neither revision supplies zero, so both accept the control that counts zero as positive."
+  },
+  {
+    "id": "dev-018",
+    "split": "development",
+    "category": "Both revisions omit token padding",
+    "source": "def parse_parts(text):\n    return [part.strip() for part in text.split(\";\")]\n",
+    "old_tests": "from subject import parse_parts\n\n\ndef test_two_parts():\n    assert parse_parts(\"a;b\") == [\"a\", \"b\"]\n",
+    "new_tests": "from subject import parse_parts\n\n\ndef test_three_parts():\n    assert parse_parts(\"red;green;blue\") == [\"red\", \"green\", \"blue\"]\n",
+    "mutant": "def parse_parts(text):\n    return text.split(\";\")\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both unpadded examples accept the control that retains token whitespace."
+  },
+  {
+    "id": "dev-019",
+    "split": "development",
+    "category": "Both revisions miss a child-price boundary",
+    "source": "def ticket_price(age):\n    return 5 if age < 12 else 10\n",
+    "old_tests": "from subject import ticket_price\n\n\ndef test_young_child_price():\n    assert ticket_price(8) == 5\n",
+    "new_tests": "from subject import ticket_price\n\n\ndef test_child_and_adult_prices():\n    assert ticket_price(9) == 5\n    assert ticket_price(18) == 10\n",
+    "mutant": "def ticket_price(age):\n    return 5 if age < 10 else 10\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both revisions avoid ages ten and eleven and therefore accept the shifted-boundary control."
+  },
+  {
+    "id": "dev-020",
+    "split": "development",
+    "category": "Both revisions use single-spaced words",
+    "source": "def reverse_words(text):\n    return \" \".join(reversed(text.split()))\n",
+    "old_tests": "from subject import reverse_words\n\n\ndef test_two_words():\n    assert reverse_words(\"one two\") == \"two one\"\n",
+    "new_tests": "from subject import reverse_words\n\n\ndef test_three_words():\n    assert reverse_words(\"red blue green\") == \"green blue red\"\n",
+    "mutant": "def reverse_words(text):\n    return \" \".join(reversed(text.split(\" \")))\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both single-spaced inputs accept the control that preserves empty tokens from repeated spaces."
+  },
+  {
+    "id": "dev-021",
+    "split": "development",
+    "category": "Invalid new baseline assertion",
+    "source": "def add(left, right):\n    return left + right\n",
+    "old_tests": "from subject import add\n\n\ndef test_addition():\n    assert add(2, 3) == 5\n",
+    "new_tests": "from subject import add\n\n\ndef test_addition():\n    assert add(2, 3) == 6\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "assertion_failure"
+    },
+    "rationale": "The new test intentionally asserts an incorrect sum on the unchanged source."
+  },
+  {
+    "id": "dev-022",
+    "split": "development",
+    "category": "Invalid new baseline import",
+    "source": "def multiply(left, right):\n    return left * right\n",
+    "old_tests": "from subject import multiply\n\n\ndef test_multiplication():\n    assert multiply(3, 4) == 12\n",
+    "new_tests": "from subject import missing_multiply\n\n\ndef test_multiplication():\n    assert missing_multiply(3, 4) == 12\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "collection_error"
+    },
+    "rationale": "The new module imports a symbol absent from the unchanged source."
+  },
+  {
+    "id": "dev-023",
+    "split": "development",
+    "category": "Invalid new baseline syntax",
+    "source": "def difference(left, right):\n    return left - right\n",
+    "old_tests": "from subject import difference\n\n\ndef test_difference():\n    assert difference(9, 4) == 5\n",
+    "new_tests": "from subject import difference\n\n\ndef test_difference(:\n    assert difference(9, 4) == 5\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "collection_error"
+    },
+    "rationale": "The intentionally malformed new test cannot be collected."
+  },
+  {
+    "id": "dev-024",
+    "split": "development",
+    "category": "Empty new test suite",
+    "source": "def square(number):\n    return number * number\n",
+    "old_tests": "from subject import square\n\n\ndef test_square():\n    assert square(4) == 16\n",
+    "new_tests": "from subject import square\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "not_executed"
+    },
+    "rationale": "The new module imports the subject but contains no collected tests."
+  },
+  {
+    "id": "dev-025",
+    "split": "development",
+    "category": "Module-level skip in new baseline",
+    "source": "def is_even(number):\n    return number % 2 == 0\n",
+    "old_tests": "from subject import is_even\n\n\ndef test_even_number():\n    assert is_even(8) is True\n",
+    "new_tests": "import pytest\n\nfrom subject import is_even\n\npytest.skip(\"declared module skip\", allow_module_level=True)\n\n\ndef test_even_number():\n    assert is_even(8) is True\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "not_executed"
+    },
+    "rationale": "The new module intentionally skips collection of its otherwise valid assertion."
+  },
+  {
+    "id": "dev-026",
+    "split": "development",
+    "category": "Marked skip in new baseline",
+    "source": "def invert(value):\n    return not value\n",
+    "old_tests": "from subject import invert\n\n\ndef test_invert():\n    assert invert(True) is False\n",
+    "new_tests": "import pytest\n\nfrom subject import invert\n\n\n@pytest.mark.skip(reason=\"declared test skip\")\ndef test_invert():\n    assert invert(True) is False\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "not_executed"
+    },
+    "rationale": "The only new test is marked skipped and provides no executed baseline assertion."
+  },
+  {
+    "id": "dev-027",
+    "split": "development",
+    "category": "Expected failure in new baseline",
+    "source": "def prefix(text, length):\n    return text[:length]\n",
+    "old_tests": "from subject import prefix\n\n\ndef test_prefix():\n    assert prefix(\"alpha\", 2) == \"al\"\n",
+    "new_tests": "import pytest\n\nfrom subject import prefix\n\n\n@pytest.mark.xfail(strict=True, reason=\"declared expected failure\")\ndef test_prefix():\n    assert prefix(\"alpha\", 2) == \"zz\"\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "not_executed"
+    },
+    "rationale": "The new assertion intentionally fails under an xfail marker and is not clean baseline evidence."
+  },
+  {
+    "id": "dev-028",
+    "split": "development",
+    "category": "Fixture setup error in new baseline",
+    "source": "def increment(number):\n    return number + 1\n",
+    "old_tests": "from subject import increment\n\n\ndef test_increment():\n    assert increment(4) == 5\n",
+    "new_tests": "import pytest\n\nfrom subject import increment\n\n\n@pytest.fixture\ndef ready():\n    raise RuntimeError(\"declared fixture setup error\")\n\n\ndef test_increment(ready):\n    assert increment(4) == 5\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "fixture_error"
+    },
+    "rationale": "The new fixture raises before its otherwise correct test assertion can run."
+  },
+  {
+    "id": "dev-029",
+    "split": "development",
+    "category": "Uncaught runtime error in new baseline",
+    "source": "def parse_integer(text):\n    return int(text)\n",
+    "old_tests": "from subject import parse_integer\n\n\ndef test_integer_parsing():\n    assert parse_integer(\"12\") == 12\n",
+    "new_tests": "from subject import parse_integer\n\n\ndef test_integer_parsing():\n    parse_integer(\"not-a-number\")\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "runtime_error"
+    },
+    "rationale": "The new test calls the unchanged parser with invalid text and leaves its ValueError uncaught."
+  },
+  {
+    "id": "dev-030",
+    "split": "development",
+    "category": "Missing fixture in new baseline",
+    "source": "def rectangle_area(width, height):\n    return width * height\n",
+    "old_tests": "from subject import rectangle_area\n\n\ndef test_rectangle_area():\n    assert rectangle_area(3, 5) == 15\n",
+    "new_tests": "from subject import rectangle_area\n\n\ndef test_rectangle_area(unavailable_fixture):\n    assert rectangle_area(3, 5) == 15\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false,
+      "baseline_failure_status": "fixture_error"
+    },
+    "rationale": "The new test requests an undefined fixture and cannot reach its valid area assertion."
+  }
+]
+

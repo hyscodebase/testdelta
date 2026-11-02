@@ -1,0 +1,282 @@
+[
+  {
+    "id": "val-001",
+    "split": "validation",
+    "category": "unit_conversion_zero_only_replacement",
+    "source": "def kilometers_to_meters(kilometers):\n    return kilometers * 1000\n",
+    "old_tests": "from subject import kilometers_to_meters\n\n\ndef test_nonzero_conversion():\n    assert kilometers_to_meters(2) == 2000\n",
+    "new_tests": "from subject import kilometers_to_meters\n\n\ndef test_zero_conversion():\n    assert kilometers_to_meters(0) == 0\n",
+    "mutant": "def kilometers_to_meters(kilometers):\n    return kilometers * 100\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The declared scale-factor negative control fails the old nonzero assertion but passes the replacement zero assertion."
+  },
+  {
+    "id": "val-002",
+    "split": "validation",
+    "category": "inclusive_age_boundary",
+    "source": "def is_adult(age):\n    return age >= 18\n",
+    "old_tests": "from subject import is_adult\n\n\ndef test_eighteenth_birthday():\n    assert is_adult(18) is True\n",
+    "new_tests": "from subject import is_adult\n\n\ndef test_older_adult():\n    assert is_adult(20) is True\n",
+    "mutant": "def is_adult(age):\n    return age > 18\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The declared strict-boundary negative control is detected at age 18 and missed at age 20."
+  },
+  {
+    "id": "val-003",
+    "split": "validation",
+    "category": "list_first_element",
+    "source": "def total(values):\n    return sum(values)\n",
+    "old_tests": "from subject import total\n\n\ndef test_nonzero_first_element():\n    assert total([4, 5]) == 9\n",
+    "new_tests": "from subject import total\n\n\ndef test_zero_first_element():\n    assert total([0, 5]) == 5\n",
+    "mutant": "def total(values):\n    return sum(values[1:])\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The declared omitted-first-element negative control fails the old list assertion and passes the zero-leading replacement."
+  },
+  {
+    "id": "val-004",
+    "split": "validation",
+    "category": "string_whitespace_normalization",
+    "source": "def normalize_label(text):\n    return text.strip().lower()\n",
+    "old_tests": "from subject import normalize_label\n\n\ndef test_surrounding_spaces():\n    assert normalize_label('  Py  ') == 'py'\n",
+    "new_tests": "from subject import normalize_label\n\n\ndef test_case_only():\n    assert normalize_label('Py') == 'py'\n",
+    "mutant": "def normalize_label(text):\n    return text.lower()\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The declared missing-trim negative control is detected by the padded string and missed by the unpadded replacement."
+  },
+  {
+    "id": "val-005",
+    "split": "validation",
+    "category": "validation_maximum_length",
+    "source": "def valid_label(label):\n    return bool(label) and len(label) <= 8\n",
+    "old_tests": "from subject import valid_label\n\n\ndef test_too_long_label():\n    assert valid_label('abcdefghi') is False\n",
+    "new_tests": "from subject import valid_label\n\n\ndef test_short_label():\n    assert valid_label('ok') is True\n",
+    "mutant": "def valid_label(label):\n    return bool(label)\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The declared removed-length-check negative control fails the old rejection assertion and passes the short-label assertion."
+  },
+  {
+    "id": "val-006",
+    "split": "validation",
+    "category": "geometry_rectangular_dimensions",
+    "source": "def rectangle_area(width, height):\n    return width * height\n",
+    "old_tests": "from subject import rectangle_area\n\n\ndef test_unequal_dimensions():\n    assert rectangle_area(3, 4) == 12\n",
+    "new_tests": "from subject import rectangle_area\n\n\ndef test_equal_dimensions():\n    assert rectangle_area(4, 4) == 16\n",
+    "mutant": "def rectangle_area(width, height):\n    return width * width\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The declared ignored-height negative control is detected for a rectangle but passes the square replacement."
+  },
+  {
+    "id": "val-007",
+    "split": "validation",
+    "category": "numeric_negative_clamp",
+    "source": "def nonnegative(value):\n    return max(value, 0)\n",
+    "old_tests": "from subject import nonnegative\n\n\ndef test_negative_input():\n    assert nonnegative(-3) == 0\n",
+    "new_tests": "from subject import nonnegative\n\n\ndef test_positive_input():\n    assert nonnegative(3) == 3\n",
+    "mutant": "def nonnegative(value):\n    return value\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The declared removed-clamp negative control fails on the old negative input and passes on the replacement positive input."
+  },
+  {
+    "id": "val-008",
+    "split": "validation",
+    "category": "unit_conversion_shared_detection",
+    "source": "def minutes_to_seconds(minutes):\n    return minutes * 60\n",
+    "old_tests": "from subject import minutes_to_seconds\n\n\ndef test_two_minutes():\n    assert minutes_to_seconds(2) == 120\n",
+    "new_tests": "import pytest\nfrom subject import minutes_to_seconds\n\n\n@pytest.mark.parametrize('minutes, expected', [(2, 120), (3, 180)])\ndef test_conversions(minutes, expected):\n    assert minutes_to_seconds(minutes) == expected\n",
+    "mutant": "def minutes_to_seconds(minutes):\n    return minutes * 10\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both the original test and its parameterized replacement detect the declared scale-factor negative control."
+  },
+  {
+    "id": "val-009",
+    "split": "validation",
+    "category": "equivalent_absolute_difference",
+    "source": "def distance(left, right):\n    return abs(left - right)\n",
+    "old_tests": "from subject import distance\n\n\ndef test_ascending_pair():\n    assert distance(2, 5) == 3\n",
+    "new_tests": "from subject import distance\n\n\ndef test_descending_pair():\n    assert distance(5, 2) == 3\n",
+    "mutant": "def distance(left, right):\n    return abs(right - left)\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "The declared operand-order control preserves absolute difference, so both valid test versions pass."
+  },
+  {
+    "id": "val-010",
+    "split": "validation",
+    "category": "parity_shared_detection",
+    "source": "def is_even(number):\n    return number % 2 == 0\n",
+    "old_tests": "from subject import is_even\n\n\ndef test_four_is_even():\n    assert is_even(4) is True\n",
+    "new_tests": "from subject import is_even\n\n\ndef test_six_is_even():\n    assert is_even(6) is True\n",
+    "mutant": "def is_even(number):\n    return number % 2 == 1\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both test versions fail assertions against the declared parity-inversion negative control."
+  },
+  {
+    "id": "val-011",
+    "split": "validation",
+    "category": "list_uncovered_empty_case",
+    "source": "def total(values):\n    return sum(values)\n",
+    "old_tests": "from subject import total\n\n\ndef test_pair_sum():\n    assert total([2, 3]) == 5\n",
+    "new_tests": "from subject import total\n\n\ndef test_rebalanced_pair_sum():\n    assert total([1, 4]) == 5\n",
+    "mutant": "def total(values):\n    return sum(values) + (1 if not values else 0)\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both versions pass the declared empty-list negative control; this records no observed loss without claiming full coverage."
+  },
+  {
+    "id": "val-012",
+    "split": "validation",
+    "category": "string_prefix_shared_detection",
+    "source": "def starts_with_a(text):\n    return text.startswith('A')\n",
+    "old_tests": "from subject import starts_with_a\n\n\ndef test_apple_prefix():\n    assert starts_with_a('Apple') is True\n",
+    "new_tests": "from subject import starts_with_a\n\n\ndef test_atlas_prefix():\n    assert starts_with_a('Atlas') is True\n",
+    "mutant": "def starts_with_a(text):\n    return text.startswith('B')\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both versions detect the declared wrong-prefix negative control with assertion failures."
+  },
+  {
+    "id": "val-013",
+    "split": "validation",
+    "category": "interval_shared_interior_gap",
+    "source": "def within(value, lower, upper):\n    return lower <= value <= upper\n",
+    "old_tests": "from subject import within\n\n\ndef test_middle_value():\n    assert within(3, 1, 5) is True\n",
+    "new_tests": "from subject import within\n\n\ndef test_other_interior_value():\n    assert within(4, 1, 5) is True\n",
+    "mutant": "def within(value, lower, upper):\n    return lower < value < upper\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both versions pass the declared strict-endpoint negative control because both exercise interior values."
+  },
+  {
+    "id": "val-014",
+    "split": "validation",
+    "category": "vowel_count_shared_detection",
+    "source": "def count_vowels(text):\n    return sum(character.lower() in 'aeiou' for character in text)\n",
+    "old_tests": "from subject import count_vowels\n\n\ndef test_muse():\n    assert count_vowels('muse') == 2\n",
+    "new_tests": "from subject import count_vowels\n\n\ndef test_queue():\n    assert count_vowels('queue') == 4\n",
+    "mutant": "def count_vowels(text):\n    return sum(character.lower() in 'aeio' for character in text)\n",
+    "expected": {
+      "verdict": "no_loss_observed",
+      "complete": true
+    },
+    "rationale": "Both versions detect the declared omitted-u negative control with assertion failures."
+  },
+  {
+    "id": "val-015",
+    "split": "validation",
+    "category": "invalid_baseline_assertion",
+    "source": "def double(number):\n    return number * 2\n",
+    "old_tests": "from subject import double\n\n\ndef test_double():\n    assert double(3) == 6\n",
+    "new_tests": "from subject import double\n\n\ndef test_incorrect_expected_value():\n    assert double(3) == 0\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false
+    },
+    "rationale": "The replacement assertion fails on the original source, so the baseline is invalid."
+  },
+  {
+    "id": "val-016",
+    "split": "validation",
+    "category": "invalid_baseline_import",
+    "source": "def increment(number):\n    return number + 1\n",
+    "old_tests": "from subject import increment\n\n\ndef test_increment():\n    assert increment(2) == 3\n",
+    "new_tests": "from subject import missing_increment\n\n\ndef test_missing_import():\n    assert missing_increment(2) == 3\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false
+    },
+    "rationale": "The replacement imports a nonexistent symbol, preventing a valid baseline run."
+  },
+  {
+    "id": "val-017",
+    "split": "validation",
+    "category": "invalid_baseline_empty_collection",
+    "source": "def identity(value):\n    return value\n",
+    "old_tests": "from subject import identity\n\n\ndef test_identity():\n    assert identity(3) == 3\n",
+    "new_tests": "from subject import identity\n\n\nEXAMPLE_VALUE = identity(3)\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false
+    },
+    "rationale": "The replacement contains no tests, so its empty collection cannot establish a passing executed baseline."
+  },
+  {
+    "id": "val-018",
+    "split": "validation",
+    "category": "invalid_baseline_skip",
+    "source": "def square(number):\n    return number * number\n",
+    "old_tests": "from subject import square\n\n\ndef test_square():\n    assert square(3) == 9\n",
+    "new_tests": "import pytest\nfrom subject import square\n\n\n@pytest.mark.skip(reason='Declared not-executed baseline control')\ndef test_skipped_square():\n    assert square(3) == 9\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false
+    },
+    "rationale": "The replacement is skipped, which is not_executed and cannot establish a valid baseline."
+  },
+  {
+    "id": "val-019",
+    "split": "validation",
+    "category": "invalid_baseline_fixture",
+    "source": "def increment(number):\n    return number + 1\n",
+    "old_tests": "from subject import increment\n\n\ndef test_increment():\n    assert increment(1) == 2\n",
+    "new_tests": "from subject import increment\n\n\ndef test_missing_fixture(unknown_fixture):\n    assert increment(1) == 2\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false
+    },
+    "rationale": "The replacement requires an undefined fixture and cannot execute a valid baseline assertion."
+  },
+  {
+    "id": "val-020",
+    "split": "validation",
+    "category": "invalid_baseline_runtime",
+    "source": "def negate(number):\n    return -number\n",
+    "old_tests": "from subject import negate\n\n\ndef test_negate():\n    assert negate(3) == -3\n",
+    "new_tests": "from subject import negate\n\n\ndef test_runtime_failure():\n    negate(3)\n    raise ValueError('Declared baseline runtime control')\n",
+    "mutant": null,
+    "expected": {
+      "verdict": "inconclusive",
+      "complete": false
+    },
+    "rationale": "The replacement raises a non-assertion runtime exception on the original source, invalidating the baseline."
+  }
+]

@@ -1,14 +1,30 @@
 # TestDelta를 만들며 배우는 테스트 검증
 
-2026-11-02 최신 `0.1.0a2` 작업 트리에서 전체 테스트 **130개가 64.94초에 통과**했고 Ruff도 통과했습니다. 아래의 a1·a2 중간 검증 수치는 당시의 기록입니다. 최종 원격 환경 검증은 해당 commit의 GitHub Actions를 기준으로 확인합니다.
+2026-11-02 a2 작업 트리에서 전체 테스트 **130개가 64.94초에 통과**했습니다. a3에서는 줄바꿈 없는 diff 회귀 검증까지 추가한 전체 **194개가 92.85초에 통과**했고 Ruff도 통과했습니다. 별도의 고정 사례 50개도 기대 결과와 모두 일치했습니다. 최종 commit 결과는 CI로 확인합니다. 아래의 a1·a2 중간 검증 수치는 당시의 기록입니다. 최종 원격 환경 검증은 해당 commit의 GitHub Actions를 기준으로 확인합니다.
 
-이 문서는 초기 알파 `0.1.0a2`까지의 실제 파일과 실행 결과를 바탕으로 작성했습니다. 이전 `0.1.0a1` 검증은 이력으로 남기고, 아직 실행하지 않은 검증과 독자가 직접 해볼 명령은 따로 표시합니다.
+이 문서는 초기 알파 `0.1.0a3`까지의 실제 파일과 실행 결과를 바탕으로 작성했습니다. 이전 `0.1.0a1` 검증은 이력으로 남기고, 아직 실행하지 않은 검증과 독자가 직접 해볼 명령은 따로 표시합니다.
 
 2026-11-02의 **a1 이력**에서 로컬 61개 테스트와 초기 commit `9a1ec28`의 GitHub CI 네 조합이 통과했습니다. 이는 현재 a2 전체 matrix의 결과를 대신하지 않습니다. a2 개발 중 한 snapshot에서는 전체 128개 테스트가 65.55초에 통과했고, 이후 추가한 회귀 테스트는 별도로 통과했습니다. 최종 commit의 전체 테스트 수와 matrix 상태는 해당 CI 결과를 확인해야 합니다. 테스트 수는 제품의 실제 저장소 정확도를 뜻하지 않습니다.
 
 추가 리뷰에서는 source hash와 import 경로가 맞아도 unchecked-hash `.pyc` 때문에 이전 코드가 실행될 수 있음을 재현했습니다. `PYTHONDONTWRITEBYTECODE`는 캐시 쓰기만 막으므로 충분하지 않았습니다. `runner/supervisor.py`가 실행마다 새 `PYTHONPYCACHEPREFIX`를 지정하고 `git_inputs.py`가 cache 파일 복사를 제외하도록 수정했습니다. 실제 Git snapshot에 캐시가 추적된 경우도 `tests/test_integration.py`에서 확인합니다.
 
 `adapters/bounded.py`와 `adapters/worker.py`는 Cosmic Ray 계산을 별도 프로세스로 실행합니다. 변이 생성이 오래 걸려도 전체 시간 예산을 소모한 뒤 무제한 계산을 계속하지 않게 하기 위한 경계입니다. source 파싱은 실행과 다르지만 CPU 시간도 예산에 포함됩니다.
+
+## a3에서 기존 PR과 CI를 연결한 방법
+
+기존 PR에 도구 설정이 없으면 `.testdelta.toml`을 과거 commit에 넣기 위해 이력을 다시 만들 필요가 있었습니다. 이제 `init --output`으로 외부 manifest를 만들고 `plan/compare --config`로 선택할 수 있습니다. `git_inputs.py`는 원본 UTF-8 bytes와 SHA-256을 기록합니다. `cli.py`의 replay는 저장된 bytes를 다시 검증하므로 원래 외부 파일을 삭제한 뒤에도 실행할 수 있습니다. 외부 설정을 선택해도 source·helper·의존성·추적된 설정 파일 변경을 허용하지는 않습니다.
+
+GitHub Action은 프로젝트 환경에 TestDelta 의존성을 설치하지 않습니다. `action.yml`이 별도 임시 venv에 도구를 설치하고, 준비된 프로젝트 Python을 `--python`으로 선택합니다. 여기서 venv 실행 파일에 `Path.resolve()`를 쓰면 symlink가 실제 공용 Python으로 바뀌어 venv 의존성을 잃을 수 있어 절대 경로만 만듭니다.
+
+또 다른 경계는 `PYTHONPATH`입니다. 설치된 도구의 site-packages를 통째로 넣으면 프로젝트 Python이 도구 쪽 pytest를 읽을 수 있습니다. `runner/supervisor.py`는 stdlib와 pytest만 사용하는 collector 파일 하나를 실행별 임시 폴더에 복사합니다. 실제로 도구 pytest **9.2.0**, 프로젝트 pytest **8.4.2**를 따로 설치한 실행에서 프로젝트 버전이 사용되고 기록되는 것을 확인했습니다. Action의 소스 설치와 별도 wheel 설치에서도 비교·replay 경로를 실행했습니다.
+
+`compare.py`는 old/new 테스트와 실제 mutation의 unified diff, 전체 diff hash, 잘림 여부를 기록합니다. 마지막 줄바꿈이 없는 파일은 표준 `\ No newline at end of file` 표식을 넣어 삭제·추가 줄이 붙어 보이지 않게 합니다. 각 pytest 실행에는 UTC 시작·종료 시각이 들어갑니다. `plan`의 최대 suite 호출 수는 `6 + 6 × max_mutants`입니다. 기준 검사 4회와 마지막 검사 2회에, 변이마다 최대 3쌍이 필요하기 때문입니다. 시간은 baseline을 실행하기 전에는 알 수 없습니다.
+
+로컬의 상세 report와 bundle에는 진단용 출력과 source가 남습니다. `export.py`의 `build_summary()`는 허용한 상태·개수·상대 경로·hash만 새 dict로 복사합니다. `testdelta export`와 자동 GitHub job summary는 이 제한된 정보만 사용합니다. 예상하지 못한 미래 필드까지 재귀 복사하지 않는 이유는 그 안에 새 private 출력이 들어갈 수 있기 때문입니다. 상대 경로와 hash도 프로젝트를 식별할 수 있어 익명화 보장은 아닙니다.
+
+독립적으로 작성한 개발용 30개와 검증용 20개의 원본 사례는 첫 실행 전에 hash로 고정했습니다. 사람이 지정한 인공 결함을 실제 pytest·반복 검사·최종 control로 확인하는 사례이므로, 자동 Cosmic Ray 생성 품질이나 실제 저장소 정확도와는 구분합니다. 세부 결과와 고정된 입력은 `corpus/README.md`와 `evidence/corpus/`를 기준으로 읽습니다. 첫 실행·재실행 중단과 불일치도 숨기지 않습니다.
+
+네트워크를 차단하는 container 실행 profile과 전체 의존성/OS image의 replay fingerprint는 아직 제공하지 않습니다. 이 알파는 신뢰한 로컬 테스트를 실행하며, 임시 폴더가 sandbox를 뜻하지 않습니다. 고정 benchmark는 10개 실제 Cosmic Ray 변이를 고른 비교를 20회 반복했고, 모두 완료했습니다. 로컬 p95는 **27.697초**, 최대는 **27.963초**였습니다. 준비 시간 제외와 동시 host 부하 등 정확한 범위는 `docs/performance.md`에서 별도로 다룹니다.
 
 ## a2에서 실제 저장소를 통해 배운 점
 
@@ -56,7 +72,7 @@ JSON/Markdown/HTML 보고서 + replay bundle
 
 | 파일 | 역할 | 배울 점 |
 |---|---|---|
-| `src/testdelta/cli.py` | `demo`, `init`, `plan`, `compare`, `replay` 명령을 연결 | 사용자 입력과 핵심 로직을 나누기 |
+| `src/testdelta/cli.py` | `demo`, `init`, `plan`, `compare`, `replay`, `export` 명령을 연결 | 사용자 입력과 핵심 로직을 나누기 |
 | `src/testdelta/git_inputs.py` | commit 파일을 읽고 비교 범위를 결정 | 작업 중인 파일과 검증할 snapshot을 구분하기 |
 | `src/testdelta/adapters/cosmic_ray.py` | Cosmic Ray 연산자로 변이를 만들고 ID·hash 기록 | 기존 도구의 검증된 역할을 재사용하기 |
 | `src/testdelta/runner/supervisor.py` | pytest subprocess, timeout, 환경과 hash 확인 | 실행 프로그램 바깥에서 상태를 관리하기 |
@@ -68,7 +84,7 @@ JSON/Markdown/HTML 보고서 + replay bundle
 
 `make_plan()`은 base/head를 commit SHA로 확정합니다. 기본 base는 두 revision의 공통 조상인 merge-base이며, `--direct-base`일 때만 정확한 base commit을 사용합니다. 그다음 Git blob을 읽어 파일 내용과 변경 목록을 만듭니다.
 
-여기서 사용자의 현재 작업 폴더를 직접 읽어 비교하지 않는 이유는 검증 대상이 바뀌면 재현하기 어렵기 때문입니다. 아직 commit하지 않은 수정은 결과에 들어가지 않습니다. `.testdelta.toml`도 base commit에 있어야 합니다.
+여기서 사용자의 현재 작업 폴더를 직접 읽어 비교하지 않는 이유는 검증 대상이 바뀌면 재현하기 어렵기 때문입니다. 아직 commit하지 않은 수정은 결과에 들어가지 않습니다. 기본 manifest는 base commit에서 읽고, `--config`를 지정하면 정확한 외부 bytes를 기록합니다.
 
 ```toml
 source_modules = ["src/pricing.py"]

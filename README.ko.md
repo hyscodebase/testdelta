@@ -2,7 +2,7 @@
 
 pytest 테스트를 바꾼 뒤, 이전에 잡던 결함을 놓치게 되었는지 확인합니다.
 
-**초기 알파 — `0.1.0a2`.** 같은 production code와 같은 변이 집합에 변경 전후 테스트를 실행합니다. 이전 테스트는 실패하고 새 테스트는 통과하는 구체적인 변이를 검토 근거로 남깁니다.
+**초기 알파 — `0.1.0a3`.** 같은 production code와 같은 변이 집합에 변경 전후 테스트를 실행합니다. 이전 테스트는 실패하고 새 테스트는 통과하는 구체적인 변이를 검토 근거로 남깁니다.
 
 [English](README.md) · [실제 저장소 호환성 검증](docs/compatibility.md) · [1인 개발 로드맵](docs/solo-roadmap.md) · [학습 문서](STUDY.MD) · [기여 안내](CONTRIBUTING.md)
 
@@ -43,6 +43,17 @@ uv run testdelta demo --scenario inconclusive --output .testdelta/demo-inconclus
 uv run testdelta init --repo ../your-project \
   --source src/pricing.py --tests tests/test_pricing.py
 ```
+
+기존 PR의 commit을 바꾸지 않으려면 외부 설정을 사용합니다. `--config` 경로는 `--repo`와 별개로 현재 작업 폴더 기준이며, 정확한 설정 내용과 hash가 replay bundle에 기록됩니다.
+
+```bash
+uv run testdelta init --source src/pricing.py --tests tests/test_pricing.py \
+  --output .testdelta/project.toml
+uv run testdelta compare --repo ../your-project --base main --head HEAD \
+  --config .testdelta/project.toml --output .testdelta/review
+```
+
+[GitHub Action](docs/action.md)은 도구 환경과 프로젝트 Python 환경을 분리합니다. CLI에서는 `--python /path/to/project/.venv/bin/python`으로 프로젝트 의존성을 준비한 실행기를 선택합니다.
 
 생성되는 manifest:
 
@@ -105,7 +116,7 @@ uv run testdelta replay .testdelta/review --witness WITNESS_ID \
 
 기록된 commit과 같은 supervisor 환경·실제 대상 Python/pytest runtime이 필요합니다. 이 기록은 전체 의존성과 운영체제 이미지를 완전히 식별하지는 않습니다. bundle에는 전체 저장소와 의존성이 들어 있지 않습니다. checksum은 우발적인 변경을 확인하며 작성자의 신원을 인증하는 서명은 아닙니다.
 
-보고서는 로컬에 저장됩니다. `GITHUB_STEP_SUMMARY`가 있으면 Markdown 결과를 GitHub Actions job summary에도 덧붙입니다. 별도의 hosted dashboard나 자동 PR 코멘트 기능은 없습니다. 공유 전 source와 실행 출력에 공개하면 안 되는 정보가 없는지 확인하세요. [CI 통합 예시](docs/ci.md)도 참고할 수 있습니다.
+보고서는 로컬에 저장됩니다. `GITHUB_STEP_SUMMARY`에는 raw log·diff·설정 원문·절대 경로를 제외한 요약을 덧붙입니다. `testdelta export .testdelta/review --output .testdelta/share.json`은 같은 허용 목록 기반 공유 자료를 만듭니다. 상대 경로·commit hash 등 프로젝트 정보는 남으므로 익명화를 보장하지 않습니다. 별도의 hosted dashboard나 자동 PR 코멘트 기능은 없습니다. 공유 전 source와 실행 출력에 공개하면 안 되는 정보가 없는지 확인하세요. [CI 통합 예시](docs/ci.md)도 참고할 수 있습니다.
 
 ## 실제 저장소에서 확인한 범위
 

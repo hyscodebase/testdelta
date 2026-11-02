@@ -17,6 +17,7 @@ import sys
 import tempfile
 import time
 import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -103,7 +104,7 @@ def run_pytest(
     started = time.monotonic()
     workspace = Path(workspace).resolve()
     executable = python_executable or sys.executable
-    command = [executable, "-m", "pytest", "-p", "testdelta.runner.plugin", "-q", "--disable-warnings", "--import-mode=importlib", "--", *test_paths]
+    command = [executable, "-m", "pytest", "-p", "_testdelta_evidence_plugin", "-q", "--disable-warnings", "--import-mode=importlib", "--", *test_paths]
     result: dict[str, Any] = {
         "status": "invalid_evidence", "collected": [], "ran": [],
         "assertion_failure_nodes": [], "observed_source_origin": {},
@@ -111,10 +112,12 @@ def run_pytest(
         "command": command, "skipped": [], "missing_test_ids": [],
         "origin_mismatches": [], "source_hashes_before": {}, "source_hashes_after": {},
         "evidence_finished": False, "returncode": None, "cleanup_errors": [],
+        "started_at_utc": datetime.now(timezone.utc).isoformat(),
     }
 
     def finish() -> dict[str, Any]:
         result["duration_seconds"] = time.monotonic() - started
+        result["finished_at_utc"] = datetime.now(timezone.utc).isoformat()
         return result
 
     try:
@@ -144,8 +147,11 @@ def run_pytest(
             "expected_source_hashes": expected_source_hashes,
             "evidence_path": str(evidence_path),
         }), encoding="utf-8")
-        tool_src = Path(__file__).resolve().parents[2]
-        python_paths = [str(tool_src), str(workspace)]
+        # Copy only the standalone collector. Adding the supervisor's site-packages
+        # would silently replace the selected target interpreter's pytest/dependencies.
+        collector = Path(directory) / "_testdelta_evidence_plugin.py"
+        collector.write_bytes(Path(__file__).with_name("plugin.py").read_bytes())
+        python_paths = [str(Path(directory)), str(workspace)]
         if (workspace / "src").is_dir():
             python_paths.append(str(workspace / "src"))
         environment = {key: value for key, value in os.environ.items() if key in _ENV_ALLOWLIST}

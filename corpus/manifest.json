@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "frozen_before_execution": true,
+  "frozen_at_utc": "2026-11-02T13:05:58+00:00",
+  "snapshot_kind": "controlled_fixture_bytes_not_git",
+  "mutation_origin": "fixture_negative_control",
+  "license": "MIT",
+  "supplemental_oracles_note": "Validation baseline failure statuses were declared before first execution because the frozen fixture records omitted this optional field; fixture bytes remain unchanged.",
+  "supplemental_oracles": {
+    "val-015": {"baseline_failure_status": "assertion_failure"},
+    "val-016": {"baseline_failure_status": "collection_error"},
+    "val-017": {"baseline_failure_status": "not_executed"},
+    "val-018": {"baseline_failure_status": "not_executed"},
+    "val-019": {"baseline_failure_status": "fixture_error"},
+    "val-020": {"baseline_failure_status": "runtime_error"}
+  },
+  "corpora": {
+    "development": {
+      "path": "corpus/development.json",
+      "count": 30,
+      "sha256": "58eea5d6f9024d57c17371b42ca633f88b3c89d37068b11f2ef0536384145d6e"
+    },
+    "validation": {
+      "path": "corpus/validation.json",
+      "count": 20,
+      "sha256": "97424a8a5ad005d427bcd6bf41130e682127c4cd8905e2f5fd4be50c8cf87be7"
+    }
+  }
+}

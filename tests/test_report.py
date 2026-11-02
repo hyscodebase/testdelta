@@ -7,7 +7,7 @@ from html.parser import HTMLParser
 
 import pytest
 
-from testdelta.report import exit_code, html_document, markdown, write_report
+from testdelta.report import exit_code, github_summary, html_document, markdown, write_report
 
 
 @pytest.fixture
@@ -171,6 +171,10 @@ def test_complete_no_loss_is_explicitly_finite(report, render):
 
 
 def test_write_report_preserves_canonical_data_and_github_summary(report, tmp_path, monkeypatch):
+    report["mutants"][0]["old"][0]["stdout"] = "PRIVATE_STDOUT /home/private/source.py"
+    report["plan"]["manifest_snapshot"] = {"text": "PRIVATE_CONFIG"}
+    report["mutants"][0]["diff"] = "PRIVATE_MUTANT_DIFF"
+    report["test_diffs"] = [{"path": "private_test.py", "diff": "PRIVATE_TEST_DIFF"}]
     original = copy.deepcopy(report)
     summary = tmp_path / "summary.md"
     summary.write_text("Previous step\n", encoding="utf-8")
@@ -181,6 +185,67 @@ def test_write_report_preserves_canonical_data_and_github_summary(report, tmp_pa
     assert json.loads((output / "report.json").read_text()) == original
     assert (output / "report.md").read_text() == markdown(report)
     assert (output / "report.html").read_text() == html_document(report)
-    assert summary.read_text() == "Previous step\n" + markdown(report) + "\n"
+    assert summary.read_text() == "Previous step\n" + github_summary(report) + "\n"
+    assert "PRIVATE_" not in summary.read_text()
+    assert "/home/private" not in summary.read_text()
+    assert "calc.py" not in summary.read_text()
+    assert "Detection loss observed" in summary.read_text()
+    assert "no proof of test equivalence" in summary.read_text()
+    assert "PRIVATE_STDOUT" in (output / "report.md").read_text()
     assert exit_code(report) == 1
     assert exit_code(report, advisory=True) == 0
+
+
+@pytest.mark.parametrize("render", [html_document, markdown])
+def test_test_and_mutant_unified_diffs_include_hashes_and_truncation(report, render):
+    report["test_diffs"] = [{
+        "path": "tests/test_calc.py", "diff": "--- a/tests/test_calc.py\n+++ b/tests/test_calc.py\n"
+        "@@ -1 +1 @@\n-assert add(1) == 2\n+assert True\n",
+        "sha256": "a" * 64, "truncated": True,
+    }]
+    report["mutants"][0].update(
+        diff="--- original/calc.py\n+++ mutant/calc.py\n@@ -2 +2 @@\n-return x + 1\n+return x - 1\n",
+        diff_sha256="b" * 64, diff_truncated=False,
+    )
+
+    output = render(report)
+
+    assert "Changed test diff:" in output and "tests/test" in output
+    assert "Mutant diff:" in output
+    assert "a" * 64 in output and "b" * 64 in output
+    assert "assert add(1) == 2" in output
+    assert "+return x - 1" in output
+    assert output.count("Diff display truncated") == 1
+    assert "identifies the full generated diff" in output
+
+
+def test_diff_markup_and_fence_delimiters_cannot_escape_evidence(report):
+    attack = '</pre><script>alert(1)</script><img src=x onerror="alert(2)">'
+    diff = f"--- old\n+++ new\n@@ -1 +1 @@\n-```\n+{attack}\n+````"
+    report["test_diffs"] = [{"path": attack, "diff": diff, "sha256": attack, "truncated": True}]
+    report["mutants"][0].update(diff=diff, diff_sha256=attack, diff_truncated=True)
+
+    output = html_document(report)
+    parsed = Tags()
+    parsed.feed(output)
+    assert not {"script", "img", "iframe"} & set(parsed.tags)
+    assert "&lt;script&gt;alert(1)&lt;/script&gt;" in output
+
+    output = markdown(report)
+    assert f"`````text\n{diff}\n`````" in output
+    outside_fences = re.sub(r"(?ms)^(`{3,})[^\n]*\n.*?^\1[ \t]*$", "", output)
+    assert "<script>" not in outside_fences
+    assert "<img src=x" not in outside_fences
+
+
+def test_github_summary_keeps_incomplete_findings_qualified_and_omits_free_reason(report):
+    report.update(
+        complete=False, verdict="incomplete_with_witnesses",
+        reason="PRIVATE_REASON /home/private/repo.py",
+    )
+    report["witnesses"][0]["confirmation"] = "unconfirmed_control"
+    output = github_summary(report)
+    assert "Incomplete comparison" in output
+    assert "No clean conclusion" in output
+    assert "Confirmed detection-loss findings: 0" in output
+    assert "PRIVATE_REASON" not in output

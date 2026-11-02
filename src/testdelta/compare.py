@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import difflib
 import hashlib
 import importlib.metadata
 import json
@@ -32,13 +33,26 @@ def environment() -> dict:
 def target_runtime(python_executable: str | None = None) -> dict:
     """Observe the interpreter actually selected for project tests."""
     result = subprocess.run(
-        [python_executable or sys.executable, "-c",
+        [python_executable or sys.executable, "-I", "-c",
          "import json,platform,sys,pytest; "
          "print(json.dumps(dict(python_version=platform.python_version(),"
          "python_executable=sys.executable,pytest_version=pytest.__version__)))"],
         capture_output=True, text=True, timeout=10, check=True,
     )
     return json.loads(result.stdout)
+
+
+def unified_diff(old: bytes, new: bytes, path: str, limit: int = 20000) -> dict:
+    """Bound display text while retaining a digest of the complete UTF-8 diff."""
+    lines = difflib.unified_diff(
+        old.decode("utf-8", "replace").splitlines(keepends=True),
+        new.decode("utf-8", "replace").splitlines(keepends=True),
+        fromfile=f"old/{path}", tofile=f"new/{path}",
+    )
+    value = "".join(line if line.endswith("\n") else
+                    line + "\n\\ No newline at end of file\n" for line in lines)
+    return {"path": path, "diff": value[:limit], "sha256": digest(value.encode()),
+            "truncated": len(value) > limit}
 
 
 def compare(
@@ -66,14 +80,16 @@ def compare(
         "verdict": "inconclusive", "complete": False, "witnesses": [], "mutants": [],
         "baseline": [], "controls": [], "mutants_planned": 0, "mutants_completed": 0,
         "limits": {"budget_seconds": budget_seconds, "max_mutants": max_mutants,
-                   "timeout_seconds": timeout_seconds},
+                   "timeout_seconds": timeout_seconds, "suite_calls_max": 6 + 6 * max_mutants},
+        "test_diffs": [unified_diff(before.get(p, b""), after.get(p, b""), p)
+                       for p in plan["test_files"] if before.get(p) != after.get(p)],
         "limitations": ["finite_mutation_scope", "trusted_local_code_not_a_sandbox",
                         "test_only_comparison", "gains_are_single_run_provisional"],
     }
     bundle = {"schema_version": "0.1", "plan": report["plan"], "mutations": [],
               "source_hashes": plan["source_hashes"], "environment": env,
               "target_runtime": runtime,
-              "runtime_executable": str(Path(python_executable or sys.executable).resolve())}
+              "runtime_executable": str(Path(python_executable or sys.executable).absolute())}
     if not plan["supported"]:
         report.update(verdict="unsupported_change", reason=plan["unsupported_changes"])
         return report, bundle
@@ -144,8 +160,11 @@ def compare(
         if remaining() < reserve + 2 * max_baseline:
             report["reason"] = "total_budget_exhausted"
             break
+        patch = unified_diff(after[mutant["path"]], mutant["mutated_source"].encode(), mutant["path"])
         item = {"id": mutant["id"], "path": mutant["path"], "line": mutant["line"],
                 "operator": mutant["operator"], "mutated_sha256": mutant["mutated_sha256"],
+                "diff": patch["diff"], "diff_sha256": patch["sha256"],
+                "diff_truncated": patch["truncated"],
                 "old": [run("old", mutant, reserve)], "new": [run("new", mutant, reserve)]}
 
         def outcome(result: dict) -> str:

@@ -72,11 +72,13 @@ def read_tree(repo: Path, sha: str) -> dict[str, bytes]:
     return files
 
 
-def load_manifest(files: dict[str, bytes]) -> dict:
-    if ".testdelta.toml" not in files:
-        raise InputError("Commit .testdelta.toml at the base revision before changing tests")
+def load_manifest(files: dict[str, bytes], manifest_bytes: bytes | None = None) -> dict:
+    if manifest_bytes is None:
+        if ".testdelta.toml" not in files:
+            raise InputError("Commit .testdelta.toml at the base revision before changing tests")
+        manifest_bytes = files[".testdelta.toml"]
     try:
-        config = tomllib.loads(files[".testdelta.toml"].decode("utf-8"))
+        config = tomllib.loads(manifest_bytes.decode("utf-8"))
     except (UnicodeDecodeError, tomllib.TOMLDecodeError) as exc:
         raise InputError(f"Invalid .testdelta.toml: {exc}") from exc
     if set(config) - {"source_modules", "test_paths"}:
@@ -105,7 +107,10 @@ def is_test_file(path: str, test_paths: list[str]) -> bool:
     )
 
 
-def make_plan(repo: Path, base: str, head: str = "HEAD", direct_base: bool = False) -> tuple:
+def make_plan(
+    repo: Path, base: str, head: str = "HEAD", direct_base: bool = False,
+    *, manifest_bytes: bytes | None = None,
+) -> tuple:
     repo = Path(git(repo, "rev-parse", "--show-toplevel").decode().strip())
     head_sha = resolve(repo, head)
     base_ref_sha = resolve(repo, base)
@@ -114,7 +119,9 @@ def make_plan(repo: Path, base: str, head: str = "HEAD", direct_base: bool = Fal
     ).decode().strip()
     before = read_tree(repo, base_sha)
     after = read_tree(repo, head_sha)
-    config = load_manifest(before)
+    config = load_manifest(before, manifest_bytes)
+    manifest_origin = "base_commit" if manifest_bytes is None else "external"
+    chosen_manifest = before[".testdelta.toml"] if manifest_bytes is None else manifest_bytes
     changed = sorted(p for p in before.keys() | after.keys() if before.get(p) != after.get(p))
     unsupported = [p for p in changed if not is_test_file(p, config["test_paths"])]
     # Never let a source file be overlaid as a test, even if paths overlap.
@@ -131,7 +138,7 @@ def make_plan(repo: Path, base: str, head: str = "HEAD", direct_base: bool = Fal
         "schema_version": "0.1", "repo": str(repo), "base_sha": base_sha,
         "requested_base_sha": base_ref_sha, "head_sha": head_sha,
         "base_mode": "direct" if direct_base else "merge_base", "manifest": config,
-        "manifest_hash": digest(before[".testdelta.toml"]),
+        "manifest_origin": manifest_origin, "manifest_hash": digest(chosen_manifest),
         "source_hashes": {p: digest(after[p]) if p in after else None
                           for p in config["source_modules"]},
         "test_hashes": {p: {"old": digest(before[p]) if p in before else None,
@@ -140,6 +147,10 @@ def make_plan(repo: Path, base: str, head: str = "HEAD", direct_base: bool = Fal
         "supported": not unsupported, "unsupported_changes": unsupported,
         "working_tree": "committed snapshots only; uncommitted files excluded",
     }
+    if manifest_bytes is not None:
+        plan["manifest_snapshot"] = {
+            "text": manifest_bytes.decode("utf-8"), "sha256": digest(manifest_bytes),
+        }
     return plan, before, after
 
 

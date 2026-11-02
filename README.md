@@ -4,9 +4,9 @@
 
 [![CI](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml/badge.svg)](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml)
 
-**Early alpha — `0.1.0a2`.** TestDelta compares two test revisions against unchanged production code and the same selected mutations. It records a concrete example when the old tests catch a deliberate fault and the new tests miss it.
+**Early alpha — `0.1.0a3`.** TestDelta compares two test revisions against unchanged production code and the same selected mutations. It records a concrete example when the old tests catch a deliberate fault and the new tests miss it.
 
-[한국어](README.ko.md) · [Real-repository compatibility](docs/compatibility.md) · [Development roadmap](docs/solo-roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+[한국어](README.ko.md) · [Real-repository compatibility](docs/compatibility.md) · [GitHub Action](docs/action.md) · [Quality status](docs/quality-status.md) · [Development roadmap](docs/solo-roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 This is a narrow Python/pytest tool, not a claim that a test change is wrong. Removing an assertion can be intentional. A complete run with no observed loss only describes the finite mutations and tests it executed.
 
@@ -25,7 +25,7 @@ The demo creates a temporary two-commit repository with original synthetic fixtu
 
 Open `.testdelta/demo/report.html` to read the result. `report.json` contains the detailed evidence. The synthetic Git repository is retained under the output directory; its exact path is recorded in `demo_repository` so it can be used with `replay --repo`. The bundle alone still does not contain a complete repository.
 
-The HTML report shows the comparison verdict, attempted pairs, confirmed findings, execution issues, and source/test provenance in separate sections. An attempted pair is not necessarily valid evidence. Old/new test-file SHA-256 values accompany the source fingerprints.
+Local reports include bounded changed-test and actual mutation diffs, full-diff hashes, and per-run UTC timestamps. The HTML report shows the comparison verdict, attempted pairs, confirmed findings, execution issues, and source/test provenance in separate sections. An attempted pair is not necessarily valid evidence. Old/new test-file SHA-256 values accompany the source fingerprints.
 
 Three executed synthetic scenarios are available:
 
@@ -39,14 +39,20 @@ They illustrate lost detection, a harmless test refactor, and an invalid baselin
 
 ## Compare a test change
 
-The initial scope requires explicit tracked Python source files and pytest test files. Commit the manifest **before** the test change you want to compare. The following commands run from the TestDelta checkout and point to an example sibling repository:
+The scope requires explicit tracked Python source files and pytest test files. For an existing PR, create an external manifest without changing its history: The following commands run from the TestDelta checkout and point to an example sibling repository:
 
 ```bash
-uv run testdelta init --repo ../your-project \
-  --source src/pricing.py --tests tests/test_pricing.py
+uv run testdelta init --source src/pricing.py --tests tests/test_pricing.py \
+  --output .testdelta/your-project.toml
+uv run testdelta plan --repo ../your-project --base main --head HEAD \
+  --config .testdelta/your-project.toml
+uv run testdelta compare --repo ../your-project --base main --head HEAD \
+  --config .testdelta/your-project.toml --output .testdelta/review
 ```
 
-The generated `.testdelta.toml` is deliberately small:
+The config path is relative to the current directory, independently of `--repo`. Its exact UTF-8 bytes and hash are recorded for replay. Review this file as comparison policy. Alternatively, omit `init --output` to create `.testdelta.toml` in the target repo and commit it before the test change. Both modes retain the same supported-change checks.
+
+The manifest is deliberately small:
 
 ```toml
 source_modules = ["src/pricing.py"]
@@ -61,9 +67,9 @@ uv run testdelta compare --repo ../your-project --base main --head HEAD \
   --output .testdelta/review --budget-seconds 120 --max-mutants 10
 ```
 
-`plan` reads committed Git snapshots without running project tests. The default base is the merge-base of the supplied revisions, as in a pull-request comparison. `--direct-base` compares the exact base commit. Uncommitted files are excluded.
+`plan` reads committed Git snapshots without running project tests and reports the suite-call upper bound `6 + 6 × max_mutants` (66 at the default cap). Runtime remains unknown until baselines execute. The default base is the merge-base of the supplied revisions, as in a pull-request comparison. `--direct-base` compares the exact base commit. Uncommitted files are excluded.
 
-`compare` executes project tests. The interpreter running TestDelta must have the project's required dependencies. It does not install project dependencies automatically. The first runner disables automatic third-party pytest plugin loading and restricts inherited environment variables; projects that depend on those features may be incompatible with this alpha.
+`compare` executes project tests. Select an interpreter with project dependencies using `--python /path/to/project/.venv/bin/python`; the default is TestDelta's interpreter. The evidence collector uses that interpreter's pytest and dependencies. It does not install project dependencies automatically. The first runner disables automatic third-party pytest plugin loading and restricts inherited environment variables; projects that depend on those features may be incompatible with this alpha.
 
 Changes outside the selected test paths—including production source, the manifest, helpers, `conftest.py`, dependency files, and other configuration—are unsupported. A no-change comparison is unsupported too. This conservative boundary prevents a source or environment change from being mistaken for a difference caused only by tests.
 
@@ -112,7 +118,15 @@ uv run testdelta replay .testdelta/review --witness WITNESS_ID \
 
 Replay requires the original committed revisions and matching recorded supervisor environment and target Python/pytest runtime. These records are not a full dependency or operating-system image fingerprint. The bundle does not include a complete repository or its dependencies. Checksums detect accidental changes; they are not signatures proving who created a bundle. Replaying untrusted code is unsafe—see [SECURITY.md](SECURITY.md).
 
-Reports stay local unless you share them. When `GITHUB_STEP_SUMMARY` is present, the Markdown report is also appended to the GitHub Actions job summary. Review source and captured output before uploading an artifact. There is no hosted dashboard or automatic PR comment publisher in this alpha. See the [CI integration example](docs/ci.md).
+Reports stay local unless you share them. When `GITHUB_STEP_SUMMARY` is present, an allowlisted summary is appended without raw logs, diffs, config text, or absolute runtime paths. Review source and captured output before uploading an artifact. There is no hosted dashboard or automatic PR comment publisher in this alpha. Use the [native GitHub Action](docs/action.md) or [CLI CI example](docs/ci.md). Export a shareable summary without raw logs or source:
+
+```bash
+uv run testdelta export .testdelta/review --output .testdelta/share.json
+```
+
+The export retains relative source/test locations, revision hashes, and outcomes. Those identifiers can still reveal project metadata; export is not a proof of anonymity. It refuses to overwrite an existing file.
+
+The [frozen fixture corpus](corpus/README.md) separates 30 development cases from 20 validation cases. These hand-authored negative controls evaluate classification behavior separately from the automatic Cosmic Ray provider; they are not a real-project accuracy benchmark.
 
 ## Real-repository checks
 

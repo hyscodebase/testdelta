@@ -35,8 +35,10 @@ jobs:
 
 This snippet is a template for your repository, not a declaration that arbitrary projects are compatible. TestDelta disables automatic third-party pytest plugin loading and restricts inherited environment variables. Use a small fixture to verify the runner's behavior before making the job required.
 
-The Markdown report is appended to the Actions job summary through `GITHUB_STEP_SUMMARY`. Local JSON, HTML, and bundle files remain under the requested output directory. Artifact upload is optional; inspect captured output and source before choosing to publish it. This integration does not post a PR comment.
+An allowlisted summary is appended through `GITHUB_STEP_SUMMARY`, excluding raw logs, diffs, config text, and absolute runtime paths. Local JSON, HTML, and bundle files remain under the requested output directory. Artifact upload is optional; inspect captured output and source before choosing to publish it. This integration does not post a PR comment.
 
 For an initial advisory rollout, add `--advisory`. Only a complete `loss_observed` comparison changes from exit `1` to `0`; its report still records the evidence. Unsupported or incomplete comparisons remain nonzero. Do not hide those states with an unconditional success command.
 
 No model API key or repository write token is needed. Avoid `pull_request_target` workflows that run untrusted PR code with elevated credentials. Temporary copies are not a sandbox; apply the same trust boundary as your ordinary test job. See [SECURITY.md](../SECURITY.md).
+
+This alpha does not provide or verify network-blocked execution. Dependency preparation and test execution use the host runner; tests retain its network and filesystem access. A network-restricted container profile remains future work.

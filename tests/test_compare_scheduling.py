@@ -19,6 +19,15 @@ NEW_TEST = b"# new tests\n"
 RUNTIME = {"python_version": "3.test", "python_executable": "/test/python", "pytest_version": "test"}
 
 
+def test_diff_preserves_missing_final_newline_boundaries_and_hash():
+    patch = engine.unified_diff(b"assert value == 2", b"assert True", "tests/test_calc.py")
+    assert "-assert value == 2\n\\ No newline at end of file\n+assert True\n" in patch["diff"]
+    assert patch["sha256"] == digest(patch["diff"].encode())
+    limited = engine.unified_diff(b"assert value == 2", b"assert True", "tests/test_calc.py", 10)
+    assert limited["truncated"] is True
+    assert limited["sha256"] == patch["sha256"]
+
+
 class Scenario:
     """Select execution evidence using actual workspace contents, not call order."""
 

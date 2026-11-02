@@ -104,6 +104,54 @@ def test_git_plan_and_cli_find_confirmed_same_byte_loss(tmp_path):
             assert run["source_hashes_before"] == run["source_hashes_after"] == expected
     assert (repo / "calc.py").read_text() == SOURCE
     assert git(repo, "status", "--porcelain") == ""
+    assert report["test_diffs"][0]["path"] == "tests/test_calc.py"
+    assert "-    assert calculate(1) == 2" in report["test_diffs"][0]["diff"]
+    assert all(m["diff"].startswith("--- old/calc.py") for m in report["mutants"])
+    for run in report["baseline"] + report["controls"]:
+        assert run["started_at_utc"] <= run["finished_at_utc"]
+
+
+def test_external_manifest_replay_survives_deleted_original_config(tmp_path, monkeypatch):
+    repo, base, head = repository(tmp_path, WEAK)
+    # Rebuild the two commits without a tracked manifest, like a pre-existing PR.
+    manifest = (repo / ".testdelta.toml").read_bytes().replace(b"\n", b"\r\n")
+    git(repo, "checkout", "--orphan", "external")
+    git(repo, "rm", "--cached", ".testdelta.toml")
+    (repo / ".testdelta.toml").unlink()
+    (repo / "tests/test_calc.py").write_text(STRONG)
+    git(repo, "add", ".")
+    git(repo, "commit", "-qm", "Baseline without tool config")
+    base = git(repo, "rev-parse", "HEAD")
+    (repo / "tests/test_calc.py").write_text(WEAK)
+    git(repo, "add", ".")
+    git(repo, "commit", "-qm", "Existing test-only change")
+    external = tmp_path / "outside.toml"
+    external.write_bytes(manifest)
+    monkeypatch.chdir(tmp_path)
+    output = tmp_path / "external-report"
+    code, report = compare_cli(repo, base, output, "--config", "outside.toml")
+    assert code == 1, report
+    assert report["plan"]["manifest_origin"] == "external"
+    assert report["plan"]["manifest_hash"] == hashlib.sha256(manifest).hexdigest()
+    external.unlink()
+    witness = report["witnesses"][0]["id"]
+    assert main(["replay", str(output), "--witness", witness, "--repo", str(repo),
+                 "--output", str(tmp_path / "external-replay")]) == 1
+    assert git(repo, "status", "--porcelain") == ""
+
+
+def test_init_external_config_does_not_modify_repo_or_overwrite_symlink(tmp_path):
+    repo = tmp_path / "empty-repo"
+    repo.mkdir()
+    config = tmp_path / "config.toml"
+    args = ["init", "--repo", str(repo), "--source", "calc.py", "--tests", "tests",
+            "--output", str(config)]
+    assert main(args) == 0
+    assert list(repo.iterdir()) == []
+    assert main(args) == 3
+    config.unlink()
+    config.symlink_to(tmp_path / "missing")
+    assert main(args) == 3
 
 
 def test_legitimate_test_refactor_retains_all_selected_kills(tmp_path):

@@ -3,25 +3,175 @@
   "$id": "https://github.com/hyscodebase/testdelta/blob/main/schemas/report.v0.1.json",
   "title": "TestDelta report 0.1 (alpha)",
   "type": "object",
-  "required": ["schema_version", "evidence_kind", "verdict", "complete", "plan", "baseline", "controls", "mutants", "witnesses", "mutants_planned", "mutants_completed"],
+  "required": [
+    "schema_version",
+    "evidence_kind",
+    "verdict",
+    "complete",
+    "plan",
+    "baseline",
+    "controls",
+    "mutants",
+    "witnesses",
+    "mutants_planned",
+    "mutants_completed"
+  ],
   "properties": {
-    "schema_version": {"const": "0.1"},
-    "evidence_kind": {"const": "actual_pytest_execution"},
-    "verdict": {"enum": ["loss_observed", "no_loss_observed", "incomplete_with_witnesses", "inconclusive", "unsupported_change"]},
-    "complete": {"type": "boolean"},
-    "plan": {"type": "object"},
-    "baseline": {"type": "array", "items": {"type": "object"}},
-    "controls": {"type": "array", "items": {"type": "object"}},
-    "mutants": {"type": "array", "items": {"type": "object", "required": ["id", "path", "line", "outcome", "old", "new"]}},
-    "witnesses": {"type": "array", "items": {"type": "object", "required": ["id", "path", "confirmation", "old_outcomes", "new_outcomes", "original_sha256", "mutated_sha256"]}},
-    "mutants_planned": {"type": "integer", "minimum": 0},
-    "mutants_completed": {"type": "integer", "minimum": 0},
-    "environment_role": {"const": "supervisor"},
-    "target_runtime": {"type": "object"}
+    "schema_version": {
+      "const": "0.1"
+    },
+    "evidence_kind": {
+      "const": "actual_pytest_execution"
+    },
+    "verdict": {
+      "enum": [
+        "loss_observed",
+        "no_loss_observed",
+        "incomplete_with_witnesses",
+        "inconclusive",
+        "unsupported_change"
+      ]
+    },
+    "complete": {
+      "type": "boolean"
+    },
+    "plan": {
+      "type": "object"
+    },
+    "baseline": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "controls": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "mutants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "line",
+          "outcome",
+          "old",
+          "new"
+        ]
+      }
+    },
+    "witnesses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "path",
+          "confirmation",
+          "old_outcomes",
+          "new_outcomes",
+          "original_sha256",
+          "mutated_sha256"
+        ]
+      }
+    },
+    "mutants_planned": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "mutants_completed": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "environment_role": {
+      "const": "supervisor"
+    },
+    "target_runtime": {
+      "type": "object"
+    },
+    "test_diffs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "diff",
+          "sha256",
+          "truncated"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "diff": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
   },
   "allOf": [
-    {"if": {"properties": {"verdict": {"enum": ["loss_observed", "no_loss_observed"]}}}, "then": {"properties": {"complete": {"const": true}}}},
-    {"if": {"properties": {"verdict": {"const": "loss_observed"}}}, "then": {"properties": {"witnesses": {"minItems": 1}}}},
-    {"if": {"properties": {"verdict": {"const": "no_loss_observed"}}}, "then": {"properties": {"witnesses": {"maxItems": 0}}}}
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "enum": [
+              "loss_observed",
+              "no_loss_observed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "complete": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "const": "loss_observed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "witnesses": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "const": "no_loss_observed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "witnesses": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
   ]
 }

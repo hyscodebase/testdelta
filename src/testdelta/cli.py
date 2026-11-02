@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -97,12 +99,14 @@ def parser() -> argparse.ArgumentParser:
     init.add_argument("--source", action="append", required=True)
     init.add_argument("--tests", action="append", required=True)
     init.add_argument("--repo", type=Path, default=Path.cwd())
+    init.add_argument("--output", type=Path, help="Write external config here instead of the repository")
     for name in ("plan", "compare"):
         cmd = commands.add_parser(name)
         cmd.add_argument("--base", required=True)
         cmd.add_argument("--head", default="HEAD")
         cmd.add_argument("--repo", type=Path, default=Path.cwd())
         cmd.add_argument("--direct-base", action="store_true")
+        cmd.add_argument("--config", type=Path, help="External UTF-8 manifest; relative to current directory")
         if name == "compare":
             cmd.add_argument("--output", type=Path, default=Path(".testdelta/report"))
             cmd.add_argument("--budget-seconds", type=float, default=120)
@@ -116,21 +120,38 @@ def parser() -> argparse.ArgumentParser:
     replay.add_argument("--repo", type=Path, default=Path.cwd())
     replay.add_argument("--output", type=Path, default=Path(".testdelta/replay"))
     replay.add_argument("--python", dest="python_executable")
+    share = commands.add_parser("export", help="Write an allowlisted summary without raw logs or source")
+    share.add_argument("report", type=Path)
+    share.add_argument("--output", type=Path, required=True)
     return result
 
 
 def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     try:
+        if getattr(args, "python_executable", None):
+            selected = shutil.which(args.python_executable)
+            if selected is None:
+                raise InputError("Selected Python executable was not found")
+            # abspath deliberately preserves a venv's executable symlink.
+            args.python_executable = os.path.abspath(selected)
         if args.command == "demo":
             return demo(args.output, args.scenario)
         if args.command == "init":
-            config = args.repo / ".testdelta.toml"
-            if config.exists():
-                raise InputError(".testdelta.toml already exists; it was not overwritten")
+            config = args.output if args.output is not None else args.repo / ".testdelta.toml"
+            if config.exists() or config.is_symlink():
+                raise InputError(f"Config already exists; it was not overwritten: {config}")
             sources, tests = [safe_path(p) for p in args.source], [safe_path(p) for p in args.tests]
-            config.write_text(f"source_modules = {json.dumps(sources)}\ntest_paths = {json.dumps(tests)}\n")
-            print(f"Created {config}. Commit it before the test change you want to compare.")
+            config.parent.mkdir(parents=True, exist_ok=True)
+            config.write_text(f"source_modules = {json.dumps(sources)}\ntest_paths = {json.dumps(tests)}\n", encoding="utf-8")
+            instruction = ("Use --config with plan/compare." if args.output is not None else
+                           "Commit it before the test change you want to compare.")
+            print(f"Created {config}. {instruction}")
+            return 0
+        if args.command == "export":
+            from testdelta.export import export_summary
+            summary = export_summary(args.report, args.output)
+            print(json.dumps({"output": str(args.output), "verdict": summary["verdict"]}))
             return 0
         if args.command == "replay":
             path = args.bundle / "bundle.json" if args.bundle.is_dir() else args.bundle
@@ -146,9 +167,23 @@ def main(argv: list[str] | None = None) -> int:
             if bundle.get("target_runtime") != target_runtime(args.python_executable):
                 raise InputError("Replay target runtime differs from recorded Python/pytest interpreter")
             recorded = bundle["plan"]
+            manifest_bytes = None
+            origin = recorded.get("manifest_origin", "base_commit")
+            if origin == "external":
+                snapshot = recorded["manifest_snapshot"]
+                if not isinstance(snapshot["text"], str):
+                    raise InputError("Invalid external manifest snapshot")
+                manifest_bytes = snapshot["text"].encode("utf-8")
+                if digest(manifest_bytes) != snapshot["sha256"] or snapshot["sha256"] != recorded["manifest_hash"]:
+                    raise InputError("External manifest checksum mismatch")
+            elif origin != "base_commit":
+                raise InputError("Unknown manifest origin")
             plan, before, after = make_plan(
-                args.repo, recorded["base_sha"], recorded["head_sha"], direct_base=True
+                args.repo, recorded["base_sha"], recorded["head_sha"], direct_base=True,
+                manifest_bytes=manifest_bytes,
             )
+            if plan["manifest_hash"] != recorded["manifest_hash"] or plan["manifest"] != recorded["manifest"]:
+                raise InputError("Replay manifest does not match the recorded configuration")
             if plan["source_hashes"] != bundle["source_hashes"]:
                 raise InputError("Replay source does not match the recorded source")
             mutations = [m for m in bundle["mutations"] if m["id"] == args.witness]
@@ -168,8 +203,13 @@ def main(argv: list[str] | None = None) -> int:
             show(report, args.output)
             write_bundle(new_bundle, args.output)
             return exit_code(report)
-        plan, before, after = make_plan(args.repo, args.base, args.head, args.direct_base)
+        manifest_bytes = args.config.read_bytes() if args.config is not None else None
+        plan, before, after = make_plan(args.repo, args.base, args.head, args.direct_base,
+                                        manifest_bytes=manifest_bytes)
         if args.command == "plan":
+            plan["execution_estimate"] = {"default_max_mutants": 10, "suite_calls_max": 66,
+                                          "formula": "6 + 6 * max_mutants",
+                                          "runtime_seconds": "unknown_until_baselines_execute"}
             print(json.dumps(plan, indent=2))
             return 0 if plan["supported"] else 2
         if args.budget_seconds <= 0 or args.timeout_seconds <= 0 or not 1 <= args.max_mutants <= 100:
