@@ -1,0 +1,42 @@
+name: Bug report
+description: Report a reproducible problem in the supported pytest workflow.
+title: '[Bug] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please use a minimal public or synthetic fixture. Do not paste credentials, private code, or unredacted logs. For sensitive reports, see SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: TestDelta version or commit
+      placeholder: '0.1.0a1 / commit SHA'
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, pytest version, and installation method.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include the command, relevant configuration, and a shareable fixture or repository revision.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Include status and sanitized error output. Say whether both original test revisions passed without mutations.
+    validations:
+      required: true

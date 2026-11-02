@@ -1,0 +1,28 @@
+name: Use case or fixture
+description: Describe a test change you want to review or a small useful fixture.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: The test change you want to understand
+      description: Explain the concrete review decision and your current workaround.
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Shareable example
+      description: A small synthetic example is welcome. Include provenance and license for material from another project.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Existing tools you tried
+      description: What is still missing after using a mutation tool, testtruth, Assertiva, or a static test checker?
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Initial scope
+      options:
+        - label: This example uses pytest and unchanged production source.
+        - label: Both test revisions pass on the original source before mutations.
+        - label: I have permission to share any attached code or logs.

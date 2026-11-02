@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python: '3.11'
+          - os: ubuntu-latest
+            python: '3.12'
+          - os: ubuntu-latest
+            python: '3.13'
+          - os: macos-latest
+            python: '3.13'
+    steps:
+      - name: Check out source
+        # Official actions/checkout v4 ref verified on 2026-11-02.
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        # Official actions/setup-python v5 ref verified on 2026-11-02.
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install project and development tools
+        run: python -m pip install --disable-pip-version-check -e '.[dev]'
+      - name: Lint
+        run: python -m ruff check .
+      - name: Test
+        run: python -m pytest
+      - name: Build wheel
+        run: python -m build --wheel
+      - name: Install wheel in a clean environment
+        run: |
+          python -m venv "$RUNNER_TEMP/testdelta-wheel"
+          "$RUNNER_TEMP/testdelta-wheel/bin/python" -m pip install --disable-pip-version-check dist/*.whl
+      - name: Smoke test the installed wheel
+        working-directory: ${{ runner.temp }}
+        run: |
+          "$RUNNER_TEMP/testdelta-wheel/bin/testdelta" --help
+          "$RUNNER_TEMP/testdelta-wheel/bin/testdelta" demo --output "$RUNNER_TEMP/testdelta-wheel-demo"
