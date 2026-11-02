@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import py_compile
 import subprocess
 from pathlib import Path
 
@@ -40,7 +41,7 @@ def git(repo: Path, *arguments: str) -> str:
     return result.stdout.strip()
 
 
-def repository(root: Path, candidate: str) -> tuple[Path, str, str]:
+def repository(root: Path, candidate: str, *, unchecked_cache: bool = False) -> tuple[Path, str, str]:
     repo = root / "repo"
     repo.mkdir()
     git(repo, "init", "-q", "-b", "main")
@@ -49,6 +50,15 @@ def repository(root: Path, candidate: str) -> tuple[Path, str, str]:
         'source_modules = ["calc.py"]\ntest_paths = ["tests"]\n', encoding="utf-8"
     )
     (repo / "calc.py").write_text(SOURCE, encoding="utf-8")
+    if unchecked_cache:
+        # A relative co_filename is valid for ordinary compilation and otherwise
+        # appears to originate in each temporary workspace despite stale code.
+        py_compile.compile(
+            str(repo / "calc.py"),
+            dfile="calc.py",
+            doraise=True,
+            invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH,
+        )
     tests = repo / "tests" / "test_calc.py"
     tests.write_text(STRONG, encoding="utf-8")
     git(repo, "add", ".")
@@ -104,6 +114,21 @@ def test_legitimate_test_refactor_retains_all_selected_kills(tmp_path):
     assert report["complete"] is True
     assert report["witnesses"] == []
     assert [m["outcome"] for m in report["mutants"]] == ["retained_kill"] * 3
+
+
+def test_tracked_unchecked_bytecode_cannot_hide_mutations(tmp_path):
+    repo, base, _head = repository(tmp_path, WEAK, unchecked_cache=True)
+    assert any(name.endswith(".pyc") for name in git(repo, "ls-files").splitlines())
+    plan, _before, after = make_plan(repo, base)
+    assert plan["supported"] is True
+    assert plan["changed_files"] == ["tests/test_calc.py"]
+    assert any(name.endswith(".pyc") for name in after)
+    code, report = compare_cli(repo, base, tmp_path / "report")
+    assert code == 1, report
+    assert report["verdict"] == "loss_observed", report
+    assert report["complete"] is True
+    assert len(report["witnesses"]) == 3
+    assert [m["outcome"] for m in report["mutants"]] == ["lost_kill"] * 3
 
 
 @pytest.mark.parametrize(

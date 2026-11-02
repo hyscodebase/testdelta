@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import os
 import platform
+import py_compile
 import sys
 import time
 from pathlib import Path
@@ -102,6 +103,32 @@ def test_source_modification_during_test_invalidates_pass(tmp_path):
     result = execute(workspace, hashes)
     assert result["status"] == "invalid_evidence", result
     assert result["source_hashes_after"] != hashes
+
+
+def test_stale_unchecked_hash_bytecode_cannot_hide_changed_source(tmp_path):
+    original = "def discount(value):\n    return value + 1\n"
+    mutated = "def discount(value):\n    return value + 2\n"
+    workspace, _ = project(
+        tmp_path,
+        "from pricing import discount\ndef test_discount():\n    assert discount(1) == 2\n",
+        source=original,
+    )
+    source_path = workspace / "pricing.py"
+    cache_path = py_compile.compile(
+        str(source_path), doraise=True,
+        invalidation_mode=py_compile.PycInvalidationMode.UNCHECKED_HASH,
+    )
+    assert cache_path is not None and Path(cache_path).is_file()
+    source_path.write_text(mutated, encoding="utf-8")
+    hashes = {"pricing.py": hashlib.sha256(mutated.encode()).hexdigest()}
+
+    result = execute(workspace, hashes)
+
+    assert result["status"] == "assertion_failure", result
+    assert result["source_hashes_before"] == result["source_hashes_after"] == hashes
+    assert result["observed_source_origin"]["pricing.py"] == [str(source_path)]
+    assert 2 in result["reached_lines"]["pricing.py"]
+    assert Path(cache_path).is_file(), "The runner must not delete caller-owned caches"
 
 
 def test_parent_credentials_and_pytest_addopts_are_not_inherited(tmp_path, monkeypatch):

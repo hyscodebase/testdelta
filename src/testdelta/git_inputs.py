@@ -29,7 +29,7 @@ def safe_path(value: str) -> str:
     path = PurePosixPath(value)
     if not value or path.is_absolute() or ".." in path.parts or "\\" in value:
         raise InputError(f"Expected a repository-relative path: {value!r}")
-    if path.parts[0] == ".git" or str(path) == ".":
+    if not path.parts or path.parts[0] == ".git" or str(path) == ".":
         raise InputError(f"Unsupported path: {value!r}")
     return str(path)
 
@@ -144,6 +144,8 @@ def materialize(files: dict[str, bytes], destination: Path) -> None:
     for path, content in files.items():
         # Credentials are never needed for the supported deterministic local tests.
         name = PurePosixPath(path).name.lower()
+        if "__pycache__" in PurePosixPath(path).parts or name.endswith((".pyc", ".pyo")):
+            continue
         if name == ".env" or name.startswith(".env.") or name.endswith((".pem", ".key")):
             continue
         target = destination / safe_path(path)

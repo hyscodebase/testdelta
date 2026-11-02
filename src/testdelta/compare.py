@@ -14,7 +14,7 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 
-from testdelta.adapters.cosmic_ray import generate_mutations
+from testdelta.adapters.bounded import generate_bounded
 from testdelta.git_inputs import digest, materialize, test_overlay
 from testdelta.runner.supervisor import run_pytest
 
@@ -122,9 +122,17 @@ def compare(
     with tempfile.TemporaryDirectory(prefix="testdelta-plan-") as temporary:
         workspace = Path(temporary)
         materialize(after, workspace)
-        mutations = mutations_override if mutations_override is not None else generate_mutations(
-            workspace, manifest["source_modules"], max_mutants
-        )
+        try:
+            if remaining() <= reserve + 0.1:
+                raise subprocess.TimeoutExpired("mutation generation", 0)
+            mutations = mutations_override if mutations_override is not None else generate_bounded(
+                workspace, manifest["source_modules"], max_mutants, remaining() - reserve
+            )
+        except subprocess.TimeoutExpired:
+            report["reason"] = "mutation_generation_budget_exhausted"
+            report["controls"] = [run("old"), run("new")]
+            report["duration_seconds"] = round(time.monotonic() - started, 3)
+            return report, bundle
     report["mutants_planned"] = len(mutations)
     bundle["mutations"] = mutations
     if not mutations:

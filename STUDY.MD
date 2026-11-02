@@ -1,6 +1,12 @@
 # TestDelta를 만들며 배우는 테스트 검증
 
-이 문서는 초기 알파 `0.1.0a1`의 실제 파일과 첫 실행 결과를 바탕으로 작성했습니다. 아직 실행하지 않은 검증과 독자가 직접 해볼 명령은 따로 표시합니다.
+이 문서는 초기 알파 `0.1.0a1`의 실제 파일과 실행 결과를 바탕으로 작성했습니다. 아직 실행하지 않은 검증과 독자가 직접 해볼 명령은 따로 표시합니다.
+
+2026-11-02 로컬 전체 검증에서 **61개 테스트가 통과**했습니다. 초기 commit `9a1ec28`의 GitHub CI 네 조합도 모두 통과했으며, 이후 캐시·입력·실행 예산 수정은 별도 CI에서 다시 확인합니다. 테스트 수는 제품의 실제 저장소 정확도를 뜻하지 않습니다.
+
+추가 리뷰에서는 source hash와 import 경로가 맞아도 unchecked-hash `.pyc` 때문에 이전 코드가 실행될 수 있음을 재현했습니다. `PYTHONDONTWRITEBYTECODE`는 캐시 쓰기만 막으므로 충분하지 않았습니다. `runner/supervisor.py`가 실행마다 새 `PYTHONPYCACHEPREFIX`를 지정하고 `git_inputs.py`가 cache 파일 복사를 제외하도록 수정했습니다. 실제 Git snapshot에 캐시가 추적된 경우도 `tests/test_integration.py`에서 확인합니다.
+
+`adapters/bounded.py`와 `adapters/worker.py`는 Cosmic Ray 계산을 별도 프로세스로 실행합니다. 변이 생성이 오래 걸려도 전체 시간 예산을 소모한 뒤 무제한 계산을 계속하지 않게 하기 위한 경계입니다. source 파싱은 실행과 다르지만 CPU 시간도 예산에 포함됩니다.
 
 ## 1. 무엇을 만들었나
 

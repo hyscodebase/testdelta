@@ -139,6 +139,8 @@ def main(argv: list[str] | None = None) -> int:
             if digest(raw) != recorded_digest:
                 raise InputError("Bundle checksum mismatch")
             bundle = json.loads(raw)
+            if not isinstance(bundle, dict):
+                raise InputError("Bundle root must be a JSON object")
             if bundle["environment"] != environment():
                 raise InputError("Replay environment differs from recorded tool/Python/platform versions")
             if bundle.get("target_runtime") != target_runtime(args.python_executable):
@@ -180,6 +182,6 @@ def main(argv: list[str] | None = None) -> int:
         show(report, args.output)
         write_bundle(bundle, args.output)
         return exit_code(report, args.advisory)
-    except (InputError, ValueError, OSError, subprocess.SubprocessError, KeyError) as exc:
+    except (InputError, ValueError, OSError, subprocess.SubprocessError, KeyError, TypeError) as exc:
         print(f"TestDelta could not complete: {exc}", file=sys.stderr)
         return 3

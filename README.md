@@ -1,6 +1,8 @@
 # TestDelta
 
-Review the protection your pytest changes remove.
+**Your tests still pass. Do they still catch the same bugs?**
+
+[![CI](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml/badge.svg)](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml)
 
 **Early alpha — `0.1.0a1`.** TestDelta compares two test revisions against unchanged production code and the same selected mutations. It records a concrete example when the old tests catch a deliberate fault and the new tests miss it.
 
@@ -74,7 +76,7 @@ For each mutation, the comparison has four cells:
 
 The original-code baselines run twice per test revision. A potential lost detection is repeated until there are three old/new pairs, then checked against final original-code controls. Repetition reduces some transient noise; it does not prove that a test is never flaky.
 
-An import, collection, fixture, runtime, or timeout error does not count as a successful kill. Source fingerprints are checked before and after each run, and the pytest plugin records imported source origins and reached lines. In the initial runner, any skip or xfail makes that execution incomplete.
+An import, collection, fixture, runtime, or timeout error does not count as a successful kill. Source fingerprints are checked before and after each run, and the pytest plugin records imported source origins and reached lines. Each execution uses a fresh bytecode-cache namespace so stale `.pyc` files cannot stand in for the mutated source. In the initial runner, any skip or xfail makes that execution incomplete.
 
 Mutation operators come from the pinned Cosmic Ray library. TestDelta uses a bounded subset; it does not implement a new general mutation engine, enumerate every possible bug, or filter all equivalent mutations.
 
@@ -90,7 +92,7 @@ Mutation operators come from the pinned Cosmic Ray library. TestDelta uses a bou
 
 `--advisory` changes a complete `loss_observed` exit from `1` to `0`; the report still says loss was observed. It does **not** turn an incomplete or unsupported comparison into success. `demo` has its own smoke-test exit convention described above.
 
-`--max-mutants` bounds the selected mutation set; completing that set is not exhaustive analysis. `--budget-seconds` bounds comparison work and `--timeout-seconds` bounds individual test runs. A budget exhausted before the selected work and controls complete does not produce a clean result.
+`--max-mutants` bounds the selected mutation set; completing that set is not exhaustive analysis. `--budget-seconds` bounds comparison work, including the mutation-provider subprocess, and `--timeout-seconds` bounds individual test runs. A budget exhausted before the selected work and controls complete does not produce a clean result.
 
 ## Reports and replay
 

@@ -74,6 +74,8 @@ uv run testdelta compare --repo ../your-project --base main --head HEAD \
 
 import·collection·fixture·runtime 오류나 timeout을 결함 탐지 성공으로 세지 않습니다. 실행 전후 source hash와 실제 import 경로를 확인하고 도달한 줄을 기록합니다. 초기 실행기에서는 skip 또는 xfail이 하나라도 있으면 완전한 실행으로 보지 않습니다.
 
+실행마다 별도 bytecode cache 경로를 사용하고 snapshot의 `.pyc`를 복사하지 않습니다. 오래된 캐시가 변이 소스 대신 실행되어 잘못된 통과 결과를 만드는 경로를 회귀 테스트로 확인했습니다. 변이 생성도 별도 프로세스에서 전체 예산 안에 제한합니다.
+
 변이 연산자는 Cosmic Ray 라이브러리의 일부를 사용합니다. 새 범용 mutation engine을 만드는 프로젝트가 아니며, 모든 버그나 의미가 같은 변이까지 완전히 다루지 않습니다.
 
 ## 결과와 종료 코드

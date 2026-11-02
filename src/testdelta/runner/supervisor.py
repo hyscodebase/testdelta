@@ -153,6 +153,10 @@ def run_pytest(
             "PYTHONPATH": os.pathsep.join(python_paths),
             "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1", "PYTHONNOUSERSITE": "1",
             "PYTHONDONTWRITEBYTECODE": "1", "PYTHONHASHSEED": "0",
+            # DONTWRITEBYTECODE suppresses writes, not reads. An unchecked-hash
+            # cache may otherwise execute old code despite valid source hashes
+            # and co_filename origins. Redirect reads to this fresh run's tree.
+            "PYTHONPYCACHEPREFIX": str(Path(directory) / "pycache"),
             "TESTDELTA_RUN_CONFIG": str(config_path),
         })
         timed_out = False
