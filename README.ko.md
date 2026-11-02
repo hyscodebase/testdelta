@@ -8,6 +8,8 @@ TestDelta는 **pytest 테스트만 바뀐 PR**을 검토하는 GitHub Action과 
 
 테스트 리팩터링, assertion 변경, 코딩 에이전트가 수정한 테스트를 검토할 때 사용할 수 있습니다. **LLM, API key, 별도 서비스 계정이 필요하지 않습니다.**
 
+[Live demo](https://hyscodebase.github.io/testdelta/) · [Press kit](https://hyscodebase.github.io/testdelta/downloads/testdelta-press-kit.zip)
+
 [English](README.md) · [Action 사용법](docs/action.md) · [검증 현황](docs/quality-status.md) · [호환성](docs/compatibility.md) · [기여 안내](CONTRIBUTING.md)
 
 **초기 알파:** 명시한 Python source/test 파일, Ubuntu/macOS, Python 3.11–3.13을 대상으로 합니다. 실행한 유한한 비교의 근거를 제공하며, PR 전체의 정확성이나 안전성을 판정하지 않습니다.
@@ -45,7 +47,7 @@ jobs:
       - run: python -m pip install "pytest==8.4.2"
       - name: Compare test revisions
         id: testdelta
-        uses: hyscodebase/testdelta@dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+        uses: hyscodebase/testdelta@2add31061b995a50a62fbf15b1a28942214f9fce
         with:
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
@@ -69,7 +71,7 @@ Git, Python 3.11–3.13, [uv](https://docs.astral.sh/uv/)가 필요합니다.
 ```bash
 git clone https://github.com/hyscodebase/testdelta.git
 cd testdelta
-git checkout dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+git checkout 2add31061b995a50a62fbf15b1a28942214f9fce
 uv sync
 uv run testdelta demo --scenario lost
 ```

@@ -8,6 +8,8 @@ TestDelta is a GitHub Action and CLI for reviewing **test-only pytest changes**.
 
 Use it when refactoring tests, reviewing changed assertions, or checking tests edited by a coding agent. **No LLM, API key, or hosted account required.**
 
+[Live demo](https://hyscodebase.github.io/testdelta/) · [Press kit](https://hyscodebase.github.io/testdelta/downloads/testdelta-press-kit.zip)
+
 [한국어](README.ko.md) · [Action reference](docs/action.md) · [Quality status](docs/quality-status.md) · [Compatibility](docs/compatibility.md) · [Contributing](CONTRIBUTING.md)
 
 **Alpha:** explicit Python source and test files; Ubuntu/macOS; Python 3.11–3.13. It reports evidence about a finite comparison, not whether a PR is correct or safe.
@@ -45,7 +47,7 @@ jobs:
       - run: python -m pip install "pytest==8.4.2"
       - name: Compare test revisions
         id: testdelta
-        uses: hyscodebase/testdelta@dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+        uses: hyscodebase/testdelta@2add31061b995a50a62fbf15b1a28942214f9fce
         with:
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
@@ -69,7 +71,7 @@ With Git, Python 3.11–3.13, and [uv](https://docs.astral.sh/uv/):
 ```bash
 git clone https://github.com/hyscodebase/testdelta.git
 cd testdelta
-git checkout dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+git checkout 2add31061b995a50a62fbf15b1a28942214f9fce
 uv sync
 uv run testdelta demo --scenario lost
 ```

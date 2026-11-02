@@ -48,7 +48,7 @@ jobs:
           install_env["PIP_CONFIG_FILE"] = os.devnull
           subprocess.run([
               str(tool / "bin/python"), "-I", "-m", "pip", "install",
-              "git+https://github.com/hyscodebase/testdelta.git@dae67c6d6b44bc4d3ceda51b4188c6ad8801efee",
+              "git+https://github.com/hyscodebase/testdelta.git@2add31061b995a50a62fbf15b1a28942214f9fce",
           ], env=install_env, check=True)
           policy = Path(os.environ["RUNNER_TEMP"]) / "testdelta-policy.toml"
           policy.write_text(

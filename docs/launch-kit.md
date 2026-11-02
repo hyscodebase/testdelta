@@ -1,15 +1,16 @@
 # TestDelta launch kit
 
-These are **unpublished drafts**, ready to copy after the release operator checks the links and the selected commit's CI. Nothing in this file sends messages, creates posts, or requests stars.
+These are **unpublished post drafts**. The landing page is public, and the ready-to-copy text links to the repository. Release and Marketplace status are recorded below. Nothing in this file sends messages, creates posts, or requests stars.
 
 ## Release facts and destinations
 
 - Project: **TestDelta** — a GitHub Action and CLI for test-only pytest changes.
 - Repository and working destination for the drafts: https://github.com/hyscodebase/testdelta
 - Action metadata name for the Marketplace submission: **TestDelta Test Quality**.
-- Current documented Action pin: `dae67c6d6b44bc4d3ceda51b4188c6ad8801efee`. Update it only after a newer commit is verified.
+- Verified alpha.4 implementation pin: `2add31061b995a50a62fbf15b1a28942214f9fce`. Its source matrix, frozen-corpus and native Action workflows passed.
 - Planned next release tag: `v0.1.0-alpha.4`; do not describe this draft as a published release.
-- Planned landing page: `https://hyscodebase.github.io/testdelta/`. Confirm deployment before adding it to any post.
+- Public landing page: https://hyscodebase.github.io/testdelta/ — homepage, report, image and evidence JSON verified HTTP 200 on 2026-11-02.
+- Public press kit: https://hyscodebase.github.io/testdelta/downloads/testdelta-press-kit.zip (published with the launch-site update).
 - Marketplace listing: pending owner acceptance of GitHub's Developer Agreement and successful publication. Proposed slug `testdelta-test-quality` is **unverified**. Do not announce a live listing or invent its URL.
 - The Action can already be used from the repository at the documented commit. Marketplace discovery and Action execution are separate.
 
@@ -149,16 +150,16 @@ README에 고정 commit 기반 workflow와 합성 데모가 있습니다. 초기
 
 작은 호환성 재현 사례나 보고서에서 이해하기 어려운 부분에 대한 의견을 환영합니다.
 
-## Concrete 60-second demo recording
+## Optional 60-second demo recording
 
-This is a recording outline, not a promise that installation or comparison always finishes within 60 seconds. Install beforehand, record an actual run, and label any cuts or time compression. Use only the original synthetic fixtures; don't present them as an upstream bug.
+The public landing page and downloadable kit are already usable for promotion without recording a video. This optional recording outline is not a promise that installation or comparison always finishes within 60 seconds. Install beforehand, record an actual run, and label any cuts or time compression. Use only the original synthetic fixtures; don't present them as an upstream bug.
 
 Preparation with the documented pin:
 
 ```bash
 git clone https://github.com/hyscodebase/testdelta.git
 cd testdelta
-git checkout dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+git checkout 2add31061b995a50a62fbf15b1a28942214f9fce
 uv sync
 uv run testdelta demo --scenario lost --output .testdelta/launch-lost
 uv run testdelta demo --scenario refactor --output .testdelta/launch-refactor

@@ -218,3 +218,5 @@ Action 배포 전 검증에서 caller 폴더의 subprocess.py가 bootstrap Pytho
 site/는 정적 HTML·CSS·JavaScript 소개 페이지입니다. dev-001의 동결된 입력과 실제 기록을 보여 주며 브라우저에서 pytest를 실행하는 것처럼 표현하지 않습니다. GitHub Pages workflow는 site/만 게시하고, 저장소의 raw 결과나 로컬 DB 보관본을 올리지 않습니다. scripts/check_site.py가 페이지·내부 링크·asset 경로를 검사합니다. 소셜 카드는 원본 SVG와 1200×630 PNG로 제공하며 외부 폰트·tracker를 넣지 않았습니다.
 
 홍보 문구는 docs/launch-kit.md의 한영 초안에 있고, 관측한 유한 사례와 실제 PR 미확정 결과를 구분합니다. 외부 커뮤니티·SNS에 메시지를 보내지 않았습니다. 최종 통과 수와 공개 URL은 해당 commit의 실제 GitHub Actions 및 배포 상태로 확인합니다.
+
+alpha.4 구현 commit 2add31061b995a50a62fbf15b1a28942214f9fce에서 로컬 전체 195개 테스트가 89.49초에 통과했습니다. 원격 네 Python/OS 조합·고정 50개 사례·Ubuntu/macOS native Action·깨끗한 wheel compare/replay가 통과했습니다. 소개 페이지 배포도 성공해 HTML·PNG·근거 JSON이 검토한 파일과 같은 bytes로 제공됨을 확인했습니다. 27.697초 p95는 과거 a3의 고정 측정값으로 유지합니다.

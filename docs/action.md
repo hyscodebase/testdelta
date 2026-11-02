@@ -6,7 +6,7 @@ for project tests. Supported runners are Ubuntu and macOS with Python 3.11–3.1
 `PATH`; Windows is not supported by this Action.
 
 The workflow below pins reviewed commit
-[`dae67c6d6b44bc4d3ceda51b4188c6ad8801efee`](https://github.com/hyscodebase/testdelta/commit/dae67c6d6b44bc4d3ceda51b4188c6ad8801efee).
+[`2add31061b995a50a62fbf15b1a28942214f9fce`](https://github.com/hyscodebase/testdelta/commit/2add31061b995a50a62fbf15b1a28942214f9fce).
 It assumes tracked files `src/pricing.py` and `tests/test_pricing.py` whose tests
 need only pytest. Set those two policy paths to your project and prepare any
 additional locked test dependencies in the project environment. The policy is
@@ -50,7 +50,7 @@ jobs:
           PY
       - name: Compare test revisions
         id: testdelta
-        uses: hyscodebase/testdelta@dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+        uses: hyscodebase/testdelta@2add31061b995a50a62fbf15b1a28942214f9fce
         with:
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}

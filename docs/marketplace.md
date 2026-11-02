@@ -25,11 +25,11 @@ The candidate version is deliberately alpha:
 | --- | --- |
 | `v0.1.0-alpha.4` | Proposed GitHub Action release tag |
 | `0.1.0a4` | Python CLI/tool version installed from that candidate checkout |
-| `dae67c6d6b44bc4d3ceda51b4188c6ad8801efee` | Previously reviewed Action commit used by the current examples; installs `0.1.0a3` |
+| `2add31061b995a50a62fbf15b1a28942214f9fce` | Reviewed alpha.4 Action implementation commit; installs `0.1.0a4` |
 
 The Python version and GitHub tag use different prerelease syntax. The candidate
-does not assert a stable release or PyPI publication. Examples will move to the
-new reviewed full commit after that commit's CI is verified. See the
+does not assert a stable release or PyPI publication. The examples use the reviewed full commit above. Its source matrix, frozen
+corpus, installed-wheel and native Action isolation checks passed on GitHub. See the
 [complete native Action workflow](action.md) and [CLI workflow](ci.md).
 
 The repository owner publishes through GitHub's release interface:

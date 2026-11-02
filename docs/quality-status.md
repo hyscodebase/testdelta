@@ -1,5 +1,7 @@
 # Alpha quality status
 
+The alpha.4 launch implementation (`2add31061b995a50a62fbf15b1a28942214f9fce`) passed 195 source tests on the supported matrix, the frozen corpus and native Action/wheel integration. The [public demo](https://hyscodebase.github.io/testdelta/) is live. Marketplace publication remains pending the owner agreement; see [current status](marketplace.md). The a3 runtime and compatibility observations below remain historical, scoped evidence.
+
 Version `0.1.0a3` delivers an executable solo MVP. The original eight-week research and growth plan is not represented as completed. Routine implementation, checks, documentation and release work are handled in the repository; maintainer interviews or team recruitment are not user prerequisites.
 
 | Area | Evidence and boundary |
