@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173c30">
+  <meta name="description" content="Your tests still pass. Do they still catch the same bugs? TestDelta compares pytest test revisions using identical selected faults and reviewable execution evidence.">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TestDelta">
+  <meta property="og:title" content="Your tests still pass. Do they still catch the same bugs?">
+  <meta property="og:description" content="Review what a pytest test change stopped detecting. Open-source, local execution, concrete evidence.">
+  <meta property="og:url" content="https://hyscodebase.github.io/testdelta/">
+  <meta property="og:image" content="https://hyscodebase.github.io/testdelta/assets/social-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="TestDelta: Your tests still pass. Do they still catch the same bugs?">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://hyscodebase.github.io/testdelta/assets/social-card.png">
+  <meta property="og:image:type" content="image/png">
+  <title>TestDelta — Your tests still pass. Do they still catch the same bugs?</title>
+  <link rel="canonical" href="https://hyscodebase.github.io/testdelta/">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap">
+    <a class="brand" href="./" aria-label="TestDelta home">
+      <img src="assets/icon.svg" alt="" width="34" height="34">
+      <span>TestDelta</span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#how-it-works">How it works</a>
+      <a href="#evidence">Evidence</a>
+      <a class="nav-repo" href="https://github.com/hyscodebase/testdelta">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> Open source <span class="eyebrow-divider">/</span> Early alpha</p>
+        <h1 id="hero-title">Your tests<br>still pass.<span class="hero-question">Do they still catch<br>the same bugs?</span></h1>
+        <p class="hero-description">A test refactor can keep the suite green and lose detection. TestDelta compares two pytest test revisions against the <strong>same selected faults</strong>, so you can review what changed.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#install">Add to GitHub Actions <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="https://github.com/hyscodebase/testdelta">Explore the repository <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="hero-footnote">Python + pytest <span aria-hidden="true">·</span> No model, API key, or LLM judge</p>
+      </div>
+
+      <div class="example" aria-label="Recorded synthetic comparison illustration">
+        <div class="example-titlebar"><span class="file-mark" aria-hidden="true">⌘</span><span>One boundary. One missed fault.</span><span class="case-label">dev-001</span></div>
+        <div class="source-heading"><span>subject.py</span><div class="source-toggle" role="group" aria-label="Illustrated source version" data-source-toggle hidden><button type="button" data-source="original" aria-pressed="false">Original</button><button type="button" data-source="mutant" aria-pressed="true">Declared fault</button></div></div>
+        <pre class="source-code" aria-label="Illustrated production source"><code><span class="line-number" aria-hidden="true">1</span><span class="syntax-keyword">def</span> <span class="syntax-function">is_adult</span>(age):
+<span class="line-number" aria-hidden="true">2</span>    <span class="syntax-keyword">return</span> age <span class="changed-token" id="source-operator">&gt;</span> <span class="syntax-number">18</span></code></pre>
+        <div class="fault-explanation"><span class="small-arrow" aria-hidden="true">↳</span><span id="fault-explanation">The declared fault excludes the eighteenth birthday.</span></div>
+        <div class="test-comparison">
+          <div class="test-revision">
+            <p class="code-label">Old tests</p>
+            <pre><code><span class="syntax-keyword">assert</span> is_adult(<span class="syntax-number">18</span>) <span class="syntax-keyword">is True</span></code></pre>
+            <p class="test-status caught" id="old-status"><span aria-hidden="true">×</span> Caught the fault</p>
+          </div>
+          <div class="test-revision">
+            <p class="code-label">New tests</p>
+            <pre><code><span class="syntax-keyword">assert</span> is_adult(<span class="syntax-number">21</span>) <span class="syntax-keyword">is True</span>
+<span class="syntax-keyword">assert</span> is_adult(<span class="syntax-number">17</span>) <span class="syntax-keyword">is False</span></code></pre>
+            <p class="test-status missed" id="new-status"><span aria-hidden="true">✓</span> Passed. Missed the fault.</p>
+          </div>
+        </div>
+        <div class="recorded-result"><span class="result-marker" aria-hidden="true"></span><div><strong id="example-verdict">loss_observed</strong><span id="example-confirmation">3 old/new pairs + passing final controls</span></div><a href="report.html" aria-label="Read recorded evidence for dev-001">↗</a></div>
+        <p class="illustration-note">Illustration of an executed synthetic case.<br>This page does not run tests. <a href="report.html">Read the recorded evidence <span aria-hidden="true">→</span></a></p>
+        <p class="visually-hidden" id="example-announcement" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <div class="principles wrap" aria-label="Comparison principles">
+      <p><span aria-hidden="true">01</span> Unchanged production code</p>
+      <p><span aria-hidden="true">02</span> Identical fault on both revisions</p>
+      <p><span aria-hidden="true">03</span> Evidence you can inspect</p>
+    </div>
+
+    <section class="section wrap" id="how-it-works" aria-labelledby="how-title">
+      <div class="section-heading"><div><p class="eyebrow">Behind the green check</p><h2 id="how-title">Review a concrete fault,<br>not a quality score.</h2></div><p>Removing a check can be intentional. TestDelta supplies a specific example for your review, with the execution history behind it.</p></div>
+      <div class="steps">
+        <article class="step"><span class="step-number">01 /</span><h3>Start with a test-only change.</h3><p>Compare committed pytest revisions with source, helpers, configuration, and dependencies unchanged.</p></article>
+        <article class="step"><span class="step-number">02 /</span><h3>Apply the same selected fault.</h3><p>Generate a bounded set of mutations with Cosmic Ray, then materialize identical mutation bytes for both suites.</p></article>
+        <article class="step"><span class="step-number">03 /</span><h3>Check the evidence.</h3><p>A lost detection needs three consistent old/new pairs and valid final controls. Errors and unfinished work stay inconclusive.</p></article>
+      </div>
+    </section>
+
+    <section class="section evidence-section wrap" id="evidence" aria-labelledby="evidence-title">
+      <div class="section-heading"><div><p class="eyebrow">Measured, with boundaries</p><h2 id="evidence-title">Small scope.<br>Evidence in the open.</h2></div><p>Inspect the fixtures, outcomes, and limitations. A finite conformance result and a real-project compatibility check answer different questions.</p></div>
+      <div class="evidence-grid">
+        <article class="evidence-card corpus-card"><div class="card-topline"><span class="pill">Finite conformance corpus</span><span class="card-glyph" aria-hidden="true">↗</span></div><p class="evidence-number">50<span>cases</span></p><h3>50 expected outcomes matched.</h3><p>30 development cases. 20 frozen validation cases. Declared hand-authored controls exercise the comparison rules separately from automatic mutation generation.</p><div class="outcome-bar" aria-hidden="true"><span class="bar-loss"></span><span class="bar-no-loss"></span><span class="bar-invalid"></span></div><ul class="outcome-legend"><li><span class="legend-dot loss-dot"></span><strong>17</strong> loss</li><li><span class="legend-dot no-loss-dot"></span><strong>17</strong> no loss</li><li><span class="legend-dot invalid-dot"></span><strong>16</strong> invalid baseline</li></ul><p class="card-boundary">Finite expected-case agreement, not a real-project accuracy benchmark.</p><a class="text-link" href="https://github.com/hyscodebase/testdelta/blob/main/corpus/README.md">Inspect the frozen corpus <span aria-hidden="true">↗</span></a></article>
+        <article class="evidence-card compatibility-card"><div class="card-topline"><span class="pill">Real-repository compatibility</span><span class="card-glyph" aria-hidden="true">↗</span></div><p class="evidence-number">2<span>test changes</span></p><h3>Both remain inconclusive.</h3><p>Two pinned Boltons PRs exercised real test-only changes. Runtime and collection errors prevented clean comparisons. No qualified loss witness was established.</p><div class="compatibility-rows"><div><span>Boltons #408</span><span class="inconclusive-label">inconclusive</span></div><div><span>Boltons #564</span><span class="inconclusive-label">inconclusive</span></div></div><p class="card-boundary">Attempted mutation pairs are not automatically valid evidence.</p><a class="text-link" href="https://github.com/hyscodebase/testdelta/blob/main/docs/compatibility.md">Read the exact results <span aria-hidden="true">↗</span></a></article>
+      </div>
+      <p class="evidence-aside">Mutation generation uses <strong>Cosmic Ray 8.7.0</strong>. These hand-authored corpus controls are a separate conformance exercise. <a href="https://github.com/hyscodebase/testdelta/blob/main/docs/engine-evidence.md">Read the engine evidence <span aria-hidden="true">↗</span></a></p>
+    </section>
+
+    <section class="install-section" id="install" aria-labelledby="install-title">
+      <div class="wrap install-layout"><div class="install-intro"><p class="eyebrow">Try a small, trusted project</p><h2 id="install-title">Bring it to your<br>next test-only PR.</h2><p>Prepare your project’s test environment, define the selected paths, and use a pinned Action.</p><div class="manifest-example"><p class="code-label">.testdelta.toml</p><pre tabindex="0" aria-label="Example TestDelta manifest"><code>source_modules = ["src/pricing.py"]
+test_paths = ["tests/test_pricing.py"]</code></pre></div><p class="install-note">Replace the example paths and dependency command. Commit the manifest <strong>before</strong> the compared test change, or use the documented external config.</p><a class="text-link" href="https://github.com/hyscodebase/testdelta/blob/main/docs/action.md">GitHub Action guide <span aria-hidden="true">↗</span></a></div>
+        <div class="installation-code"><div class="install-tabs" role="tablist" aria-label="Installation example" hidden><button type="button" id="workflow-tab" role="tab" aria-selected="true" aria-controls="workflow-panel" tabindex="0">GitHub Action</button><button type="button" id="local-tab" role="tab" aria-selected="false" aria-controls="local-panel" tabindex="-1">Local demo</button></div><div class="install-panel" id="workflow-panel" role="tabpanel" aria-labelledby="workflow-tab"><div class="snippet-heading"><span>.github/workflows/testdelta.yml</span><button class="copy-button" type="button" data-copy="workflow-code" hidden>Copy workflow</button></div><pre class="workflow-code" tabindex="0" aria-label="GitHub Actions workflow"><code id="workflow-code">name: TestDelta evidence
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+      # Use your project's locked test dependency setup.
+      - run: python -m pip install -r requirements-test.txt
+      - name: Compare test revisions
+        uses: hyscodebase/testdelta@dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+        with:
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
+          python: python
+          max-mutants: '10'
+          budget-seconds: '120'</code></pre><p class="snippet-footnote"><span class="pin-symbol" aria-hidden="true">⌁</span> Pinned to a full reviewed commit SHA.</p></div><div class="install-panel" id="local-panel" role="tabpanel" aria-labelledby="local-tab"><div class="snippet-heading"><span>Terminal</span><button class="copy-button" type="button" data-copy="local-code" hidden>Copy commands</button></div><pre class="local-code" tabindex="0" aria-label="Run the executed synthetic demo locally"><code id="local-code">git clone https://github.com/hyscodebase/testdelta.git
+cd testdelta
+uv sync --extra dev
+uv run testdelta demo</code></pre><div class="local-explanation"><p>Requires Python 3.11–3.13, Git, and uv. Install from the repository; a PyPI release is not assumed.</p><p>The demo executes a synthetic Git comparison using actual Cosmic Ray mutations and pytest. Open <code>.testdelta/demo/report.html</code> for the report.</p></div></div><p class="visually-hidden" id="copy-status" aria-live="polite"></p></div>
+      </div>
+    </section>
+
+    <section class="scope-section wrap" aria-labelledby="scope-title"><div><p class="eyebrow">A deliberate first scope</p><h2 id="scope-title">Know what you’re running.</h2></div><dl class="scope-list"><div><dt>Python + pytest</dt><dd>Python 3.11–3.13. The native Action supports Ubuntu and macOS; Windows is outside its current scope.</dd></div><div><dt>Local execution</dt><dd>No LLM or API key in the comparison core. Prepare your own project dependencies; reports stay local unless you share them.</dd></div><div><dt>Trusted code only</dt><dd>Temporary workspaces are <strong>not a sandbox</strong>. Tests retain the runner user’s filesystem and network access.</dd></div></dl></section>
+
+    <section class="closing wrap"><img src="assets/icon.svg" alt="" width="44" height="44"><h2>Make a green check<br>worth a closer look.</h2><p>Start with the demo. Read the evidence. Keep the decision yours.</p><div class="closing-actions"><a class="button button-primary" href="https://github.com/hyscodebase/testdelta">View on GitHub <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/hyscodebase/testdelta/blob/main/docs/action.md">Use the GitHub Action <span aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer wrap"><a class="brand" href="./"><img src="assets/icon.svg" alt="" width="24" height="24"><span>TestDelta</span></a><p>Early alpha. MIT licensed. Built for reviewable evidence.</p><div><a href="https://github.com/hyscodebase/testdelta/blob/main/SECURITY.md">Security</a><a href="https://github.com/hyscodebase/testdelta/blob/main/LICENSE">License</a><a href="https://github.com/hyscodebase/testdelta/issues">Feedback</a></div></footer>
+</body>
+</html>

@@ -1,0 +1,260 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "recorded_finite_conformance_case",
+  "display_qualification": "Illustration of an executed synthetic case; this site does not run tests.",
+  "snapshot_kind": "controlled_fixture_bytes_not_git",
+  "mutation_origin": "fixture_negative_control",
+  "recorded_at_utc": "2026-11-02T13:12:55.177600+00:00",
+  "source_documents": [
+    "https://github.com/hyscodebase/testdelta/blob/dae67c6d6b44bc4d3ceda51b4188c6ad8801efee/corpus/development.json",
+    "https://github.com/hyscodebase/testdelta/blob/dae67c6d6b44bc4d3ceda51b4188c6ad8801efee/evidence/corpus/development.json"
+  ],
+  "corpus_sha256": "58eea5d6f9024d57c17371b42ca633f88b3c89d37068b11f2ef0536384145d6e",
+  "fixture": {
+    "id": "dev-001",
+    "split": "development",
+    "category": "Inclusive age boundary",
+    "source": "def is_adult(age):\n    return age >= 18\n",
+    "old_tests": "from subject import is_adult\n\n\ndef test_adult_at_boundary():\n    assert is_adult(18) is True\n",
+    "new_tests": "from subject import is_adult\n\n\ndef test_adult_and_child_examples():\n    assert is_adult(21) is True\n    assert is_adult(17) is False\n",
+    "mutant": "def is_adult(age):\n    return age > 18\n",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "rationale": "The old boundary assertion rejects the hand-authored control, while the new examples omit age eighteen."
+  },
+  "result": {
+    "id": "dev-001",
+    "split": "development",
+    "category": "Inclusive age boundary",
+    "expected": {
+      "verdict": "loss_observed",
+      "complete": true
+    },
+    "actual": {
+      "verdict": "loss_observed",
+      "complete": true,
+      "reason": null,
+      "baseline_statuses": [
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "control_statuses": [
+        "pass",
+        "pass"
+      ],
+      "mutation_outcomes": [
+        "lost_kill"
+      ]
+    },
+    "checks": {
+      "verdict": true,
+      "complete": true,
+      "controlled_fixture_provenance": true,
+      "four_passing_baselines": true,
+      "two_passing_final_controls": true,
+      "one_declared_control_completed": true,
+      "three_pairs_and_confirmed_witness": true
+    },
+    "matches_expected": true,
+    "duration_seconds": 4.39,
+    "execution_summary": {
+      "schema_version": "0.1",
+      "export_kind": "sanitized_summary",
+      "verdict": "loss_observed",
+      "complete": true,
+      "mutants_planned": 1,
+      "mutants_completed": 1,
+      "plan": {
+        "manifest_hash": "e0ffbb5106b30c825eb3b2ce40e046c014a406f7db628206e2a705a09bc1ea18",
+        "manifest_origin": "unknown",
+        "source_hashes": {
+          "subject.py": "9379074b3dec0fe817c6a0801f3283470beec0311bea0b475f471aecec5ef367"
+        },
+        "test_hashes": {
+          "tests/test_subject.py": {
+            "old": "6b30f8f661a4c6de39ee9e982e604b22183e0b86a5cdf766ae96f9c98ba81277",
+            "new": "b44efad94920c68816faa337e6a58dc2a8af8e2d2ca573757ec1d08a9dbb244e"
+          }
+        }
+      },
+      "baseline": [
+        {
+          "status": "pass",
+          "side": "old",
+          "ran_count": 1,
+          "collected_count": 1,
+          "skipped_count": 0,
+          "missing_test_ids_count": 0,
+          "assertion_failure_nodes_count": 0
+        },
+        {
+          "status": "pass",
+          "side": "new",
+          "ran_count": 1,
+          "collected_count": 1,
+          "skipped_count": 0,
+          "missing_test_ids_count": 0,
+          "assertion_failure_nodes_count": 0
+        },
+        {
+          "status": "pass",
+          "side": "old",
+          "ran_count": 1,
+          "collected_count": 1,
+          "skipped_count": 0,
+          "missing_test_ids_count": 0,
+          "assertion_failure_nodes_count": 0
+        },
+        {
+          "status": "pass",
+          "side": "new",
+          "ran_count": 1,
+          "collected_count": 1,
+          "skipped_count": 0,
+          "missing_test_ids_count": 0,
+          "assertion_failure_nodes_count": 0
+        }
+      ],
+      "controls": [
+        {
+          "status": "pass",
+          "side": "old",
+          "ran_count": 1,
+          "collected_count": 1,
+          "skipped_count": 0,
+          "missing_test_ids_count": 0,
+          "assertion_failure_nodes_count": 0
+        },
+        {
+          "status": "pass",
+          "side": "new",
+          "ran_count": 1,
+          "collected_count": 1,
+          "skipped_count": 0,
+          "missing_test_ids_count": 0,
+          "assertion_failure_nodes_count": 0
+        }
+      ],
+      "mutants": [
+        {
+          "id": "unrecorded",
+          "path": "subject.py",
+          "line": 2,
+          "mutated_sha256": "b3700e74e610ffa098ac363cd3644a0cc954321c9e635bacd2366d3289a78147",
+          "diff_sha256": "5f0c94f55ada8f1445fb59672b4f30eedaa2b3b657cd21cdc9b300a6955eaed9",
+          "diff_truncated": false,
+          "outcome": "lost_kill",
+          "old": [
+            {
+              "status": "assertion_failure",
+              "side": "old",
+              "ran_count": 1,
+              "collected_count": 1,
+              "skipped_count": 0,
+              "missing_test_ids_count": 0,
+              "assertion_failure_nodes_count": 1
+            },
+            {
+              "status": "assertion_failure",
+              "side": "old",
+              "ran_count": 1,
+              "collected_count": 1,
+              "skipped_count": 0,
+              "missing_test_ids_count": 0,
+              "assertion_failure_nodes_count": 1
+            },
+            {
+              "status": "assertion_failure",
+              "side": "old",
+              "ran_count": 1,
+              "collected_count": 1,
+              "skipped_count": 0,
+              "missing_test_ids_count": 0,
+              "assertion_failure_nodes_count": 1
+            }
+          ],
+          "new": [
+            {
+              "status": "pass",
+              "side": "new",
+              "ran_count": 1,
+              "collected_count": 1,
+              "skipped_count": 0,
+              "missing_test_ids_count": 0,
+              "assertion_failure_nodes_count": 0
+            },
+            {
+              "status": "pass",
+              "side": "new",
+              "ran_count": 1,
+              "collected_count": 1,
+              "skipped_count": 0,
+              "missing_test_ids_count": 0,
+              "assertion_failure_nodes_count": 0
+            },
+            {
+              "status": "pass",
+              "side": "new",
+              "ran_count": 1,
+              "collected_count": 1,
+              "skipped_count": 0,
+              "missing_test_ids_count": 0,
+              "assertion_failure_nodes_count": 0
+            }
+          ]
+        }
+      ],
+      "witnesses": [
+        {
+          "id": "unrecorded",
+          "path": "subject.py",
+          "line": 2,
+          "original_sha256": "9379074b3dec0fe817c6a0801f3283470beec0311bea0b475f471aecec5ef367",
+          "mutated_sha256": "b3700e74e610ffa098ac363cd3644a0cc954321c9e635bacd2366d3289a78147",
+          "confirmation": "three_pairs_and_final_controls",
+          "old_outcomes": [
+            "killed",
+            "killed",
+            "killed"
+          ],
+          "new_outcomes": [
+            "survived",
+            "survived",
+            "survived"
+          ]
+        }
+      ],
+      "limitations": [
+        "Finite selected mutation scope only; no proof of test equivalence or correctness.",
+        "Incomplete work and provisional observations are not clean conclusions.",
+        "Raw diagnostics, source/config text, diffs, and absolute paths are omitted.",
+        "Relative filenames and hashes remain; this summary is not a replay record."
+      ],
+      "environment_hash": "795a3323c44c0d59b73ccda8bab88e6b440340d728559a966ca24d3305670f04",
+      "limits": {
+        "budget_seconds": 60,
+        "max_mutants": 1,
+        "timeout_seconds": 10
+      },
+      "test_diffs": [
+        {
+          "path": "tests/test_subject.py",
+          "sha256": "8104e57c0193199f86c4d88cea0515a3ca8083b13011a6bdb71505327a9e65d2",
+          "truncated": false
+        }
+      ]
+    },
+    "versions": {
+      "supervisor_python": "3.13.5",
+      "target_python": "3.13.5",
+      "target_pytest": "9.2.0",
+      "testdelta": "0.1.0a3",
+      "pytest": "9.2.0",
+      "cosmic-ray": "8.7.0"
+    }
+  }
+}

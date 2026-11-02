@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173c30">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Read the actual recorded dev-001 synthetic test comparison: passing baselines, three paired fault checks, and passing final controls.">
+  <title>Recorded dev-001 evidence — TestDelta</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header wrap"><a class="brand" href="./"><img src="assets/icon.svg" alt="" width="34" height="34"><span>TestDelta</span></a><nav aria-label="Evidence navigation"><a href="./">Overview</a><a class="nav-repo" href="recorded-case.json">Recorded JSON <span aria-hidden="true">↗</span></a></nav></header>
+  <main class="report-main wrap" id="main">
+    <p class="report-topline">RECORDED SYNTHETIC EVIDENCE / DEV-001 / TESTDELTA 0.1.0a3</p>
+    <h1>A boundary check<br>that disappeared.</h1>
+    <p class="report-description">A readable excerpt of the published, executed <code>dev-001</code> result. Both test revisions pass on the original code. A declared fault changes <code>&gt;= 18</code> to <code>&gt; 18</code>: the old test catches it, while the new tests pass.</p>
+    <p class="report-description">Illustration of an executed synthetic case. This static page runs no tests. The fault is hand-authored; this conformance case is separate from automatic Cosmic Ray generation.</p>
+    <div class="report-verdict"><code>loss_observed</code><span>Complete comparison · Three pairs and final controls</span></div>
+    <div class="report-metrics"><div><strong>4</strong><span>Passing original-code baselines<br>Two per test revision</span></div><div><strong>3</strong><span>Consistent old/new fault pairs<br>Old caught it; new passed</span></div><div><strong>2</strong><span>Passing final original-code controls<br>One per test revision</span></div></div>
+    <table class="report-table"><caption class="visually-hidden">Recorded execution outcomes for dev-001</caption><thead><tr><th scope="col">Stage</th><th scope="col">Old tests</th><th scope="col">New tests</th><th scope="col">Qualification</th></tr></thead><tbody><tr><th scope="row">Original-code baselines</th><td>2 passed</td><td>2 passed</td><td>Valid baseline</td></tr><tr><th scope="row">Identical declared fault</th><td>3 assertion failures</td><td>3 passed</td><td>Lost kill</td></tr><tr><th scope="row">Final original-code controls</th><td>1 passed</td><td>1 passed</td><td>Confirmed</td></tr></tbody></table>
+    <div class="report-code-grid"><section class="report-code-block"><h2>Original subject.py</h2><pre tabindex="0"><code>def is_adult(age):
+    return age &gt;= 18
+</code></pre></section>
+<section class="report-code-block"><h2>Declared hand-authored fault</h2><pre tabindex="0"><code>def is_adult(age):
+    return age &gt; 18
+</code></pre></section>
+<section class="report-code-block"><h2>Old tests/test_subject.py</h2><pre tabindex="0"><code>from subject import is_adult
+
+
+def test_adult_at_boundary():
+    assert is_adult(18) is True
+</code></pre></section>
+<section class="report-code-block"><h2>New tests/test_subject.py</h2><pre tabindex="0"><code>from subject import is_adult
+
+
+def test_adult_and_child_examples():
+    assert is_adult(21) is True
+    assert is_adult(17) is False
+</code></pre></section></div>
+    <div class="report-provenance"><p><strong>Provenance.</strong> Development corpus, inclusive age boundary. Snapshot kind: <code>controlled_fixture_bytes_not_git</code>. Mutation origin: <code>fixture_negative_control</code>. Recorded on 2026-11-02, with Python 3.13.5 and pytest 9.2.0.</p><p>Original source SHA-256: <code>9379074b3dec0fe817c6a0801f3283470beec0311bea0b475f471aecec5ef367</code><br>Declared fault SHA-256: <code>b3700e74e610ffa098ac363cd3644a0cc954321c9e635bacd2366d3289a78147</code><br>Confirmation: <code>three_pairs_and_final_controls</code></p><p>This is one finite conformance case, not an accuracy benchmark or a general claim about test quality. This view is adapted from the sanitized recorded summary; it is not a fresh execution or a replay bundle.</p><p><a href="https://github.com/hyscodebase/testdelta/blob/dae67c6d6b44bc4d3ceda51b4188c6ad8801efee/corpus/development.json">Original fixture</a> · <a href="https://github.com/hyscodebase/testdelta/blob/dae67c6d6b44bc4d3ceda51b4188c6ad8801efee/evidence/corpus/development.json">Published execution summary</a> · <a href="recorded-case.json">This recorded case as JSON</a> · <a href="./">Back to TestDelta</a></p></div>
+  </main>
+</body>
+</html>

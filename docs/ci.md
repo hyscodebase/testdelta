@@ -1,11 +1,17 @@
-# Run TestDelta in a pull-request workflow
+# Run the CLI in a pull-request workflow
 
-Use this only for the supported test-only changes in a repository whose test execution policy you already control. Commit `.testdelta.toml` before the compared change. A source, dependency, helper, or configuration change is currently unsupported and is not silently skipped as a successful comparison.
+The [native Action](action.md) handles the separate tool environment for you.
+This CLI alternative shows the same boundary explicitly: project tests run with
+their prepared Python, while TestDelta and Cosmic Ray live in a separate venv.
 
-The example below uses official actions pinned to commit SHAs. Replace `FULL_TESTDELTA_COMMIT_SHA` with the reviewed TestDelta commit you intend to install. The placeholder is intentional: a published package or release tag is not assumed. Pin your project's dependencies using its own lockfile workflow as well.
+The complete example assumes tracked `src/pricing.py` and
+`tests/test_pricing.py`, with pytest as their only test dependency. Change those
+two policy paths and replace the project dependency installation with your own
+locked setup. The external policy is written outside the checkout; it does not
+require changing the PR's history or committing `.testdelta.toml` first.
 
 ```yaml
-name: Test change evidence
+name: TestDelta CLI evidence
 on:
   pull_request:
 permissions:
@@ -15,30 +21,81 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
-      # Install this project's locked test dependencies here.
-      - run: python -m pip install 'git+https://github.com/hyscodebase/testdelta.git@FULL_TESTDELTA_COMMIT_SHA'
+      - name: Prepare project test environment
+        run: |
+          python -I -m venv "$RUNNER_TEMP/testdelta-project"
+          "$RUNNER_TEMP/testdelta-project/bin/python" -I -m pip install 'pytest==8.4.2'
+      - name: Install the reviewed TestDelta commit in a separate environment
+        run: |
+          python -I - <<'PY'
+          import os
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          tool = Path(os.environ["RUNNER_TEMP"]) / "testdelta-tool"
+          subprocess.run([sys.executable, "-I", "-m", "venv", str(tool)], check=True)
+          install_env = {key: value for key, value in os.environ.items()
+                         if not key.startswith("PIP_")}
+          install_env["PIP_CONFIG_FILE"] = os.devnull
+          subprocess.run([
+              str(tool / "bin/python"), "-I", "-m", "pip", "install",
+              "git+https://github.com/hyscodebase/testdelta.git@dae67c6d6b44bc4d3ceda51b4188c6ad8801efee",
+          ], env=install_env, check=True)
+          policy = Path(os.environ["RUNNER_TEMP"]) / "testdelta-policy.toml"
+          policy.write_text(
+              'source_modules = ["src/pricing.py"]\n'
+              'test_paths = ["tests/test_pricing.py"]\n',
+              encoding="utf-8",
+          )
+          PY
       - name: Compare test revisions
         env:
           TESTDELTA_BASE: ${{ github.event.pull_request.base.sha }}
           TESTDELTA_HEAD: ${{ github.event.pull_request.head.sha }}
-        run: >-
-          testdelta compare --base "$TESTDELTA_BASE" --head "$TESTDELTA_HEAD"
-          --output .testdelta/report --budget-seconds 120 --max-mutants 10
+        run: |
+          "$RUNNER_TEMP/testdelta-tool/bin/python" -I -m testdelta compare \
+            --repo "$GITHUB_WORKSPACE" \
+            --base "$TESTDELTA_BASE" --head "$TESTDELTA_HEAD" \
+            --config "$RUNNER_TEMP/testdelta-policy.toml" \
+            --python "$RUNNER_TEMP/testdelta-project/bin/python" \
+            --output "$RUNNER_TEMP/testdelta-report" \
+            --budget-seconds 120 --max-mutants 10 --advisory
 ```
 
-This snippet is a template for your repository, not a declaration that arbitrary projects are compatible. TestDelta disables automatic third-party pytest plugin loading and restricts inherited environment variables. Use a small fixture to verify the runner's behavior before making the job required.
+Both revisions must be available locally. Relative `--config` and `--output`
+paths use the command's working directory, independently of `--repo`. TestDelta
+records the selected policy bytes and hash for replay. Review the policy as part
+of the workflow: an external policy does not exempt source, dependency, helper,
+or configuration changes from the supported test-only boundary.
 
-An allowlisted summary is appended through `GITHUB_STEP_SUMMARY`, excluding raw logs, diffs, config text, and absolute runtime paths. Local JSON, HTML, and bundle files remain under the requested output directory. Artifact upload is optional; inspect captured output and source before choosing to publish it. This integration does not post a PR comment.
+The pinned commit installs CLI version `0.1.0a3`. An Action release tag identifies
+a GitHub repository revision; it is separate from Python package version syntax
+and from whether a Marketplace listing has been published. Check the
+[Marketplace status](marketplace.md) before describing the listing as available.
 
-For an initial advisory rollout, add `--advisory`. Only a complete `loss_observed` comparison changes from exit `1` to `0`; its report still records the evidence. Unsupported or incomplete comparisons remain nonzero. Do not hide those states with an unconditional success command.
+TestDelta disables automatic third-party pytest plugin loading and restricts
+inherited test environment variables. Verify a small representative fixture
+before requiring the check. Unsupported or incomplete work exits nonzero.
+`--advisory` changes only a complete `loss_observed` result from exit `1` to `0`;
+it preserves exit `2` for unfinished work and exit `3` for invalid input.
 
-No model API key or repository write token is needed. Avoid `pull_request_target` workflows that run untrusted PR code with elevated credentials. Temporary copies are not a sandbox; apply the same trust boundary as your ordinary test job. See [SECURITY.md](../SECURITY.md).
+An allowlisted job summary excludes raw logs, diffs, policy text, and absolute
+runtime paths. JSON, HTML, and replay bundles stay under the requested output
+directory. This workflow creates no PR comments, uploads no artifacts, and uses
+only `contents: read`. Inspect captured output and source before sharing local
+artifacts yourself.
 
-This alpha does not provide or verify network-blocked execution. Dependency preparation and test execution use the host runner; tests retain its network and filesystem access. A network-restricted container profile remains future work.
+Apply your ordinary test job's code-execution policy. Temporary workspaces are
+not a sandbox, and tests retain the runner user's filesystem and network access.
+Avoid elevated `pull_request_target` jobs that execute untrusted PR code. No
+network-restricted execution profile is provided or verified in this alpha.
+See [SECURITY.md](../SECURITY.md).

@@ -205,3 +205,16 @@ uv run python -m build --wheel
 또한 이 비교 방식은 새로운 발명이 아닙니다. testtruth와 Assertiva 등 기존 프로젝트가 관련 기능을 제공합니다. TestDelta를 통해 배우고 개선할 부분은 작은 pytest 흐름, 재현 가능한 근거, 정확한 실패 분류, 사용자가 이해할 수 있는 제한 설명입니다.
 
 다음 개발은 이 기반의 재현성과 설치 안정성을 확인한 뒤 진행합니다. 구체적인 순서는 `docs/solo-roadmap.md`에 있습니다.
+
+
+## Marketplace와 홍보 준비: alpha.4
+
+Marketplace 이름은 기존 GitHub 계정 이름과 겹칠 수 없어 action.yml을 TestDelta Test Quality로 지정했습니다. 제품 브랜드는 TestDelta입니다. Python 배포 버전 0.1.0a4와 SemVer 태그 v0.1.0-alpha.4를 구분합니다. Marketplace 게시 상태는 실제 등록 화면과 공개 listing으로 확인하며, 일반 release가 있다는 사실만으로 Marketplace 등록 완료라고 부르지 않습니다.
+
+실제 등록 화면에서 계정 소유자의 GitHub Marketplace Developer Agreement 동의가 아직 없어 게시 체크박스가 잠긴 것을 확인했습니다. 계정 소유자의 약관 수락은 본인이 직접 하는 단계이며, 그 전까지 문서·패키지·소개 페이지·초안을 준비합니다.
+
+Action 배포 전 검증에서 caller 폴더의 subprocess.py가 bootstrap Python의 표준 모듈을 가릴 수 있음을 확인했습니다. 바깥 실행도 python -I -로 격리하고, mutation worker도 -I에서 도구 경로만 명시적으로 넣습니다. Python의 -I는 pip 설정까지 격리하지 않으므로 도구 설치 환경에서는 PIP_* 변수를 제거하고 PIP_CONFIG_FILE을 os.devnull로 지정합니다. 대상 프로젝트의 의존성은 사용자가 준비한 interpreter에 그대로 두며, CI가 실제 환경 분리와 sentinel 폴더를 확인합니다.
+
+site/는 정적 HTML·CSS·JavaScript 소개 페이지입니다. dev-001의 동결된 입력과 실제 기록을 보여 주며 브라우저에서 pytest를 실행하는 것처럼 표현하지 않습니다. GitHub Pages workflow는 site/만 게시하고, 저장소의 raw 결과나 로컬 DB 보관본을 올리지 않습니다. scripts/check_site.py가 페이지·내부 링크·asset 경로를 검사합니다. 소셜 카드는 원본 SVG와 1200×630 PNG로 제공하며 외부 폰트·tracker를 넣지 않았습니다.
+
+홍보 문구는 docs/launch-kit.md의 한영 초안에 있고, 관측한 유한 사례와 실제 PR 미확정 결과를 구분합니다. 외부 커뮤니티·SNS에 메시지를 보내지 않았습니다. 최종 통과 수와 공개 URL은 해당 commit의 실제 GitHub Actions 및 배포 상태로 확인합니다.

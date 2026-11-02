@@ -10,7 +10,7 @@ body:
     id: version
     attributes:
       label: TestDelta version or commit
-      placeholder: '0.1.0a1 / commit SHA'
+      placeholder: '0.1.0a4 / full commit SHA'
     validations:
       required: true
   - type: input

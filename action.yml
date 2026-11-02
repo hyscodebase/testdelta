@@ -1,4 +1,4 @@
-name: TestDelta
+name: TestDelta Test Quality
 description: Compare whether committed pytest test changes retain detection of selected faults
 branding:
   icon: check-circle
@@ -62,7 +62,7 @@ runs:
         TESTDELTA_INPUT_PYTHON: ${{ inputs.python }}
         TESTDELTA_INPUT_ADVISORY: ${{ inputs.advisory }}
       run: |
-        python - <<'PY'
+        python -I - <<'PY'
         import os
         import shutil
         import subprocess
@@ -84,10 +84,17 @@ runs:
             tool_env = temporary / "tool"
             subprocess.run([sys.executable, "-I", "-m", "venv", str(tool_env)], check=True)
             tool_python = str(tool_env / "bin" / "python")
+            install_environment = {
+                key: value for key, value in os.environ.items()
+                if not key.startswith("PIP_")
+            }
+            # Pip has its own environment/configuration outside Python's -I.
+            # Do not let caller PIP_TARGET/PREFIX/USER redirect the tool install.
+            install_environment["PIP_CONFIG_FILE"] = os.devnull
             subprocess.run([
                 tool_python, "-I", "-m", "pip", "--disable-pip-version-check", "install",
                 os.environ["GITHUB_ACTION_PATH"],
-            ], check=True)
+            ], check=True, env=install_environment)
             environment = dict(os.environ, TESTDELTA_TARGET_PYTHON=target)
             code = subprocess.run(
                 [tool_python, "-I", "-m", "testdelta.action_entry"], env=environment,

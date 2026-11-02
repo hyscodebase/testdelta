@@ -1,1 +1,5 @@
 blank_issues_enabled: true
+contact_links:
+  - name: Action setup and supported scope
+    url: https://github.com/hyscodebase/testdelta/blob/main/docs/action.md
+    about: Check the supported pytest workflow and configuration first.

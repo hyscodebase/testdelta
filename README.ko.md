@@ -1,147 +1,154 @@
 # TestDelta
 
-pytest 테스트를 바꾼 뒤, 이전에 잡던 결함을 놓치게 되었는지 확인합니다.
+**테스트는 여전히 통과합니다. 이전에 잡던 결함도 계속 잡을까요?**
 
-**초기 알파 — `0.1.0a3`.** 같은 production code와 같은 변이 집합에 변경 전후 테스트를 실행합니다. 이전 테스트는 실패하고 새 테스트는 통과하는 구체적인 변이를 검토 근거로 남깁니다.
+[![CI](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml/badge.svg)](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml)
 
-[English](README.md) · [실제 저장소 호환성 검증](docs/compatibility.md) · [1인 개발 로드맵](docs/solo-roadmap.md) · [학습 문서](STUDY.MD) · [기여 안내](CONTRIBUTING.md)
+TestDelta는 **pytest 테스트만 바뀐 PR**을 검토하는 GitHub Action과 CLI입니다. 동일한 production code와 동일한 변이에 변경 전후 테스트를 실행해, 이전 테스트는 잡지만 새 테스트는 놓치는 구체적인 결함을 보여줍니다.
 
-이 결과는 해당 PR이 잘못되었다는 판정이 아닙니다. 의도적으로 보장 범위를 바꾸는 경우도 있습니다. 탐지 손실이 없다는 결과도 실행한 유한한 변이·테스트 범위만 설명합니다.
+테스트 리팩터링, assertion 변경, 코딩 에이전트가 수정한 테스트를 검토할 때 사용할 수 있습니다. **LLM, API key, 별도 서비스 계정이 필요하지 않습니다.**
 
-## 실제 실행 데모
+[English](README.md) · [Action 사용법](docs/action.md) · [검증 현황](docs/quality-status.md) · [호환성](docs/compatibility.md) · [기여 안내](CONTRIBUTING.md)
 
-Python 3.11–3.13, Git, [uv](https://docs.astral.sh/uv/)가 필요합니다. 현재 저장소에서 설치하며 PyPI 배포가 완료되었다고 가정하지 않습니다.
+**초기 알파:** 명시한 Python source/test 파일, Ubuntu/macOS, Python 3.11–3.13을 대상으로 합니다. 실행한 유한한 비교의 근거를 제공하며, PR 전체의 정확성이나 안전성을 판정하지 않습니다.
 
-```bash
-git clone https://github.com/hyscodebase/testdelta.git
-cd testdelta
-uv sync --extra dev
-uv run testdelta demo
-```
+## 테스트만 바뀐 PR에 추가하기
 
-데모는 직접 만든 작은 가격 계산 함수와 두 테스트 버전으로 임시 Git 저장소를 만듭니다. 원래 코드에서는 두 테스트 모두 통과하지만, 두 번째 테스트는 정확한 값 비교를 약한 비교로 바꿉니다. Cosmic Ray 변이를 만들고 pytest를 실제 실행합니다. 모델이나 API key, LLM judge가 필요하지 않습니다.
-
-`.testdelta/demo/report.html`에서 결과를 읽고 `report.json`에서 상세 실행 근거를 확인합니다. 합성 Git 저장소는 출력 폴더 안에 보존되며 정확한 경로가 `demo_repository`에 기록됩니다. 이 경로를 `replay --repo`에 사용할 수 있습니다. bundle 자체에 전체 저장소가 포함되는 것은 아닙니다.
-
-HTML 보고서는 판정, 시도한 변이 쌍, 확정한 근거, 실행 오류, source/test 출처를 구분해 보여줍니다. 시도한 쌍의 수와 유효한 근거의 수는 다릅니다. source hash와 함께 old/new 테스트 파일의 SHA-256도 기록합니다.
-
-다음 세 합성 시나리오를 실행할 수 있습니다.
-
-```bash
-uv run testdelta demo --scenario lost --output .testdelta/demo-lost
-uv run testdelta demo --scenario refactor --output .testdelta/demo-refactor
-uv run testdelta demo --scenario inconclusive --output .testdelta/demo-inconclusive
-```
-
-각각 탐지 손실, 정상적인 테스트 리팩터링, 유효하지 않은 baseline을 보여줍니다. `demo`는 기대한 시나리오 판정을 관찰하면 종료 코드 `0`을 반환하므로, 의도한 미확정 예제도 `0`일 수 있습니다. 보고서의 판정과 완료 상태를 함께 읽으세요. 이는 `compare`의 종료 규칙과 다르며 실제 프로젝트 성능 측정도 아닙니다.
-
-## 자기 저장소에 적용하기
-
-먼저 **비교할 테스트 변경보다 앞선 commit**에 `.testdelta.toml`을 넣습니다. 아래 예시는 TestDelta checkout에서 옆 디렉터리의 프로젝트를 가리킵니다.
-
-```bash
-uv run testdelta init --repo ../your-project \
-  --source src/pricing.py --tests tests/test_pricing.py
-```
-
-기존 PR의 commit을 바꾸지 않으려면 외부 설정을 사용합니다. `--config` 경로는 `--repo`와 별개로 현재 작업 폴더 기준이며, 정확한 설정 내용과 hash가 replay bundle에 기록됩니다.
-
-```bash
-uv run testdelta init --source src/pricing.py --tests tests/test_pricing.py \
-  --output .testdelta/project.toml
-uv run testdelta compare --repo ../your-project --base main --head HEAD \
-  --config .testdelta/project.toml --output .testdelta/review
-```
-
-[GitHub Action](docs/action.md)은 도구 환경과 프로젝트 Python 환경을 분리합니다. CLI에서는 `--python /path/to/project/.venv/bin/python`으로 프로젝트 의존성을 준비한 실행기를 선택합니다.
-
-생성되는 manifest:
+먼저 프로젝트의 실제 tracked 파일 경로로 `.testdelta.toml`을 만들고, **검사할 테스트 변경보다 앞선 commit**에 넣습니다.
 
 ```toml
 source_modules = ["src/pricing.py"]
 test_paths = ["tests/test_pricing.py"]
 ```
 
-manifest를 프로젝트에 commit한 뒤 테스트 변경을 별도 commit합니다. `main`이 변경 전 기준 revision인 예시입니다.
+아래 workflow도 테스트 변경 PR을 열기 전에 추가합니다. 예시는 pytest 외의 의존성이 없는 프로젝트용입니다. 필요한 경우 설치 단계를 프로젝트의 고정된 테스트 환경 구성으로 바꾸세요.
+
+```yaml
+name: TestDelta
+on:
+  pull_request:
+    paths: ["tests/**"]
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: "3.13"
+      - run: python -m pip install "pytest==8.4.2"
+      - name: Compare test revisions
+        id: testdelta
+        uses: hyscodebase/testdelta@dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+        with:
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
+          python: python
+          max-mutants: "10"
+          budget-seconds: "120"
+```
+
+Action은 별도 도구 환경에 TestDelta를 설치하고, 프로젝트 테스트에는 준비된 Python을 사용합니다. GitHub 작업 요약과 로컬 HTML/JSON 보고서를 만듭니다. PR 댓글이나 artifact를 자동으로 게시하지 않습니다. [전체 입력·출력 설명 →](docs/action.md)
+
+이미 열린 PR에는 `config: path/to/reviewed-policy.toml`로 **외부 manifest**를 지정할 수 있습니다. Git 이력을 바꿀 필요가 없습니다. 이 파일은 검사 범위를 결정하는 신뢰한 정책이어야 합니다. 검토된 workflow에서 관리하거나 신뢰한 base revision에서 가져오세요. 검토하지 않은 PR이 스스로 검사 범위를 정하게 하지 마세요. 정확한 설정 내용과 hash는 replay에 기록되며, 외부 설정을 써도 지원하는 변경 범위는 같습니다.
+
+선택한 테스트 파일만 바뀌어야 합니다. production source, helper, `conftest.py`, 의존성, 설정, 저장소 내부 manifest가 함께 바뀌면 지원하지 않는 비교입니다. workflow의 경로 필터가 이 규칙을 바꾸지는 않습니다. 외부 pytest plugin 자동 로드는 꺼져 있으므로 작은 호환 가능한 테스트부터 시작하세요.
+
+테스트는 runner 사용자의 파일·네트워크 권한으로 실행됩니다. 임시 폴더는 **sandbox가 아닙니다**. 일반 테스트 작업과 같은 신뢰 정책을 적용하고, 권한이 높은 `pull_request_target`에서 신뢰하지 않은 PR 코드를 실행하지 마세요. [보안 설명 →](SECURITY.md)
+
+## 로컬 데모 실행
+
+Git, Python 3.11–3.13, [uv](https://docs.astral.sh/uv/)가 필요합니다.
 
 ```bash
-uv run testdelta plan --repo ../your-project --base main --head HEAD
+git clone https://github.com/hyscodebase/testdelta.git
+cd testdelta
+git checkout dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
+uv sync
+uv run testdelta demo --scenario lost
+```
+
+`.testdelta/demo/report.html`을 여세요. 합성 가격 계산 예제는 `total(1000, 3) == 3500` 같은 정확한 assertion을 `total(1000, 3) >= 0`으로 바꿉니다. 원래 코드에서는 둘 다 통과하지만, 선택한 결함을 넣으면 약해진 테스트가 놓치는 동작이 드러납니다. 보고서에서 실제 변이, 테스트 diff, 반복 실행, source/test hash를 확인할 수 있습니다.
+
+정상적인 리팩터링과 유효하지 않은 baseline도 실행할 수 있습니다.
+
+```bash
+uv run testdelta demo --scenario refactor --output .testdelta/demo-refactor
+uv run testdelta demo --scenario inconclusive --output .testdelta/demo-inconclusive
+```
+
+`demo`는 기대한 판정을 관찰하면 `0`으로 종료합니다. 의도한 미확정 시나리오도 여기에 해당하므로 보고서의 판정과 완료 상태를 읽어야 합니다. 이 합성 예제들은 실제 프로젝트 benchmark가 아닙니다.
+
+## 기존 변경을 로컬에서 비교하기
+
+TestDelta checkout에서 프로젝트의 commit을 지정합니다.
+
+```bash
+uv run testdelta init --source src/pricing.py --tests tests/test_pricing.py \
+  --output .testdelta/project.toml
+uv run testdelta plan --repo ../your-project --base main --head HEAD \
+  --config .testdelta/project.toml
 uv run testdelta compare --repo ../your-project --base main --head HEAD \
+  --config .testdelta/project.toml --python ../your-project/.venv/bin/python \
   --output .testdelta/review --budget-seconds 120 --max-mutants 10
 ```
 
-`plan`은 Git에 commit된 파일을 읽고 지원 범위를 확인하며 테스트를 실행하지 않습니다. 기본 기준은 두 revision의 공통 조상인 merge-base입니다. 정확한 base commit과 비교하려면 `--direct-base`를 사용합니다. commit하지 않은 변경은 비교하지 않습니다.
+source/test 경로를 바꾸고 프로젝트 Python에 pytest와 필요한 의존성을 준비하세요. `plan`은 commit된 Git snapshot만 읽고 테스트는 실행하지 않습니다. `compare`는 테스트를 실행합니다. 기본 기준은 두 revision의 merge-base이며, 정확한 base commit을 쓰려면 `--direct-base`를 지정합니다. commit하지 않은 변경은 제외됩니다. 외부 config 경로는 `--repo`와 별개로 현재 작업 폴더 기준입니다.
 
-`compare`는 프로젝트의 테스트를 실행합니다. TestDelta를 실행하는 Python 환경에 대상 프로젝트의 의존성이 있어야 하며 자동 설치하지 않습니다. 초기 실행기는 외부 pytest plugin 자동 로드를 끄고 상속하는 환경 변수를 제한하므로 해당 기능에 의존하는 프로젝트는 호환되지 않을 수 있습니다.
+## 결과 읽기
 
-첫 범위는 명시한 Python source 파일이 그대로이고 선택한 테스트 파일만 바뀐 경우입니다. source, manifest, helper, `conftest.py`, 의존성 파일, 설정 등 다른 파일이 바뀌면 지원하지 않는 비교로 표시합니다. 변경이 없는 비교도 지원 대상이 아닙니다.
+| 판정 | 의미 | 종료 코드 |
+| --- | --- | ---: |
+| `no_loss_observed` | 선택한 비교를 완료했으며 확정한 탐지 손실 없음 | `0` |
+| `loss_observed` | 선택한 비교를 완료했고 탐지 손실 확인 | `1` |
+| `incomplete_with_witnesses` | 확정한 일부 근거가 있으나 전체 비교는 미완료 | `2` |
+| `inconclusive` / `unsupported_change` | 유효한 비교를 완료하지 못함 | `2` |
+| 입력·실행 오류 | 작업을 준비하거나 완료하지 못함 | `3` |
 
-## 네 가지 실행 결과를 비교합니다
+Action의 `advisory: "true"`나 CLI의 `--advisory`는 **완료된** 탐지 손실만 종료 코드 `0`으로 바꿉니다. 미완료 비교는 여전히 실패합니다.
 
-| | 원래 production code | 동일한 변이를 적용한 code |
-|---|---|---|
-| 이전 테스트 | 통과해야 함 | 변이 줄에 도달한 assertion 실패 |
-| 새 테스트 | 통과해야 함 | 통과하면 해당 변이를 놓친 것 |
+탐지 손실을 확정하려면 먼저 원본 코드에서 두 테스트 버전이 각각 두 번 통과해야 합니다. 같은 변이에서 이전 테스트는 변경된 줄에 도달해 assertion에 실패하고 새 테스트는 통과해야 합니다. 이 결과가 세 쌍에서 반복되고 마지막 원본 코드 검사도 통과해야 합니다. collection·fixture·runtime·import 오류와 timeout은 결함 탐지 성공으로 세지 않습니다. skip/xfail도 미완료로 남깁니다.
 
-원본 코드 기준 검사는 각 테스트 버전에서 두 번 실행합니다. 탐지 손실 후보는 old/new 쌍이 세 번 일치하는지 확인하고, 마지막에 원본 코드 기준 검사를 다시 합니다. 반복 확인이 모든 flaky test를 제거한다는 뜻은 아닙니다.
+변이는 [Cosmic Ray](https://github.com/sixty-north/cosmic-ray)의 일부 연산자로 생성합니다. 정해진 상한까지 선택한 변이는 모든 버그를 포괄하거나 통계적으로 대표하지 않습니다. 보장 범위를 의도적으로 줄인 변경일 수도 있으므로 구체적인 근거를 보고 판단하세요.
 
-import·collection·fixture·runtime 오류나 timeout을 결함 탐지 성공으로 세지 않습니다. 실행 전후 source hash와 실제 import 경로를 확인하고 도달한 줄을 기록합니다. 초기 실행기에서는 skip 또는 xfail이 하나라도 있으면 완전한 실행으로 보지 않습니다.
+## 근거 보관과 공유
 
-실행마다 별도 bytecode cache 경로를 사용하고 snapshot의 `.pyc`를 복사하지 않습니다. 오래된 캐시가 변이 소스 대신 실행되어 잘못된 통과 결과를 만드는 경로를 회귀 테스트로 확인했습니다. 변이 생성도 별도 프로세스에서 전체 예산 안에 제한합니다.
-
-변이 연산자는 Cosmic Ray 라이브러리의 일부를 사용합니다. 새 범용 mutation engine을 만드는 프로젝트가 아니며, 모든 버그나 의미가 같은 변이까지 완전히 다루지 않습니다.
-
-## 결과와 종료 코드
-
-| 결과 | 의미 | 종료 코드 |
-|---|---|---:|
-| `no_loss_observed` | 선택한 비교가 완료되었고 확정한 탐지 손실 없음 | `0` |
-| `loss_observed` | 비교가 완료되었고 반복 확인한 탐지 손실 있음 | `1` |
-| `incomplete_with_witnesses` | 일부 근거가 있지만 전체 비교는 미완료 | `2` |
-| `inconclusive` / `unsupported_change` | 유효한 비교를 완료할 수 없음 | `2` |
-| 입력·실행 준비 오류 | 명령을 준비하거나 완료할 수 없음 | `3` |
-
-`--advisory`는 완전한 `loss_observed` 실행의 종료 코드만 `0`으로 바꿉니다. 보고서의 탐지 손실은 남고 미완료·지원 불가 결과는 성공으로 바뀌지 않습니다. `demo`는 위에서 설명한 별도 종료 규칙을 사용합니다.
-
-`--max-mutants`는 선택할 변이 수, `--budget-seconds`는 비교 시간, `--timeout-seconds`는 개별 테스트 실행 시간을 제한합니다. 선택한 변이를 모두 실행해도 전체 프로그램에 대한 완전한 분석은 아닙니다. 시간이 부족해 작업이나 기준 검사를 마치지 못하면 깨끗한 결과로 표시하지 않습니다.
-
-## 보고서와 재실행
-
-출력 폴더에는 `report.html`, `report.md`, `report.json`, `bundle.json`, `bundle.sha256`이 생성됩니다. 실제 저장소를 보존한 비교에서는 보고서의 witness ID를 골라 재실행할 수 있습니다.
+실행마다 `report.html`, `report.md`, `report.json`과 replay bundle을 만듭니다. 시도한 변이 쌍과 유효한 근거를 구분합니다. Replay에는 기록된 commit과 일치하는 기록된 runtime이 필요하며, bundle이 독립적인 환경 image는 아닙니다.
 
 ```bash
-uv run testdelta replay .testdelta/review --witness WITNESS_ID \
-  --repo ../your-project --output .testdelta/replay
+uv run testdelta export .testdelta/review --output .testdelta/share.json
 ```
 
-기록된 commit과 같은 supervisor 환경·실제 대상 Python/pytest runtime이 필요합니다. 이 기록은 전체 의존성과 운영체제 이미지를 완전히 식별하지는 않습니다. bundle에는 전체 저장소와 의존성이 들어 있지 않습니다. checksum은 우발적인 변경을 확인하며 작성자의 신원을 인증하는 서명은 아닙니다.
+Export와 자동 작업 요약에는 raw log, source/config 원문, 절대 runtime 경로가 포함되지 않습니다. 상대 경로·revision·결과는 남으므로 공유 전에 확인하세요. 원본 보고서와 bundle에는 source code나 캡처한 출력이 있을 수 있습니다. [보고서와 replay 설명 →](docs/report-format.md)
 
-보고서는 로컬에 저장됩니다. `GITHUB_STEP_SUMMARY`에는 raw log·diff·설정 원문·절대 경로를 제외한 요약을 덧붙입니다. `testdelta export .testdelta/review --output .testdelta/share.json`은 같은 허용 목록 기반 공유 자료를 만듭니다. 상대 경로·commit hash 등 프로젝트 정보는 남으므로 익명화를 보장하지 않습니다. 별도의 hosted dashboard나 자동 PR 코멘트 기능은 없습니다. 공유 전 source와 실행 출력에 공개하면 안 되는 정보가 없는지 확인하세요. [CI 통합 예시](docs/ci.md)도 참고할 수 있습니다.
+## 확인한 범위
 
-## 실제 저장소에서 확인한 범위
+| 근거 | 확인한 내용 |
+| --- | --- |
+| [a3 시점 로컬 테스트 194개](STUDY.MD) | 해당 구현 테스트 실행 통과. 사용할 commit의 [CI 결과](https://github.com/hyscodebase/testdelta/actions)는 별도로 확인 |
+| [고정 사례 50개](corpus/README.md) | 직접 작성한 control로 개발 30개·검증 20개의 기대 판정과 일치. 일반 정확도나 자동 변이 품질 측정은 아님 |
+| [로컬 실행 시간 20회](docs/performance.md) | macOS 한 대의 합성 가격 계산 예제, 매회 변이 10개에서 p95 **27.697초**. 준비 시간 제외, host 부하 미통제 |
+| [Boltons의 고정 PR 2개](docs/compatibility.md) | 둘 다 **미확정**. 실행 오류를 보존했으며 확정한 탐지 손실이나 clean 결과 없음 |
 
-고정된 Boltons의 test-only 변경 두 건을 로컬에서 실행했습니다. **두 결과 모두 `inconclusive`입니다.** 한 건은 변이 쌍 10개 중 7개에서 runtime 오류가 났고, 다른 한 건은 3개 중 1개에서 collection/runtime 오류가 났습니다. 확정한 탐지 손실이나 clean 결과로 바꾸지 않았습니다.
+AI가 만든 테스트에 대한 탐지 성능, 외부 도입, 임의 프로젝트의 실행 속도는 측정해 입증하지 않았습니다. source와 test가 함께 바뀌는 PR, Windows, plugin 의존 suite, 임의의 monorepo, 네트워크 격리 실행은 초기 지원 범위 밖입니다. [상세 검증 현황 →](docs/quality-status.md)
 
-두 번째 사례에서는 trace 과정의 과도한 경로 확인도 발견했습니다. source-origin 조회를 캐시한 뒤 baseline이 기존 timeout 안에 들어왔으며, 판정 기준을 낮추지는 않았습니다. 이는 제한된 호환성 검증이며 maintainer의 채택, upstream 버그, 일반적인 정확도의 증거는 아닙니다. [고정 revision·준비 방법·결과·재현 명령](docs/compatibility.md)을 별도로 기록했습니다.
+## 관련 프로젝트와 기여
 
-## 기존 도구와 범위
+같은 변이로 변경 전후를 비교하는 아이디어는 이미 존재합니다. [testtruth](https://github.com/T4LEL/testtruth)는 JS/TS, [Assertiva](https://github.com/Soturine/Assertiva)는 Python을 포함한 baseline/candidate 근거를 다룹니다. [TestSeal](https://github.com/satwiksps/testseal)은 테스트 약화 신호를 정적으로 검사합니다. TestDelta는 명시적인 pytest 작업 흐름과 개별 실행 근거에 집중하며, 새로운 알고리즘이나 다른 도구보다 높은 정확도를 주장하지 않습니다.
 
-같은 변이로 변경 전후 테스트를 비교하는 방식은 이미 존재합니다. [testtruth](https://github.com/T4LEL/testtruth)는 JS/TS에서 이 흐름을 제공하고, [Assertiva](https://github.com/Soturine/Assertiva)는 Python을 포함한 baseline/candidate 변이 근거를 제공합니다. [TestSeal](https://github.com/satwiksps/testseal)은 테스트 약화 신호를 정적으로 검사합니다. [Cosmic Ray](https://github.com/sixty-north/cosmic-ray)는 TestDelta가 사용하는 변이 연산자를 제공합니다.
-
-TestDelta는 작은 pytest 검토 흐름을 실험하는 도구입니다. 알고리즘의 신규성, 더 넓은 지원 범위, 더 높은 정확도를 주장하지 않습니다. 기존 도구로 충분하다면 그것을 사용해도 좋습니다.
-
-CI 대상은 Ubuntu의 Python 3.11·3.12·3.13과 macOS의 Python 3.13입니다. 선언된 matrix 자체가 검증 결과는 아니므로 사용하는 commit의 [CI 결과](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml)를 확인하세요. Windows, source와 test를 함께 바꾸는 migration, symlink/submodule, 외부 서비스, 임의의 monorepo는 초기 범위 밖입니다. snapshot은 파일별 5 MB, 전체 25 MB 제한이 있습니다.
-
-임시 폴더는 운영체제 sandbox가 아닙니다. 자신의 계정 권한으로 실행해도 신뢰할 수 있는 테스트에만 사용하세요. 자세한 실행 경계는 [SECURITY.md](SECURITY.md)에 있습니다.
-
-## 개발
+작은 재현 사례, 호환성 fixture, 문서 개선을 환영합니다. [기여 안내](CONTRIBUTING.md), [학습 문서](STUDY.MD), [코딩 에이전트 검토 흐름](docs/agent-workflow.md)을 참고하세요.
 
 ```bash
+uv sync --extra dev
 uv run pytest
 uv run ruff check .
 uv run python -m build --wheel
 ```
 
-[STUDY.MD](STUDY.MD)는 실제 구현과 확인한 결과, 직접 해볼 실습을 구분해 설명합니다. 작은 fixture·버그 재현·문서 개선을 환영합니다.
-
-MIT © 2026 Hong Yuseok. [LICENSE](LICENSE).
+MIT © 2026 Hong Yuseok. [라이선스](LICENSE).

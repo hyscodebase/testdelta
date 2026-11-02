@@ -23,11 +23,11 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
       - name: Check out source
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           persist-credentials: false
       - name: Set up supervisor Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
       - name: Prepare independent project environment
@@ -41,9 +41,25 @@ jobs:
             --root "$RUNNER_TEMP/action-fixture" \
             --config .testdelta/action-fixture.toml \
             --target-python "$RUNNER_TEMP/project-python/bin/python"
+      - name: Prepare caller import and pip destination traps
+        run: |
+          python -I - <<'PY'
+          import os
+          from pathlib import Path
+
+          Path("subprocess.py").write_text(
+              'raise RuntimeError("Caller subprocess.py must not shadow the bootstrap")\n',
+              encoding="utf-8",
+          )
+          trap = Path(os.environ["RUNNER_TEMP"]) / "forbidden-pip-target"
+          trap.mkdir()
+          (trap / "sentinel").write_text("unchanged\n", encoding="utf-8")
+          PY
       - name: Complete observed loss is advisory
         id: loss
         uses: ./
+        env:
+          PIP_TARGET: ${{ runner.temp }}/forbidden-pip-target
         with:
           repo: ${{ steps.fixture.outputs.lost-repo }}
           base: ${{ steps.fixture.outputs.lost-base }}
@@ -58,6 +74,8 @@ jobs:
         id: invalid
         continue-on-error: true
         uses: ./
+        env:
+          PIP_TARGET: ${{ runner.temp }}/forbidden-pip-target
         with:
           repo: ${{ steps.fixture.outputs.invalid-repo }}
           base: ${{ steps.fixture.outputs.invalid-base }}
@@ -79,7 +97,20 @@ jobs:
           INVALID_VERDICT: ${{ steps.invalid.outputs.verdict }}
           INVALID_COMPLETE: ${{ steps.invalid.outputs.complete }}
           INVALID_REPORT: ${{ steps.invalid.outputs.report-path }}
-        run: python scripts/action_fixture.py verify-native --root "$RUNNER_TEMP/action-fixture"
+        run: |
+          python -I scripts/action_fixture.py verify-native --root "$RUNNER_TEMP/action-fixture"
+          python -I - <<'PY'
+          import os
+          from pathlib import Path
+
+          trap = Path(os.environ["RUNNER_TEMP"]) / "forbidden-pip-target"
+          assert sorted(path.name for path in trap.iterdir()) == ["sentinel"]
+          assert (trap / "sentinel").read_text(encoding="utf-8") == "unchanged\n"
+          assert Path("subprocess.py").read_text(encoding="utf-8") == (
+              'raise RuntimeError("Caller subprocess.py must not shadow the bootstrap")\n'
+          )
+          print("Caller stdlib shadow ignored; pip destination sentinel unchanged")
+          PY
 
   installed-wheel:
     name: Clean wheel / compare and replay
@@ -87,11 +118,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check out source
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
           persist-credentials: false
       - name: Set up Python
-        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
       - name: Build and install only the wheel

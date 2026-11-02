@@ -5,9 +5,12 @@ It uses an isolated environment for TestDelta and the Python environment you pre
 for project tests. Supported runners are Ubuntu and macOS with Python 3.11–3.13 on
 `PATH`; Windows is not supported by this Action.
 
-Pin the Action to a reviewed full commit SHA. The placeholder below is intentional;
-replace it before using the workflow. Fetch both revisions and install your own
-project's locked test dependencies before the comparison.
+The workflow below pins reviewed commit
+[`dae67c6d6b44bc4d3ceda51b4188c6ad8801efee`](https://github.com/hyscodebase/testdelta/commit/dae67c6d6b44bc4d3ceda51b4188c6ad8801efee).
+It assumes tracked files `src/pricing.py` and `tests/test_pricing.py` whose tests
+need only pytest. Set those two policy paths to your project and prepare any
+additional locked test dependencies in the project environment. The policy is
+created outside the checkout, so an existing test-only PR needs no setup commit.
 
 ```yaml
 name: TestDelta evidence
@@ -20,24 +23,43 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.13'
-      # Replace this with your project's locked test-environment setup.
-      - run: python -m pip install -r requirements-test.txt
+      - name: Prepare project test environment
+        run: |
+          python -I -m venv "$RUNNER_TEMP/testdelta-project"
+          "$RUNNER_TEMP/testdelta-project/bin/python" -I -m pip install 'pytest==8.4.2'
+      - name: Write trusted comparison policy
+        run: |
+          python -I - <<'PY'
+          import os
+          from pathlib import Path
+
+          policy = Path(os.environ["RUNNER_TEMP"]) / "testdelta-policy.toml"
+          policy.write_text(
+              'source_modules = ["src/pricing.py"]\n'
+              'test_paths = ["tests/test_pricing.py"]\n',
+              encoding="utf-8",
+          )
+          PY
       - name: Compare test revisions
         id: testdelta
-        uses: hyscodebase/testdelta@FULL_TESTDELTA_COMMIT_SHA
+        uses: hyscodebase/testdelta@dae67c6d6b44bc4d3ceda51b4188c6ad8801efee
         with:
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
-          python: python
+          config: ${{ runner.temp }}/testdelta-policy.toml
+          python: ${{ runner.temp }}/testdelta-project/bin/python
+          output: ${{ runner.temp }}/testdelta-report
           budget-seconds: '120'
           max-mutants: '10'
+          advisory: 'true'
 ```
 
 Commit `.testdelta.toml` before the compared test change, or select an external
@@ -71,6 +93,13 @@ project interpreter. The project interpreter must already have pytest and its
 required test dependencies. Automatic third-party pytest plugin loading is disabled;
 verify a small fixture before making this check required.
 
+The `0.1.0a4` bootstrap additionally isolates its initial Python imports and ignores
+caller `PIP_*` options and pip configuration files when installing the tool. This
+prevents project module names or `PIP_TARGET` from redirecting its own setup.
+Prepare private-index project dependencies before invoking the Action; its tool
+installation uses its own pip settings. The pinned example above currently selects
+`0.1.0a3`; use the reviewed release commit for the bootstrap behavior you require.
+
 The Action forwards inputs through environment variables and argument arrays.
 It does not evaluate them as shell fragments. The supervisor records its own
 environment separately from the selected test interpreter's provenance. Project
@@ -93,7 +122,8 @@ cannot become clean outputs. Use `if: always()` for later inspection steps when
 needed; a failed comparison remains a failed step unless your workflow explicitly
 changes that policy.
 
-An allowlisted summary without raw logs, diffs, config text, or absolute runtime paths is appended to the job summary. JSON, HTML, and replay bundles
+An allowlisted summary without raw logs, diffs, config text, or absolute runtime
+paths is appended to the job summary. JSON, HTML, and replay bundles
 stay in the requested local output directory. This Action creates no PR comments,
 uploads no artifacts, and requests no repository write permission. Inspect captured
 test output and source before publishing artifacts yourself.
@@ -105,4 +135,10 @@ fixtures. Environment filtering does not isolate secrets already present in file
 or other host state. Avoid elevated `pull_request_target` jobs that execute
 untrusted pull-request code. See [SECURITY.md](../SECURITY.md).
 
-This alpha does not provide or verify network-blocked execution. Dependency preparation and test execution use the host runner; tests retain its network and filesystem access. A network-restricted container profile remains future work.
+This alpha does not provide or verify network-blocked execution. Dependency
+preparation and test execution use the host runner; tests retain its network and
+filesystem access. A network-restricted container profile remains future work.
+
+GitHub Marketplace publication is tracked separately in
+[Marketplace release status](marketplace.md). Using a commit-pinned Action does
+not require a Marketplace listing.
