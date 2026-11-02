@@ -1,12 +1,28 @@
 # TestDelta를 만들며 배우는 테스트 검증
 
-이 문서는 초기 알파 `0.1.0a1`의 실제 파일과 실행 결과를 바탕으로 작성했습니다. 아직 실행하지 않은 검증과 독자가 직접 해볼 명령은 따로 표시합니다.
+2026-11-02 최신 `0.1.0a2` 작업 트리에서 전체 테스트 **130개가 64.94초에 통과**했고 Ruff도 통과했습니다. 아래의 a1·a2 중간 검증 수치는 당시의 기록입니다. 최종 원격 환경 검증은 해당 commit의 GitHub Actions를 기준으로 확인합니다.
 
-2026-11-02 로컬 전체 검증에서 **61개 테스트가 통과**했습니다. 초기 commit `9a1ec28`의 GitHub CI 네 조합도 모두 통과했으며, 이후 캐시·입력·실행 예산 수정은 별도 CI에서 다시 확인합니다. 테스트 수는 제품의 실제 저장소 정확도를 뜻하지 않습니다.
+이 문서는 초기 알파 `0.1.0a2`까지의 실제 파일과 실행 결과를 바탕으로 작성했습니다. 이전 `0.1.0a1` 검증은 이력으로 남기고, 아직 실행하지 않은 검증과 독자가 직접 해볼 명령은 따로 표시합니다.
+
+2026-11-02의 **a1 이력**에서 로컬 61개 테스트와 초기 commit `9a1ec28`의 GitHub CI 네 조합이 통과했습니다. 이는 현재 a2 전체 matrix의 결과를 대신하지 않습니다. a2 개발 중 한 snapshot에서는 전체 128개 테스트가 65.55초에 통과했고, 이후 추가한 회귀 테스트는 별도로 통과했습니다. 최종 commit의 전체 테스트 수와 matrix 상태는 해당 CI 결과를 확인해야 합니다. 테스트 수는 제품의 실제 저장소 정확도를 뜻하지 않습니다.
 
 추가 리뷰에서는 source hash와 import 경로가 맞아도 unchecked-hash `.pyc` 때문에 이전 코드가 실행될 수 있음을 재현했습니다. `PYTHONDONTWRITEBYTECODE`는 캐시 쓰기만 막으므로 충분하지 않았습니다. `runner/supervisor.py`가 실행마다 새 `PYTHONPYCACHEPREFIX`를 지정하고 `git_inputs.py`가 cache 파일 복사를 제외하도록 수정했습니다. 실제 Git snapshot에 캐시가 추적된 경우도 `tests/test_integration.py`에서 확인합니다.
 
 `adapters/bounded.py`와 `adapters/worker.py`는 Cosmic Ray 계산을 별도 프로세스로 실행합니다. 변이 생성이 오래 걸려도 전체 시간 예산을 소모한 뒤 무제한 계산을 계속하지 않게 하기 위한 경계입니다. source 파싱은 실행과 다르지만 CPU 시간도 예산에 포함됩니다.
+
+## a2에서 실제 저장소를 통해 배운 점
+
+Boltons의 test-only PR 두 건에서 source와 테스트의 원본 내용을 보존하고, 양쪽에 같은 TestDelta manifest를 추가한 로컬 파생 commit으로 실행했습니다. 원본 upstream SHA와 파생 SHA는 `docs/compatibility.md`에 구분했습니다. upstream에 수정이나 연락을 보내지 않았습니다.
+
+- **PR #564:** 기준 검사 네 번과 마지막 원본 코드 검사 두 번은 통과했습니다. 변이 쌍 열 개를 시도했지만 일곱 개는 양쪽 runtime 오류로 미확정, 세 개는 양쪽 통과였습니다. `inconclusive`이며 확정한 탐지 손실은 없습니다.
+- **PR #408:** 처음에는 trace를 켠 baseline이 15초 제한을 넘었습니다. 같은 head를 trace 없이 돌린 관찰은 약 0.179초였으므로, 원래 테스트가 느리다는 설명만으로 끝내면 안 됐습니다. `runner/plugin.py`가 대상 줄마다 반복하던 경로 정규화·origin 확인을 캐시하도록 바꿨습니다. 수정 후 old baseline은 약 0.821/0.808초, new baseline은 0.595/0.594초로 기존 제한 안에 들어왔습니다. 이 수치는 해당 로컬 실행의 관찰이지 일반 성능 배수가 아닙니다.
+- 수정 후 #408의 변이 쌍 세 개 중 두 개는 양쪽 통과, 한 개는 old collection 오류와 new runtime 오류였습니다. 전체 8.339초 실행의 결과는 여전히 `inconclusive`입니다. timeout을 해결했다고 결과를 clean으로 바꾸면 안 됩니다.
+
+import-origin 검증은 패키지와 직접 module import의 경로 배치를 고려하도록 보완했습니다. 일반 패키지의 child와 우연히 이름이 같은 표준 라이브러리 module을 잘못된 import라고 판정하지 않으면서, 원래 checkout에서 코드를 가져오는 실제 경로 불일치는 계속 탐지해야 합니다. `tests/test_runner.py`의 관련 회귀가 이 경계를 다룹니다.
+
+보고서도 Markdown을 한 덩어리로 보여주던 형태에서 의미별 HTML section·table·펼침 영역으로 바뀌었습니다. `report.py`는 같은 section 데이터로 Markdown과 HTML을 만들고, 판정·완료 여부·시도 수·유효 근거·오류·출처를 나눕니다. source hash뿐 아니라 old/new 테스트 파일 hash도 기록하므로 어떤 내용을 비교했는지 더 정확히 설명할 수 있습니다. 다만 hash는 결과의 정확성을 스스로 증명하지 않습니다.
+
+두 실제 사례는 실행 호환성과 측정 한계를 확인하는 자료입니다. 사용자 수요, maintainer의 제품 채택, Boltons의 결함, TestDelta의 일반 탐지 정확도를 입증하지 않습니다. 자세한 결과와 재현 명령은 [호환성 기록](docs/compatibility.md)에 있습니다.
 
 ## 1. 무엇을 만들었나
 

@@ -9,10 +9,12 @@ import py_compile
 import sys
 import time
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
 from testdelta.runner import run_pytest
+from testdelta.runner.plugin import _Evidence
 
 
 def project(tmp_path: Path, tests: str, source: str = "def discount(value):\n    return value * 0.1\n"):
@@ -89,6 +91,115 @@ def test_importing_original_checkout_invalidates_evidence(tmp_path):
     result = execute(workspace, hashes)
     assert result["status"] == "invalid_evidence", result
     assert result["origin_mismatches"][0]["observed"] == str(outside / "pricing.py")
+
+
+@pytest.mark.parametrize("source_path,module_name", [("lib/calc.py", "calc"), ("lib/project/__init__.py", "project")])
+def test_non_src_layout_importing_original_checkout_invalidates_evidence(tmp_path, source_path, module_name):
+    workspace = tmp_path / "snapshot"
+    target = workspace / source_path
+    target.parent.mkdir(parents=True)
+    source = b"def calculate():\n    return 999\n"
+    target.write_bytes(source)
+    original = tmp_path / "original"
+    outside_source = original / Path(source_path).relative_to("lib")
+    outside_source.parent.mkdir(parents=True)
+    outside_source.write_text("def calculate():\n    return 2\n")
+    (workspace / "test_calc.py").write_text(
+        f"import sys\nsys.path.insert(0, {str(original)!r})\n"
+        f"from {module_name} import calculate\n"
+        "def test_calculate():\n    assert calculate() == 2\n"
+    )
+
+    result = run_pytest(workspace, ["test_calc.py"], 10, {source_path: hashlib.sha256(source).hexdigest()})
+
+    assert result["status"] == "invalid_evidence", result
+    assert result["origin_mismatches"][0]["observed"] == str(outside_source)
+
+
+def test_non_src_layout_with_correct_workspace_import_is_valid(tmp_path):
+    workspace = tmp_path / "snapshot"
+    (workspace / "lib").mkdir(parents=True)
+    source = b"def calculate():\n    return 2\n"
+    (workspace / "lib/calc.py").write_bytes(source)
+    (workspace / "conftest.py").write_text(
+        "import sys\nfrom pathlib import Path\n"
+        "sys.path.insert(0, str(Path(__file__).parent / 'lib'))\n"
+    )
+    (workspace / "test_calc.py").write_text(
+        "from calc import calculate\ndef test_calculate():\n    assert calculate() == 2\n"
+    )
+    result = run_pytest(workspace, ["test_calc.py"], 10, {"lib/calc.py": hashlib.sha256(source).hexdigest()})
+    assert result["status"] == "pass", result
+    assert result["observed_source_origin"]["lib/calc.py"] == [str(workspace / "lib/calc.py")]
+    assert 2 in result["reached_lines"]["lib/calc.py"]
+
+
+def test_explicit_import_root_inside_package_still_detects_outside_shadow(tmp_path):
+    workspace = tmp_path / "snapshot"
+    package = workspace / "package"
+    package.mkdir(parents=True)
+    (package / "__init__.py").write_text("")
+    source = b"def calculate():\n    return 999\n"
+    (package / "calc.py").write_bytes(source)
+    outside = tmp_path / "original"
+    outside.mkdir()
+    (outside / "calc.py").write_text("def calculate():\n    return 2\n")
+    (workspace / "conftest.py").write_text(
+        "import sys\nfrom pathlib import Path\n"
+        "sys.path.insert(0, str(Path(__file__).parent / 'package'))\n"
+    )
+    (workspace / "test_calc.py").write_text(
+        f"import sys\nsys.path.insert(0, {str(outside)!r})\n"
+        "from calc import calculate\ndef test_calculate():\n    assert calculate() == 2\n"
+    )
+    result = run_pytest(workspace, ["test_calc.py"], 10, {"package/calc.py": hashlib.sha256(source).hexdigest()})
+    assert result["status"] == "invalid_evidence", result
+    assert result["origin_mismatches"][0]["observed"] == str(outside / "calc.py")
+
+
+@pytest.mark.parametrize("regular_package", [True, False], ids=["regular-package", "namespace-package"])
+@pytest.mark.parametrize("import_target", [True, False], ids=["imported-target", "unused-target"])
+def test_package_json_does_not_conflict_with_unrelated_stdlib_json(tmp_path, regular_package, import_target):
+    workspace = tmp_path / "snapshot"
+    (workspace / "package").mkdir(parents=True)
+    if regular_package:
+        (workspace / "package/__init__.py").write_text("")
+    source = b"def calculate():\n    return 2\n"
+    (workspace / "package/json.py").write_bytes(source)
+    tests = "import json\n"
+    if import_target:
+        tests += "from package.json import calculate\ndef test_json():\n    assert json.loads('2') == calculate()\n"
+    else:
+        tests += "def test_json():\n    assert json.loads('2') == 2\n"
+    (workspace / "test_json.py").write_text(tests)
+    result = run_pytest(workspace, ["test_json.py"], 10, {"package/json.py": hashlib.sha256(source).hexdigest()})
+    assert result["status"] == "pass", result
+    assert result["origin_mismatches"] == []
+    if import_target:
+        assert 2 in result["reached_lines"]["package/json.py"]
+    else:
+        assert result["reached_lines"] == {"package/json.py": []}
+
+
+def test_repeated_target_line_events_do_not_repeat_path_resolution(tmp_path, monkeypatch):
+    source_path = tmp_path / "calc.py"
+    source_path.write_text("def calculate():\n    return 2\n")
+    evidence = _Evidence({
+        "workspace": str(tmp_path), "expected_source_hashes": {"calc.py": "unused-by-collector"},
+        "run_id": "hot-path-test", "evidence_path": str(tmp_path / "evidence.json"),
+    })
+    frame = SimpleNamespace(f_code=SimpleNamespace(co_filename=str(source_path)),
+                            f_globals={"__name__": "calc"}, f_lineno=2)
+    evidence.trace(frame, "call", None)
+
+    def forbidden_resolution(*args, **kwargs):
+        raise AssertionError("Known target line events must not resolve filesystem paths")
+
+    monkeypatch.setattr(Path, "resolve", forbidden_resolution)
+    for _ in range(1000):
+        evidence.trace(frame, "line", None)
+    assert evidence.lines["calc.py"] == {2}
+    assert evidence.origins["calc.py"] == {str(source_path)}
 
 
 def test_hash_mismatch_prevents_execution(tmp_path):

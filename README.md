@@ -4,9 +4,9 @@
 
 [![CI](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml/badge.svg)](https://github.com/hyscodebase/testdelta/actions/workflows/ci.yml)
 
-**Early alpha — `0.1.0a1`.** TestDelta compares two test revisions against unchanged production code and the same selected mutations. It records a concrete example when the old tests catch a deliberate fault and the new tests miss it.
+**Early alpha — `0.1.0a2`.** TestDelta compares two test revisions against unchanged production code and the same selected mutations. It records a concrete example when the old tests catch a deliberate fault and the new tests miss it.
 
-[한국어](README.ko.md) · [Development roadmap](docs/solo-roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
+[한국어](README.ko.md) · [Real-repository compatibility](docs/compatibility.md) · [Development roadmap](docs/solo-roadmap.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)
 
 This is a narrow Python/pytest tool, not a claim that a test change is wrong. Removing an assertion can be intentional. A complete run with no observed loss only describes the finite mutations and tests it executed.
 
@@ -24,6 +24,8 @@ uv run testdelta demo
 The demo creates a temporary two-commit repository with original synthetic fixtures. Both test revisions pass on the unmodified pricing function. The second revision weakens exact assertions. TestDelta executes the comparison using Cosmic Ray mutations and actual pytest subprocesses. No model, API key, or LLM judge is involved.
 
 Open `.testdelta/demo/report.html` to read the result. `report.json` contains the detailed evidence. The synthetic Git repository is retained under the output directory; its exact path is recorded in `demo_repository` so it can be used with `replay --repo`. The bundle alone still does not contain a complete repository.
+
+The HTML report shows the comparison verdict, attempted pairs, confirmed findings, execution issues, and source/test provenance in separate sections. An attempted pair is not necessarily valid evidence. Old/new test-file SHA-256 values accompany the source fingerprints.
 
 Three executed synthetic scenarios are available:
 
@@ -112,6 +114,12 @@ Replay requires the original committed revisions and matching recorded superviso
 
 Reports stay local unless you share them. When `GITHUB_STEP_SUMMARY` is present, the Markdown report is also appended to the GitHub Actions job summary. Review source and captured output before uploading an artifact. There is no hosted dashboard or automatic PR comment publisher in this alpha. See the [CI integration example](docs/ci.md).
 
+## Real-repository checks
+
+Two pinned Boltons test-only changes have been executed locally. Both remain **inconclusive**: one attempted ten mutation pairs with seven runtime-error pairs, and the other attempted three with one collection/runtime-error pair. Neither produced a qualified lost-detection witness or a clean result. The second case also exposed tracing overhead; caching source-origin lookups brought its baseline runs within the existing timeout without relaxing the evidence rules.
+
+These are bounded compatibility checks, not evidence of maintainer adoption, upstream bugs, or general accuracy. See [the exact revisions, setup, results, and reproduction commands](docs/compatibility.md).
+
 ## Scope and alternatives
 
 The same-mutation before/after idea already exists. [testtruth](https://github.com/T4LEL/testtruth) provides this workflow for JS/TS. [Assertiva](https://github.com/Soturine/Assertiva) includes Python and baseline/candidate mutation evidence. [TestSeal](https://github.com/satwiksps/testseal) checks test-weakening signals statically. [Cosmic Ray](https://github.com/sixty-north/cosmic-ray) supplies this project's mutation operators.
@@ -130,6 +138,6 @@ uv run ruff check .
 uv run python -m build --wheel
 ```
 
-The Korean [STUDY.MD](STUDY.MD) explains the implementation and distinguishes performed checks from suggested exercises. Small fixtures, clear bug reports, and documentation improvements are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+The Korean [STUDY.MD](STUDY.MD) explains the implementation and distinguishes performed checks from suggested exercises. The optional [agent workflow](docs/agent-workflow.md) and [review skill](skills/testdelta-review/SKILL.md) describe how a coding agent can use the evidence and verify an authorized test repair. Their structural validation is not a measured claim about model performance. Small fixtures, clear bug reports, and documentation improvements are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 MIT © 2026 Hong Yuseok. See [LICENSE](LICENSE).

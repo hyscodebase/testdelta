@@ -63,3 +63,13 @@ def test_symlink_is_not_exported(repository):
     commit()
     with pytest.raises(InputError, match="Symlinks"):
         read_tree(repo, resolve(repo, "HEAD"))
+
+
+def test_deleted_source_is_an_explicit_unsupported_plan(repository):
+    repo, commit = repository
+    (repo / "src/calc.py").unlink()
+    commit()
+    plan, _, _ = make_plan(repo, "HEAD~1")
+    assert not plan["supported"]
+    assert plan["unsupported_changes"] == ["src/calc.py"]
+    assert plan["source_hashes"]["src/calc.py"] is None

@@ -11,6 +11,7 @@ import json
 import os
 import platform
 import sys
+import sysconfig
 import threading
 from pathlib import Path
 from types import FrameType
@@ -29,16 +30,28 @@ class _Evidence:
             for name in config["expected_source_hashes"]
         }
         self.module_targets: dict[str, set[str]] = {}
+        self.alias_roots: dict[tuple[str, str], Path] = {}
+        self.package_aliases: set[tuple[str, str]] = set()
         for relative in config["expected_source_hashes"]:
             parts = list(Path(relative).with_suffix("").parts)
-            variants = [parts]
-            if parts and parts[0] == "src":
-                variants.append(parts[1:])
-            for variant in variants:
-                if variant and variant[-1] == "__init__":
-                    variant = variant[:-1]
-                if variant:
-                    self.module_targets.setdefault(".".join(variant), set()).add(relative)
+            if parts and parts[-1] == "__init__":
+                parts = parts[:-1]
+            for start in range(len(parts)):
+                module_name = ".".join(parts[start:])
+                self.module_targets.setdefault(module_name, set()).add(relative)
+                if start:
+                    key = (module_name, relative)
+                    self.alias_roots[key] = self.workspace.joinpath(*parts[:start])
+                    # A regular package's children are not top-level modules
+                    # unless its directory is explicitly an import root.
+                    if any(self.workspace.joinpath(*parts[:depth], "__init__.py").is_file()
+                           for depth in range(1, start + 1)):
+                        self.package_aliases.add(key)
+        paths = sysconfig.get_paths()
+        self.stdlib_roots = {Path(paths[key]).resolve() for key in ("stdlib", "platstdlib")}
+        self.site_roots = {Path(paths[key]).resolve() for key in ("purelib", "platlib")}
+        self.resolved_origins: dict[str, str] = {}
+        self.traced_origins: set[tuple[str, str]] = set()
         self.data: dict[str, Any] = {
             "schema_version": 1,
             "run_id": config["run_id"],
@@ -66,18 +79,36 @@ class _Evidence:
     def _observe_origin(self, module_name: str, filename: str) -> str | None:
         if not filename or filename.startswith("<"):
             return None
-        path = str(Path(filename).resolve())
-        if path.endswith((".pyc", ".pyo")):
-            try:
-                path = str(Path(importlib.util.source_from_cache(path)).resolve())
-            except ValueError:
-                pass
+        path = self.resolved_origins.get(filename)
+        if path is None:
+            path = filename if filename in self.targets else str(Path(filename).resolve())
+            if path.endswith((".pyc", ".pyo")):
+                try:
+                    path = str(Path(importlib.util.source_from_cache(path)).resolve())
+                except ValueError:
+                    pass
+            self.resolved_origins[filename] = path
         direct = self.targets.get(path)
         if direct:
             self.origins[direct].add(path)
         for expected in self.module_targets.get(module_name, ()):
+            key = (module_name, expected)
+            root = self.alias_roots.get(key)
+            if root is not None:
+                explicit_root = any(Path(entry).resolve() == root for entry in sys.path if isinstance(entry, str))
+                if key in self.package_aliases and not explicit_root:
+                    continue
+                origin = Path(path)
+                stdlib = any(origin.is_relative_to(base) for base in self.stdlib_roots) and not any(
+                    origin.is_relative_to(base) for base in self.site_roots
+                )
+                # Namespace packages have no __init__ marker. A basename
+                # collision with stdlib is not evidence of an outside checkout
+                # unless the intended top-level import root is on sys.path.
+                if stdlib and not explicit_root:
+                    continue
             self.origins[expected].add(path)
-            wanted = str((self.workspace / expected).resolve())
+            wanted = str(self.workspace / expected)
             if path != wanted:
                 mismatch = {"module": module_name, "expected": wanted, "observed": path}
                 if mismatch not in self.data["origin_mismatches"]:
@@ -93,7 +124,15 @@ class _Evidence:
         module = str(frame.f_globals.get("__name__", ""))
         if filename not in self.targets and module not in self.module_targets:
             return None
-        relative = self._observe_origin(module, filename)
+        # Target line events are the hot path. Resolve/check each frame origin
+        # once, not once per source line (which can run millions of times).
+        key = (module, filename)
+        if key not in self.traced_origins:
+            self._observe_origin(module, filename)
+            self.traced_origins.add(key)
+        relative = self.targets.get(filename)
+        if relative is None:
+            relative = self.targets.get(self.resolved_origins.get(filename, ""))
         if relative is not None:
             if event == "line":
                 self.lines[relative].add(frame.f_lineno)

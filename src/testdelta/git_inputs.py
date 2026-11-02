@@ -132,7 +132,10 @@ def make_plan(repo: Path, base: str, head: str = "HEAD", direct_base: bool = Fal
         "requested_base_sha": base_ref_sha, "head_sha": head_sha,
         "base_mode": "direct" if direct_base else "merge_base", "manifest": config,
         "manifest_hash": digest(before[".testdelta.toml"]),
-        "source_hashes": {p: digest(after[p]) for p in config["source_modules"]},
+        "source_hashes": {p: digest(after[p]) if p in after else None
+                          for p in config["source_modules"]},
+        "test_hashes": {p: {"old": digest(before[p]) if p in before else None,
+                            "new": digest(after[p]) if p in after else None} for p in test_files},
         "changed_files": changed, "test_files": test_files,
         "supported": not unsupported, "unsupported_changes": unsupported,
         "working_tree": "committed snapshots only; uncommitted files excluded",

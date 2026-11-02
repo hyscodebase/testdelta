@@ -1,0 +1,230 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "actual_local_compatibility_run",
+  "case": "boltons-pr564",
+  "upstream": {
+    "url": "https://github.com/mahmoud/boltons/pull/564",
+    "base": "4e5faa3d7e4008d89e0d8bf1ea87b6d9a061a16d",
+    "head": "7ea6c0bade3e1057593afd67bb6bc6bd7097f098",
+    "source": "boltons/queueutils.py",
+    "tests": "tests/test_queueutils.py",
+    "context": "Closed unmerged test-strengthening proposal; not evidence of adoption.",
+    "derived_base": "a9441b319987f7a9dc2f205622d7ef5f7d50072e",
+    "derived_head": "7b60cfa519c6f7d29088334ad6e5d7905148e504",
+    "setup": "Only an identical manifest was added; upstream test/source bytes preserved.",
+    "expected_source_unchanged": true,
+    "project": "boltons",
+    "license": "BSD-3-Clause",
+    "license_url": "https://github.com/mahmoud/boltons/blob/7ea6c0bade3e1057593afd67bb6bc6bd7097f098/LICENSE"
+  },
+  "tool_version": "0.1.0a2",
+  "runtime": {
+    "python_version": "3.13.5",
+    "pytest_version": "9.2.0"
+  },
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "verdict": "inconclusive",
+  "complete": false,
+  "duration_seconds": 11.841,
+  "source_hashes": {
+    "boltons/queueutils.py": "a60f04f5f27803429c7a79f3f51f9b286cba3bd997f122161f252c66ca0499bb"
+  },
+  "test_hashes": {
+    "tests/test_queueutils.py": {
+      "old": "e7140dcde4a96340ce29cfba5c26ee0a3a0e380b145d4e8b848a1970b374062c",
+      "new": "da1cfa50e55ace0cc0a142231bf2eb2bcedc25ae37f89e00cf14d554964d80f2"
+    }
+  },
+  "mutants_planned": 10,
+  "mutants_attempted": 10,
+  "outcome_counts": {
+    "inconclusive": 7,
+    "survived_both": 3
+  },
+  "baselines": [
+    {
+      "side": "old",
+      "status": "pass",
+      "duration_seconds": 0.4186478339834139,
+      "tests_executed": 2
+    },
+    {
+      "side": "new",
+      "status": "pass",
+      "duration_seconds": 0.4323006669874303,
+      "tests_executed": 14
+    },
+    {
+      "side": "old",
+      "status": "pass",
+      "duration_seconds": 0.41288729099323973,
+      "tests_executed": 2
+    },
+    {
+      "side": "new",
+      "status": "pass",
+      "duration_seconds": 0.43328816699795425,
+      "tests_executed": 14
+    }
+  ],
+  "controls": [
+    {
+      "side": "old",
+      "status": "pass",
+      "duration_seconds": 0.41562987497309223
+    },
+    {
+      "side": "new",
+      "status": "pass",
+      "duration_seconds": 0.42405912501271814
+    }
+  ],
+  "mutants": [
+    {
+      "id": "cr-35b8fb1110cbd4a5",
+      "path": "boltons/queueutils.py",
+      "line": 105,
+      "operator": "core/ReplaceOrWithAnd",
+      "mutated_sha256": "b4c08a707a4177d943f194ea845dcefff0e56cf502da286db3aadf08f3dcfe19",
+      "outcome": "inconclusive",
+      "old_statuses": [
+        "runtime_error"
+      ],
+      "new_statuses": [
+        "runtime_error"
+      ]
+    },
+    {
+      "id": "cr-b0581a4b1c2c1201",
+      "path": "boltons/queueutils.py",
+      "line": 105,
+      "operator": "core/NumberReplacer",
+      "mutated_sha256": "76ba71cd2e37732aa6bb8e1daad6fda826f06bbab2c97fc05969586d50e3cda7",
+      "outcome": "survived_both",
+      "old_statuses": [
+        "pass"
+      ],
+      "new_statuses": [
+        "pass"
+      ]
+    },
+    {
+      "id": "cr-1cb5236e6c9512aa",
+      "path": "boltons/queueutils.py",
+      "line": 105,
+      "operator": "core/NumberReplacer",
+      "mutated_sha256": "a147def36ba528ba1995a97e9865e3f8c421f28743393ecb2b4e2cf515c70595",
+      "outcome": "survived_both",
+      "old_statuses": [
+        "pass"
+      ],
+      "new_statuses": [
+        "pass"
+      ]
+    },
+    {
+      "id": "cr-63efa6990c013342",
+      "path": "boltons/queueutils.py",
+      "line": 113,
+      "operator": "core/AddNot",
+      "mutated_sha256": "47919f76886f59cff128ded07a632866cc9b1b7a36e57e947f835d86afed9e34",
+      "outcome": "inconclusive",
+      "old_statuses": [
+        "runtime_error"
+      ],
+      "new_statuses": [
+        "runtime_error"
+      ]
+    },
+    {
+      "id": "cr-89345720e91522cc",
+      "path": "boltons/queueutils.py",
+      "line": 133,
+      "operator": "core/AddNot",
+      "mutated_sha256": "0d517102fe08323067c5659e1f5ae40c48da16f80bd03c76541d8b166a7ba0e0",
+      "outcome": "inconclusive",
+      "old_statuses": [
+        "runtime_error"
+      ],
+      "new_statuses": [
+        "runtime_error"
+      ]
+    },
+    {
+      "id": "cr-5bf8be693cb0ffb9",
+      "path": "boltons/queueutils.py",
+      "line": 145,
+      "operator": "core/NumberReplacer",
+      "mutated_sha256": "82233b67c9d5751c13bb19d6f74e1cb7d53ebe723e25543aa6fedcbdff206033",
+      "outcome": "inconclusive",
+      "old_statuses": [
+        "runtime_error"
+      ],
+      "new_statuses": [
+        "runtime_error"
+      ]
+    },
+    {
+      "id": "cr-e5b7a4446a157077",
+      "path": "boltons/queueutils.py",
+      "line": 145,
+      "operator": "core/NumberReplacer",
+      "mutated_sha256": "71ff2a303ed6c73f9da4ea8d9f2e9c437eb7f0e3b2c6dfbe691885db34eae024",
+      "outcome": "inconclusive",
+      "old_statuses": [
+        "runtime_error"
+      ],
+      "new_statuses": [
+        "runtime_error"
+      ]
+    },
+    {
+      "id": "cr-1d43646b0b0ffaa3",
+      "path": "boltons/queueutils.py",
+      "line": 147,
+      "operator": "core/ReplaceTrueWithFalse",
+      "mutated_sha256": "749ebe6d4d9217208d7d220f160d5fb8c5c1f46149a998eeebe8f9e4fb093669",
+      "outcome": "survived_both",
+      "old_statuses": [
+        "pass"
+      ],
+      "new_statuses": [
+        "pass"
+      ]
+    },
+    {
+      "id": "cr-9de57065b00a5f1e",
+      "path": "boltons/queueutils.py",
+      "line": 149,
+      "operator": "core/AddNot",
+      "mutated_sha256": "6eca57aae3ba24d3d667c8234ceb9cfa4faa3b06b444bb29f09793f42d23acb1",
+      "outcome": "inconclusive",
+      "old_statuses": [
+        "runtime_error"
+      ],
+      "new_statuses": [
+        "runtime_error"
+      ]
+    },
+    {
+      "id": "cr-604f5d26092689b8",
+      "path": "boltons/queueutils.py",
+      "line": 150,
+      "operator": "core/NumberReplacer",
+      "mutated_sha256": "6c61f00747a762a7601712bd6b18807b50a066d40f67a9aa691d470fa4fb1dfb",
+      "outcome": "inconclusive",
+      "old_statuses": [
+        "runtime_error"
+      ],
+      "new_statuses": [
+        "runtime_error"
+      ]
+    }
+  ],
+  "limits": {
+    "budget_seconds": 180.0,
+    "max_mutants": 10,
+    "timeout_seconds": 15
+  },
+  "qualification": "Two cases from one project; not a demand study, adoption evidence, or a measurement of real production defects. No upstream code or raw source bundles redistributed."
+}

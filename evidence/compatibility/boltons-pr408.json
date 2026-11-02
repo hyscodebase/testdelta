@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "actual_local_compatibility_run",
+  "case": "boltons-pr408",
+  "upstream": {
+    "url": "https://github.com/mahmoud/boltons/pull/408",
+    "base": "3970a80f63807392e512340c25dc2db473bcba70",
+    "head": "b14382f0710333d11fb56b73e2218771e537c1e9",
+    "source": "boltons/listutils.py",
+    "tests": "tests/test_listutils.py",
+    "context": "Merged cleanup removing a module-import test invocation.",
+    "derived_base": "51ff340e61605fe3f4e381a9efa1115328a8719e",
+    "derived_head": "6f3de0099e5e14c5ee975c762217705b0b89d0e4",
+    "setup": "Only an identical manifest was added; upstream test/source bytes preserved.",
+    "expected_source_unchanged": true,
+    "project": "boltons",
+    "license": "BSD-3-Clause",
+    "license_url": "https://github.com/mahmoud/boltons/blob/b14382f0710333d11fb56b73e2218771e537c1e9/LICENSE"
+  },
+  "tool_version": "0.1.0a2",
+  "runtime": {
+    "python_version": "3.13.5",
+    "pytest_version": "9.2.0"
+  },
+  "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "verdict": "inconclusive",
+  "complete": false,
+  "duration_seconds": 8.339,
+  "source_hashes": {
+    "boltons/listutils.py": "535b28641e3955f48d5dff74a68fcfb0e367ed154dc29c565dcd5e542eaa1edb"
+  },
+  "test_hashes": {
+    "tests/test_listutils.py": {
+      "old": "db64b87554a9789cf5800fb0290bd7dc430631584a918d48b3ada52fa732c544",
+      "new": "a91ff67762c86b7a898de3c686cd4e006d7ca2c247a9161c454befad5c8ef9be"
+    }
+  },
+  "mutants_planned": 3,
+  "mutants_attempted": 3,
+  "outcome_counts": {
+    "survived_both": 2,
+    "inconclusive": 1
+  },
+  "baselines": [
+    {
+      "side": "old",
+      "status": "pass",
+      "duration_seconds": 0.8211596669862047,
+      "tests_executed": 3
+    },
+    {
+      "side": "new",
+      "status": "pass",
+      "duration_seconds": 0.5951057500205934,
+      "tests_executed": 3
+    },
+    {
+      "side": "old",
+      "status": "pass",
+      "duration_seconds": 0.8078765000100248,
+      "tests_executed": 3
+    },
+    {
+      "side": "new",
+      "status": "pass",
+      "duration_seconds": 0.5941092919674702,
+      "tests_executed": 3
+    }
+  ],
+  "controls": [
+    {
+      "side": "old",
+      "status": "pass",
+      "duration_seconds": 0.8285205829888582
+    },
+    {
+      "side": "new",
+      "status": "pass",
+      "duration_seconds": 0.5941843340406194
+    }
+  ],
+  "mutants": [
+    {
+      "id": "cr-cb5a2b5cd84ae493",
+      "path": "boltons/listutils.py",
+      "line": 95,
+      "operator": "core/NumberReplacer",
+      "mutated_sha256": "b5036b088885aa9b0d331b82de71b1b77fc6f93da04e00daf1b45687a5a47f4d",
+      "outcome": "survived_both",
+      "old_statuses": [
+        "pass"
+      ],
+      "new_statuses": [
+        "pass"
+      ]
+    },
+    {
+      "id": "cr-e077a24acc748f6f",
+      "path": "boltons/listutils.py",
+      "line": 95,
+      "operator": "core/NumberReplacer",
+      "mutated_sha256": "60032302874a41db07cca0d55554a3afde3715eba7631c080eb9f4dbcf675d9d",
+      "outcome": "survived_both",
+      "old_statuses": [
+        "pass"
+      ],
+      "new_statuses": [
+        "pass"
+      ]
+    },
+    {
+      "id": "cr-75a8d1b91522fe8f",
+      "path": "boltons/listutils.py",
+      "line": 100,
+      "operator": "core/AddNot",
+      "mutated_sha256": "f22567f7501ed6a21ab51aacb95506d315304d40039709cecbf4df8dbbca93c5",
+      "outcome": "inconclusive",
+      "old_statuses": [
+        "collection_error"
+      ],
+      "new_statuses": [
+        "runtime_error"
+      ]
+    }
+  ],
+  "limits": {
+    "budget_seconds": 180.0,
+    "max_mutants": 3,
+    "timeout_seconds": 15
+  },
+  "qualification": "Two cases from one project; not a demand study, adoption evidence, or a measurement of real production defects. No upstream code or raw source bundles redistributed."
+}

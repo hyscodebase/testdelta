@@ -2,9 +2,9 @@
 
 pytest 테스트를 바꾼 뒤, 이전에 잡던 결함을 놓치게 되었는지 확인합니다.
 
-**초기 알파 — `0.1.0a1`.** 같은 production code와 같은 변이 집합에 변경 전후 테스트를 실행합니다. 이전 테스트는 실패하고 새 테스트는 통과하는 구체적인 변이를 검토 근거로 남깁니다.
+**초기 알파 — `0.1.0a2`.** 같은 production code와 같은 변이 집합에 변경 전후 테스트를 실행합니다. 이전 테스트는 실패하고 새 테스트는 통과하는 구체적인 변이를 검토 근거로 남깁니다.
 
-[English](README.md) · [1인 개발 로드맵](docs/solo-roadmap.md) · [학습 문서](STUDY.MD) · [기여 안내](CONTRIBUTING.md)
+[English](README.md) · [실제 저장소 호환성 검증](docs/compatibility.md) · [1인 개발 로드맵](docs/solo-roadmap.md) · [학습 문서](STUDY.MD) · [기여 안내](CONTRIBUTING.md)
 
 이 결과는 해당 PR이 잘못되었다는 판정이 아닙니다. 의도적으로 보장 범위를 바꾸는 경우도 있습니다. 탐지 손실이 없다는 결과도 실행한 유한한 변이·테스트 범위만 설명합니다.
 
@@ -22,6 +22,8 @@ uv run testdelta demo
 데모는 직접 만든 작은 가격 계산 함수와 두 테스트 버전으로 임시 Git 저장소를 만듭니다. 원래 코드에서는 두 테스트 모두 통과하지만, 두 번째 테스트는 정확한 값 비교를 약한 비교로 바꿉니다. Cosmic Ray 변이를 만들고 pytest를 실제 실행합니다. 모델이나 API key, LLM judge가 필요하지 않습니다.
 
 `.testdelta/demo/report.html`에서 결과를 읽고 `report.json`에서 상세 실행 근거를 확인합니다. 합성 Git 저장소는 출력 폴더 안에 보존되며 정확한 경로가 `demo_repository`에 기록됩니다. 이 경로를 `replay --repo`에 사용할 수 있습니다. bundle 자체에 전체 저장소가 포함되는 것은 아닙니다.
+
+HTML 보고서는 판정, 시도한 변이 쌍, 확정한 근거, 실행 오류, source/test 출처를 구분해 보여줍니다. 시도한 쌍의 수와 유효한 근거의 수는 다릅니다. source hash와 함께 old/new 테스트 파일의 SHA-256도 기록합니다.
 
 다음 세 합성 시나리오를 실행할 수 있습니다.
 
@@ -104,6 +106,12 @@ uv run testdelta replay .testdelta/review --witness WITNESS_ID \
 기록된 commit과 같은 supervisor 환경·실제 대상 Python/pytest runtime이 필요합니다. 이 기록은 전체 의존성과 운영체제 이미지를 완전히 식별하지는 않습니다. bundle에는 전체 저장소와 의존성이 들어 있지 않습니다. checksum은 우발적인 변경을 확인하며 작성자의 신원을 인증하는 서명은 아닙니다.
 
 보고서는 로컬에 저장됩니다. `GITHUB_STEP_SUMMARY`가 있으면 Markdown 결과를 GitHub Actions job summary에도 덧붙입니다. 별도의 hosted dashboard나 자동 PR 코멘트 기능은 없습니다. 공유 전 source와 실행 출력에 공개하면 안 되는 정보가 없는지 확인하세요. [CI 통합 예시](docs/ci.md)도 참고할 수 있습니다.
+
+## 실제 저장소에서 확인한 범위
+
+고정된 Boltons의 test-only 변경 두 건을 로컬에서 실행했습니다. **두 결과 모두 `inconclusive`입니다.** 한 건은 변이 쌍 10개 중 7개에서 runtime 오류가 났고, 다른 한 건은 3개 중 1개에서 collection/runtime 오류가 났습니다. 확정한 탐지 손실이나 clean 결과로 바꾸지 않았습니다.
+
+두 번째 사례에서는 trace 과정의 과도한 경로 확인도 발견했습니다. source-origin 조회를 캐시한 뒤 baseline이 기존 timeout 안에 들어왔으며, 판정 기준을 낮추지는 않았습니다. 이는 제한된 호환성 검증이며 maintainer의 채택, upstream 버그, 일반적인 정확도의 증거는 아닙니다. [고정 revision·준비 방법·결과·재현 명령](docs/compatibility.md)을 별도로 기록했습니다.
 
 ## 기존 도구와 범위
 
