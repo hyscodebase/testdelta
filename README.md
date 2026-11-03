@@ -8,11 +8,11 @@ TestDelta is a GitHub Action and CLI for reviewing **test-only pytest changes**.
 
 Use it when refactoring tests, reviewing changed assertions, or checking tests edited by a coding agent. **No LLM, API key, or hosted account required.**
 
-[Live demo](https://hyscodebase.github.io/testdelta/) · [Press kit](https://hyscodebase.github.io/testdelta/downloads/testdelta-press-kit.zip)
+[GitHub Marketplace](https://github.com/marketplace/actions/testdelta-test-quality) · [Live demo](https://hyscodebase.github.io/testdelta/) · [Press kit](https://hyscodebase.github.io/testdelta/downloads/testdelta-press-kit.zip)
 
 [한국어](README.ko.md) · [Action reference](docs/action.md) · [Quality status](docs/quality-status.md) · [Compatibility](docs/compatibility.md) · [Contributing](CONTRIBUTING.md)
 
-**Alpha:** explicit Python source and test files; Ubuntu/macOS; Python 3.11–3.13. It reports evidence about a finite comparison, not whether a PR is correct or safe.
+**Alpha — [v0.1.0-alpha.4](https://github.com/hyscodebase/testdelta/releases/tag/v0.1.0-alpha.4):** explicit Python source and test files; Ubuntu/macOS; Python 3.11–3.13. It reports evidence about a finite comparison, not whether a PR is correct or safe.
 
 ## Add it to a test-only PR
 
@@ -47,7 +47,7 @@ jobs:
       - run: python -m pip install "pytest==8.4.2"
       - name: Compare test revisions
         id: testdelta
-        uses: hyscodebase/testdelta@2add31061b995a50a62fbf15b1a28942214f9fce
+        uses: hyscodebase/testdelta@55d64056c14834eab99cf49ca86c4786a14804bd
         with:
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
@@ -71,7 +71,7 @@ With Git, Python 3.11–3.13, and [uv](https://docs.astral.sh/uv/):
 ```bash
 git clone https://github.com/hyscodebase/testdelta.git
 cd testdelta
-git checkout 2add31061b995a50a62fbf15b1a28942214f9fce
+git checkout 55d64056c14834eab99cf49ca86c4786a14804bd
 uv sync
 uv run testdelta demo --scenario lost
 ```
@@ -133,7 +133,7 @@ The export and automatic job summary omit raw logs, source/config text, and abso
 
 | Evidence | What it establishes |
 | --- | --- |
-| [194 local tests at the a3 snapshot](STUDY.MD) | That recorded implementation test run passed; see [CI for the commit you use](https://github.com/hyscodebase/testdelta/actions) |
+| [195 tests on the alpha.4 release CI](https://github.com/hyscodebase/testdelta/commit/55d64056c14834eab99cf49ca86c4786a14804bd/checks) | The supported Python/OS matrix passed; the earlier 194-test a3 run is [historical](STUDY.MD) |
 | [50 frozen fixtures](corpus/README.md) | All 30 development and 20 validation expectations matched using hand-authored controls; not general accuracy or automatic mutation-quality measurement |
 | [20 local runtime repetitions](docs/performance.md) | One synthetic pricing fixture, 10 mutations each: p95 **27.697 s** on one macOS host; setup excluded, host load uncontrolled |
 | [Two pinned Boltons PR checks](docs/compatibility.md) | Both **inconclusive**, with execution errors retained; no qualified witness or clean result |

@@ -207,11 +207,11 @@ uv run python -m build --wheel
 다음 개발은 이 기반의 재현성과 설치 안정성을 확인한 뒤 진행합니다. 구체적인 순서는 `docs/solo-roadmap.md`에 있습니다.
 
 
-## Marketplace와 홍보 준비: alpha.4
+## Marketplace 게시와 홍보: alpha.4
 
 Marketplace 이름은 기존 GitHub 계정 이름과 겹칠 수 없어 action.yml을 TestDelta Test Quality로 지정했습니다. 제품 브랜드는 TestDelta입니다. Python 배포 버전 0.1.0a4와 SemVer 태그 v0.1.0-alpha.4를 구분합니다. Marketplace 게시 상태는 실제 등록 화면과 공개 listing으로 확인하며, 일반 release가 있다는 사실만으로 Marketplace 등록 완료라고 부르지 않습니다.
 
-실제 등록 화면에서 계정 소유자의 GitHub Marketplace Developer Agreement 동의가 아직 없어 게시 체크박스가 잠긴 것을 확인했습니다. 계정 소유자의 약관 수락은 본인이 직접 하는 단계이며, 그 전까지 문서·패키지·소개 페이지·초안을 준비합니다.
+등록 초기에는 약관 안내로 게시 체크박스가 잠겨 있었으나, 최종 등록 화면에서 게시 선택이 활성화되고 메타데이터 검증을 통과한 것을 확인했습니다. 마지막 GitHub 본인 재인증은 사용자가 직접 완료했고, 이후 공개 릴리스와 Marketplace 등록을 확인했습니다.
 
 Action 배포 전 검증에서 caller 폴더의 subprocess.py가 bootstrap Python의 표준 모듈을 가릴 수 있음을 확인했습니다. 바깥 실행도 python -I -로 격리하고, mutation worker도 -I에서 도구 경로만 명시적으로 넣습니다. Python의 -I는 pip 설정까지 격리하지 않으므로 도구 설치 환경에서는 PIP_* 변수를 제거하고 PIP_CONFIG_FILE을 os.devnull로 지정합니다. 대상 프로젝트의 의존성은 사용자가 준비한 interpreter에 그대로 두며, CI가 실제 환경 분리와 sentinel 폴더를 확인합니다.
 
@@ -220,3 +220,5 @@ site/는 정적 HTML·CSS·JavaScript 소개 페이지입니다. dev-001의 동�
 홍보 문구는 docs/launch-kit.md의 한영 초안에 있고, 관측한 유한 사례와 실제 PR 미확정 결과를 구분합니다. 외부 커뮤니티·SNS에 메시지를 보내지 않았습니다. 최종 통과 수와 공개 URL은 해당 commit의 실제 GitHub Actions 및 배포 상태로 확인합니다.
 
 alpha.4 구현 commit 2add31061b995a50a62fbf15b1a28942214f9fce에서 로컬 전체 195개 테스트가 89.49초에 통과했습니다. 원격 네 Python/OS 조합·고정 50개 사례·Ubuntu/macOS native Action·깨끗한 wheel compare/replay가 통과했습니다. 소개 페이지 배포도 성공해 HTML·PNG·근거 JSON이 검토한 파일과 같은 bytes로 제공됨을 확인했습니다. 27.697초 p95는 과거 a3의 고정 측정값으로 유지합니다.
+
+2026-11-03 공개 Marketplace https://github.com/marketplace/actions/testdelta-test-quality 에서 TestDelta Test Quality, v0.1.0-alpha.4, hyscodebase/testdelta 저장소, Testing·Code quality 분류와 실제 설치 snippet을 확인했습니다. 비로그인 HTTP 요청으로도 listing과 릴리스가 200 응답을 반환했습니다. 홈페이지·홍보 ZIP에도 확인된 등록 링크를 반영했으며, 배포 tag는 검증한 55d64056c14834eab99cf49ca86c4786a14804bd를 유지합니다.

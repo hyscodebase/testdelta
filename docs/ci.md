@@ -48,7 +48,7 @@ jobs:
           install_env["PIP_CONFIG_FILE"] = os.devnull
           subprocess.run([
               str(tool / "bin/python"), "-I", "-m", "pip", "install",
-              "git+https://github.com/hyscodebase/testdelta.git@2add31061b995a50a62fbf15b1a28942214f9fce",
+              "git+https://github.com/hyscodebase/testdelta.git@55d64056c14834eab99cf49ca86c4786a14804bd",
           ], env=install_env, check=True)
           policy = Path(os.environ["RUNNER_TEMP"]) / "testdelta-policy.toml"
           policy.write_text(
@@ -77,10 +77,12 @@ records the selected policy bytes and hash for replay. Review the policy as part
 of the workflow: an external policy does not exempt source, dependency, helper,
 or configuration changes from the supported test-only boundary.
 
-The pinned commit installs CLI version `0.1.0a3`. An Action release tag identifies
-a GitHub repository revision; it is separate from Python package version syntax
-and from whether a Marketplace listing has been published. Check the
-[Marketplace status](marketplace.md) before describing the listing as available.
+The pinned release commit installs CLI/tool version `0.1.0a4` and is the target of
+[GitHub prerelease `v0.1.0-alpha.4`](https://github.com/hyscodebase/testdelta/releases/tag/v0.1.0-alpha.4).
+The Action is published as
+[TestDelta Test Quality on GitHub Marketplace](https://github.com/marketplace/actions/testdelta-test-quality).
+Python package and GitHub tag prerelease syntax differ; this release remains alpha.
+See the [release record](marketplace.md) for the publication date and exact commit.
 
 TestDelta disables automatic third-party pytest plugin loading and restricts
 inherited test environment variables. Verify a small representative fixture

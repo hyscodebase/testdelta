@@ -1,20 +1,20 @@
 # TestDelta launch kit
 
-These are **unpublished post drafts**. The landing page is public, and the ready-to-copy text links to the repository. Release and Marketplace status are recorded below. Nothing in this file sends messages, creates posts, or requests stars.
+These are **unpublished post drafts**. The landing page, release, and GitHub Marketplace listing are public. Ready-to-copy text below uses their verified destinations. Nothing in this file sends messages, creates posts, or requests stars.
 
 ## Release facts and destinations
 
 - Project: **TestDelta** — a GitHub Action and CLI for test-only pytest changes.
 - Repository and working destination for the drafts: https://github.com/hyscodebase/testdelta
-- Action metadata name for the Marketplace submission: **TestDelta Test Quality**.
-- Verified alpha.4 implementation pin: `2add31061b995a50a62fbf15b1a28942214f9fce`. Its source matrix, frozen-corpus and native Action workflows passed.
-- Planned next release tag: `v0.1.0-alpha.4`; do not describe this draft as a published release.
+- Published Marketplace name: **TestDelta Test Quality**, owned by **hyscodebase**.
+- Released immutable Action pin: `55d64056c14834eab99cf49ca86c4786a14804bd`. Its release CI passed 195 source tests on the supported matrix, the frozen corpus, and native Action/wheel integration.
+- Published prerelease: [v0.1.0-alpha.4](https://github.com/hyscodebase/testdelta/releases/tag/v0.1.0-alpha.4), verified on 2026-11-03.
 - Public landing page: https://hyscodebase.github.io/testdelta/ — homepage, report, image and evidence JSON verified HTTP 200 on 2026-11-02.
 - Public press kit: https://hyscodebase.github.io/testdelta/downloads/testdelta-press-kit.zip (published with the launch-site update).
-- Marketplace listing: pending owner acceptance of GitHub's Developer Agreement and successful publication. Proposed slug `testdelta-test-quality` is **unverified**. Do not announce a live listing or invent its URL.
-- The Action can already be used from the repository at the documented commit. Marketplace discovery and Action execution are separate.
+- Public Marketplace listing: [TestDelta Test Quality](https://github.com/marketplace/actions/testdelta-test-quality) — publication verified on 2026-11-03, showing `v0.1.0-alpha.4` as the latest prerelease, under Testing and Code quality.
+- Use the released immutable commit in workflows. Marketplace publication does not imply a verified publisher badge, external adoption, or general accuracy.
 
-Before posting, the release operator checks the actual Pages URL, release/tag, Action pin, Marketplace status, and links. Keep the repository URL in the drafts if a destination remains pending. No interviews, external contacts, or posting are prerequisites for preparing this package.
+Recheck destination links if posting after this recorded release. No interviews, external contacts, or posting are prerequisites for using this package. The publication recorded above does not mean any social or community post has been sent.
 
 ## Positioning
 
@@ -50,6 +50,9 @@ The alpha supports explicit test-only pytest changes. It could help review test 
 
 The limits are public too: 50 frozen, hand-authored cases matched their expected outcomes, while both real Boltons PR checks remained inconclusive. Those are bounded checks, not a general accuracy claim.
 
+Now on GitHub Marketplace:
+https://github.com/marketplace/actions/testdelta-test-quality
+
 The README has a pinned Action example and a local demo:
 https://github.com/hyscodebase/testdelta
 
@@ -71,6 +74,9 @@ GitHub Action과 로컬 CLI로 실행하며 LLM API key는 필요하지 않습�
 
 검증 범위도 공개했습니다. 직접 작성해 고정한 50개 사례는 기대 판정과 일치했고, 실제 Boltons PR 두 건은 모두 미확정이었습니다. 이를 일반적인 정확도로 표현하지 않습니다.
 
+GitHub Marketplace에 공개했습니다.
+https://github.com/marketplace/actions/testdelta-test-quality
+
 README에 고정 commit 기반 Action 설정과 로컬 데모를 넣었습니다.
 https://github.com/hyscodebase/testdelta
 
@@ -83,12 +89,12 @@ https://github.com/hyscodebase/testdelta
 **English**
 
 Tests still pass. Do they still catch the same faults? TestDelta compares old/new pytest tests on identical mutations and shows lost detection. GitHub Action + CLI, no LLM key. Alpha: test-only changes.
-https://github.com/hyscodebase/testdelta
+https://github.com/marketplace/actions/testdelta-test-quality
 
 **한국어**
 
 테스트를 바꾼 뒤에도 CI는 초록색. 이전에 잡던 결함도 계속 잡을까요? TestDelta는 같은 변이에 변경 전후 pytest를 실행해 놓친 결함을 보여줍니다. GitHub Action·CLI, LLM key 불필요. 초기 범위는 테스트만 바뀐 PR입니다.
-https://github.com/hyscodebase/testdelta
+https://github.com/marketplace/actions/testdelta-test-quality
 
 ## Show HN
 
@@ -110,6 +116,8 @@ A candidate loss must repeat across three old/new execution pairs, with passing 
 
 The scope is deliberately small: explicit Python source/test files, unchanged production code and test configuration, and Ubuntu/macOS with Python 3.11–3.13. Tests execute with host permissions; temporary workspaces aren't a sandbox. The Action uses a separate tool environment and a caller-prepared project interpreter.
 
+The Action is listed on GitHub Marketplace: https://github.com/marketplace/actions/testdelta-test-quality
+
 The README includes a pinned workflow and a runnable demo. Reports show actual test and mutation diffs, source/test hashes, and execution outcomes. You can export an allowlisted summary or replay a recorded witness with the required repository and runtime.
 
 This isn't a new mutation-testing algorithm. testtruth and Assertiva already offer related before/after workflows; TestDelta reuses Cosmic Ray and explores a focused pytest integration.
@@ -130,6 +138,8 @@ The README includes a pinned workflow and a synthetic demo. This alpha supports 
 
 Public checks include 50 finite conformance fixtures and two real PR compatibility checks; both real PR checks were inconclusive. These aren't general accuracy results.
 
+GitHub Marketplace: https://github.com/marketplace/actions/testdelta-test-quality
+
 Code, demo, and limitations: https://github.com/hyscodebase/testdelta
 
 Reproducible compatibility reports and feedback on report clarity are welcome.
@@ -146,6 +156,8 @@ README에 고정 commit 기반 workflow와 합성 데모가 있습니다. 초기
 
 고정 사례 50개와 실제 PR 두 건의 검증 기록도 공개했습니다. 실제 PR 두 건은 모두 미확정이었으며 일반 정확도를 입증한 결과는 아닙니다.
 
+GitHub Marketplace: https://github.com/marketplace/actions/testdelta-test-quality
+
 코드·실행 방법·한계: https://github.com/hyscodebase/testdelta
 
 작은 호환성 재현 사례나 보고서에서 이해하기 어려운 부분에 대한 의견을 환영합니다.
@@ -159,7 +171,7 @@ Preparation with the documented pin:
 ```bash
 git clone https://github.com/hyscodebase/testdelta.git
 cd testdelta
-git checkout 2add31061b995a50a62fbf15b1a28942214f9fce
+git checkout 55d64056c14834eab99cf49ca86c4786a14804bd
 uv sync
 uv run testdelta demo --scenario lost --output .testdelta/launch-lost
 uv run testdelta demo --scenario refactor --output .testdelta/launch-refactor
@@ -189,13 +201,14 @@ Use these claims with their scope intact:
 
 | Claim | Supporting artifact | Required scope |
 | --- | --- | --- |
+| 195 implementation tests passed on release CI | [Released commit checks](https://github.com/hyscodebase/testdelta/commit/55d64056c14834eab99cf49ca86c4786a14804bd/checks) | Alpha.4 supported Python/OS matrix; no performance remeasurement implied |
 | 194 implementation tests passed | [Recorded a3 validation](../STUDY.MD) | Historical local a3 run; later releases need their own CI |
 | 50 cases matched expectations | [Frozen corpus](../corpus/README.md) | 30 development + 20 validation, hand-authored controls; not general accuracy or automatic mutation-quality evidence |
 | Local p95 27.697 seconds | [Runtime protocol and record](performance.md) | One synthetic pricing fixture, 20 repetitions, 10 mutations each, one macOS host; preparation excluded and load uncontrolled |
 | Two real PR checks | [Compatibility report](compatibility.md) | Both inconclusive; no confirmed upstream bug or maintainer endorsement |
 | No LLM API key | CLI and Action implementation | Dependencies still need installation; host compute and any CI usage can have costs |
 
-Avoid “100% accurate,” “finds AI bugs,” “first/only,” “production-ready,” “sandboxed,” “guaranteed under two minutes,” or “used by Boltons.” Do not imply Marketplace publication, a verified publisher badge, or Pages availability until each is checked. Do not infer users from stars or downloads.
+Avoid “100% accurate,” “finds AI bugs,” “first/only,” “production-ready,” “sandboxed,” “guaranteed under two minutes,” or “used by Boltons.” Marketplace publication and Pages availability are verified above. Do not imply a verified publisher badge or external adoption. Do not infer users from stars or downloads.
 
 ## Sharing and feedback practice
 

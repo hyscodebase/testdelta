@@ -5,8 +5,11 @@ It uses an isolated environment for TestDelta and the Python environment you pre
 for project tests. Supported runners are Ubuntu and macOS with Python 3.11–3.13 on
 `PATH`; Windows is not supported by this Action.
 
-The workflow below pins reviewed commit
-[`2add31061b995a50a62fbf15b1a28942214f9fce`](https://github.com/hyscodebase/testdelta/commit/2add31061b995a50a62fbf15b1a28942214f9fce).
+The Action is published as
+[TestDelta Test Quality on GitHub Marketplace](https://github.com/marketplace/actions/testdelta-test-quality).
+The workflow below pins released commit
+[`55d64056c14834eab99cf49ca86c4786a14804bd`](https://github.com/hyscodebase/testdelta/commit/55d64056c14834eab99cf49ca86c4786a14804bd),
+the target of [alpha release `v0.1.0-alpha.4`](https://github.com/hyscodebase/testdelta/releases/tag/v0.1.0-alpha.4).
 It assumes tracked files `src/pricing.py` and `tests/test_pricing.py` whose tests
 need only pytest. Set those two policy paths to your project and prepare any
 additional locked test dependencies in the project environment. The policy is
@@ -50,7 +53,7 @@ jobs:
           PY
       - name: Compare test revisions
         id: testdelta
-        uses: hyscodebase/testdelta@2add31061b995a50a62fbf15b1a28942214f9fce
+        uses: hyscodebase/testdelta@55d64056c14834eab99cf49ca86c4786a14804bd
         with:
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
@@ -97,8 +100,8 @@ The `0.1.0a4` bootstrap additionally isolates its initial Python imports and ign
 caller `PIP_*` options and pip configuration files when installing the tool. This
 prevents project module names or `PIP_TARGET` from redirecting its own setup.
 Prepare private-index project dependencies before invoking the Action; its tool
-installation uses its own pip settings. The pinned example above currently selects
-`0.1.0a3`; use the reviewed release commit for the bootstrap behavior you require.
+installation uses its own pip settings. The pinned example above installs
+CLI/tool version `0.1.0a4`. This is an alpha prerelease.
 
 The Action forwards inputs through environment variables and argument arrays.
 It does not evaluate them as shell fragments. The supervisor records its own
@@ -139,6 +142,6 @@ This alpha does not provide or verify network-blocked execution. Dependency
 preparation and test execution use the host runner; tests retain its network and
 filesystem access. A network-restricted container profile remains future work.
 
-GitHub Marketplace publication is tracked separately in
-[Marketplace release status](marketplace.md). Using a commit-pinned Action does
-not require a Marketplace listing.
+The [Marketplace release record](marketplace.md) identifies the published listing,
+alpha tag, and exact target commit. Using a commit-pinned Action does not require
+a hosted TestDelta account.

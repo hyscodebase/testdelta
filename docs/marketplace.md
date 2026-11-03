@@ -1,60 +1,47 @@
-# GitHub Marketplace release status
+# GitHub Marketplace release record
 
-Marketplace publication is pending. On 2026-11-02 the repository's release form
-required the owner to accept the GitHub Marketplace Developer Agreement before
-enabling publication. The owner must review and accept that agreement directly;
-no acceptance is recorded by this project or its automation. A release page or
-usable commit-pinned Action does not establish that a Marketplace listing is live.
+[TestDelta Test Quality](https://github.com/marketplace/actions/testdelta-test-quality)
+was published on GitHub Marketplace on **2026-11-03**. The public listing identifies
+`hyscodebase` as the publisher, links to this repository, and displays
+`v0.1.0-alpha.4` as its latest prerelease. Its listed categories are **Testing**
+and **Code quality**.
 
-The launch candidate uses Action display name **TestDelta Test Quality**, with
-**Testing** as the intended primary category and **Code quality** as the intended
-secondary category. These categories exist in the
-[GitHub Marketplace category browser](https://github.com/marketplace?type=actions).
-The release form must validate the final name and categories before publication.
-
-The prior display name `TestDelta` conflicts with the existing
-[`TestDelta` GitHub organization](https://github.com/TestDelta). GitHub disallows
-an Action name matching another account unless its owner publishes that Action.
-GitHub also requires a public repository, one root `action.yml` or `action.yaml`,
-and a unique non-reserved Action name. See the official
-[publication requirements](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/publish-in-github-marketplace).
-
-The candidate version is deliberately alpha:
-
-| Identifier | Meaning |
+| Release field | Published value |
 | --- | --- |
-| `v0.1.0-alpha.4` | Proposed GitHub Action release tag |
-| `0.1.0a4` | Python CLI/tool version installed from that candidate checkout |
-| `2add31061b995a50a62fbf15b1a28942214f9fce` | Reviewed alpha.4 Action implementation commit; installs `0.1.0a4` |
+| GitHub release | [`v0.1.0-alpha.4`](https://github.com/hyscodebase/testdelta/releases/tag/v0.1.0-alpha.4), published prerelease |
+| Publication time | `2026-11-03T02:17:52Z` (UTC) |
+| Release API record | [`432194720`](https://api.github.com/repos/hyscodebase/testdelta/releases/432194720), `draft: false` |
+| Exact target commit | [`55d64056c14834eab99cf49ca86c4786a14804bd`](https://github.com/hyscodebase/testdelta/commit/55d64056c14834eab99cf49ca86c4786a14804bd) |
+| Python CLI/tool version | `0.1.0a4` |
+| Repository | [`hyscodebase/testdelta`](https://github.com/hyscodebase/testdelta) |
 
-The Python version and GitHub tag use different prerelease syntax. The candidate
-does not assert a stable release or PyPI publication. The examples use the reviewed full commit above. Its source matrix, frozen
-corpus, installed-wheel and native Action isolation checks passed on GitHub. See the
-[complete native Action workflow](action.md) and [CLI workflow](ci.md).
+Publication completed after owner authorization. The earlier agreement and
+authentication requirements are resolved; the listing and release are public.
+The Python version and GitHub tag use different prerelease syntax. This is an
+alpha release, with no stable-release or PyPI-publication claim.
 
-The repository owner publishes through GitHub's release interface:
+The [native Action workflow](action.md) and [CLI workflow](ci.md) pin the exact
+released commit above. The Action installs its tool environment from that
+checkout and uses the caller's prepared Python for project tests. The `0.1.0a4`
+bootstrap and mutation worker isolate supervisor imports, and caller pip options
+cannot redirect the separate tool installation.
 
-1. Open the root `action.yml` on GitHub and choose **Draft a release**.
-2. Complete the owner agreement requirement if GitHub presents it, then enable
-   **Publish this Action to the GitHub Marketplace**.
-3. Resolve metadata validation messages, select the categories, and choose the
-   reviewed alpha tag, target commit, title, and release notes.
-4. Publish the release, completing GitHub's two-factor authentication if requested.
-5. Open the resulting Marketplace URL and confirm its name, version, repository,
-   installation snippet, and README before recording publication as complete.
+The release commit's recorded checks passed: 195 source tests per supported
+matrix job, the frozen 50-case conformance corpus, Ubuntu/macOS native Action
+isolation traps, installed-wheel comparison/replay, and Pages deployment. Check
+the [workflow runs](https://github.com/hyscodebase/testdelta/actions) for a specific
+commit or subsequent rerun. The linked a3 runtime, corpus, and Boltons
+compatibility artifacts retain their recorded versions and scope; publication
+does not turn them into new a4 measurements. See [quality status](quality-status.md).
 
-This follows GitHub's
+Consumer workflows retain `contents: read`, local reports, no automatic artifact
+upload, and no PR comment publisher. Supported inputs remain committed test-only
+Python/pytest changes with unchanged source, helpers, dependencies, and
+configuration. Tests retain the host runner's filesystem and network access;
+temporary workspaces are not a sandbox. Marketplace publication does not expand
+the alpha's execution boundary.
+
+Future listing updates use GitHub's
 [official publishing flow](https://docs.github.com/en/actions/how-tos/create-and-publish-actions/publish-in-github-marketplace).
-If GitHub rejects the prerelease choice or still disables publication, preserve
-the alpha labeling and resolve the displayed requirement before claiming a listing.
-
-The release candidate retains read-only consumer workflow permissions, local
-reports, no automatic artifact upload, and no PR comment publisher. Test execution
-is limited to trusted Python/pytest repositories under the documented alpha
-scope. Marketplace publication does not expand that execution boundary.
-
-The `0.1.0a4` bootstrap isolates initial Python imports and ignores caller pip
-installation settings when installing its separate tool environment. This keeps
-caller modules and `PIP_TARGET` from redirecting setup. Project dependencies still
-come from the caller's selected Python. Pip documents the environment/configuration
-behavior in its [configuration reference](https://pip.pypa.io/en/stable/topics/configuration/#pip-config-file).
+Verify the new release's target, CI, installation pin, and public Marketplace
+page before updating this record.

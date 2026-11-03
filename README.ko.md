@@ -8,11 +8,11 @@ TestDelta는 **pytest 테스트만 바뀐 PR**을 검토하는 GitHub Action과 
 
 테스트 리팩터링, assertion 변경, 코딩 에이전트가 수정한 테스트를 검토할 때 사용할 수 있습니다. **LLM, API key, 별도 서비스 계정이 필요하지 않습니다.**
 
-[Live demo](https://hyscodebase.github.io/testdelta/) · [Press kit](https://hyscodebase.github.io/testdelta/downloads/testdelta-press-kit.zip)
+[GitHub Marketplace](https://github.com/marketplace/actions/testdelta-test-quality) · [Live demo](https://hyscodebase.github.io/testdelta/) · [Press kit](https://hyscodebase.github.io/testdelta/downloads/testdelta-press-kit.zip)
 
 [English](README.md) · [Action 사용법](docs/action.md) · [검증 현황](docs/quality-status.md) · [호환성](docs/compatibility.md) · [기여 안내](CONTRIBUTING.md)
 
-**초기 알파:** 명시한 Python source/test 파일, Ubuntu/macOS, Python 3.11–3.13을 대상으로 합니다. 실행한 유한한 비교의 근거를 제공하며, PR 전체의 정확성이나 안전성을 판정하지 않습니다.
+**초기 알파 — [v0.1.0-alpha.4](https://github.com/hyscodebase/testdelta/releases/tag/v0.1.0-alpha.4):** 명시한 Python source/test 파일, Ubuntu/macOS, Python 3.11–3.13을 대상으로 합니다. 실행한 유한한 비교의 근거를 제공하며, PR 전체의 정확성이나 안전성을 판정하지 않습니다.
 
 ## 테스트만 바뀐 PR에 추가하기
 
@@ -47,7 +47,7 @@ jobs:
       - run: python -m pip install "pytest==8.4.2"
       - name: Compare test revisions
         id: testdelta
-        uses: hyscodebase/testdelta@2add31061b995a50a62fbf15b1a28942214f9fce
+        uses: hyscodebase/testdelta@55d64056c14834eab99cf49ca86c4786a14804bd
         with:
           base: ${{ github.event.pull_request.base.sha }}
           head: ${{ github.event.pull_request.head.sha }}
@@ -71,7 +71,7 @@ Git, Python 3.11–3.13, [uv](https://docs.astral.sh/uv/)가 필요합니다.
 ```bash
 git clone https://github.com/hyscodebase/testdelta.git
 cd testdelta
-git checkout 2add31061b995a50a62fbf15b1a28942214f9fce
+git checkout 55d64056c14834eab99cf49ca86c4786a14804bd
 uv sync
 uv run testdelta demo --scenario lost
 ```
@@ -133,7 +133,7 @@ Export와 자동 작업 요약에는 raw log, source/config 원문, 절대 runti
 
 | 근거 | 확인한 내용 |
 | --- | --- |
-| [a3 시점 로컬 테스트 194개](STUDY.MD) | 해당 구현 테스트 실행 통과. 사용할 commit의 [CI 결과](https://github.com/hyscodebase/testdelta/actions)는 별도로 확인 |
+| [alpha.4 릴리스 CI의 테스트 195개](https://github.com/hyscodebase/testdelta/commit/55d64056c14834eab99cf49ca86c4786a14804bd/checks) | 지원 Python/OS 조합에서 통과. 이전 a3의 194개 결과는 [과거 기록](STUDY.MD) |
 | [고정 사례 50개](corpus/README.md) | 직접 작성한 control로 개발 30개·검증 20개의 기대 판정과 일치. 일반 정확도나 자동 변이 품질 측정은 아님 |
 | [로컬 실행 시간 20회](docs/performance.md) | macOS 한 대의 합성 가격 계산 예제, 매회 변이 10개에서 p95 **27.697초**. 준비 시간 제외, host 부하 미통제 |
 | [Boltons의 고정 PR 2개](docs/compatibility.md) | 둘 다 **미확정**. 실행 오류를 보존했으며 확정한 탐지 손실이나 clean 결과 없음 |
